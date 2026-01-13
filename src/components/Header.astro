@@ -88,6 +88,30 @@ const isActive = (path: string) => {
               thoughts, ideas, and rants
             </a>
           </li>
+          <li class="group relative col-span-2">
+            <a
+              href="/registries"
+              class:list={{ "active-nav": isActive("/registries") }}
+            >
+              registries
+            </a>
+            <ul
+              class:list={[
+                "hidden sm:block",
+                "pointer-events-none absolute top-full left-0 z-50 min-w-32 rounded-md border border-border bg-background opacity-0 shadow-lg transition-opacity",
+                "group-hover:pointer-events-auto group-hover:opacity-100",
+              ]}
+            >
+              <li>
+                <a
+                  href="/registries/coderabbit"
+                  class="block px-4 py-2 text-sm hover:text-accent"
+                >
+                  coderabbit
+                </a>
+              </li>
+            </ul>
+          </li>
           {
             SITE.showArchives && (
               <li class="col-span-2">
