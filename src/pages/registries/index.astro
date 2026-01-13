@@ -1,0 +1,63 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+
+const registries = [
+  {
+    name: "CodeRabbit",
+    slug: "coderabbit",
+    description:
+      "Framework-agnostic API client with storage adapters and React components for developer activity reports.",
+    icon: "🐰",
+    tags: ["shadcn", "react", "api"],
+  },
+];
+---
+
+<Layout
+  title="Registries | Ray"
+  description="Open source shadcn registries and component libraries by Ray"
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <h1 class="text-2xl font-semibold sm:text-3xl">[registries]</h1>
+    <p class="mt-2 mb-8 text-muted-foreground">
+      Open source shadcn registries. Install components directly into your
+      projects.
+    </p>
+
+    <div class="grid gap-4">
+      {
+        registries.map(registry => (
+          <a
+            href={`/registries/${registry.slug}`}
+            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
+          >
+            <span class="text-3xl">{registry.icon}</span>
+            <div class="flex-1">
+              <h2 class="text-lg font-medium group-hover:text-accent">
+                {registry.name}
+                <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </h2>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {registry.description}
+              </p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {registry.tags.map(tag => (
+                  <span class="rounded bg-secondary/50 px-2 py-0.5 text-xs text-secondary-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
