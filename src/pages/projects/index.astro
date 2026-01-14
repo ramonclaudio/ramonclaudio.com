@@ -1,0 +1,63 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import { projects } from "@/data/projects";
+---
+
+<Layout
+  title="Projects | Ray"
+  description="Open source projects and experiments by Ray"
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold sm:text-3xl">[projects]</h1>
+      <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+        {projects.length} oss projects
+      </span>
+    </div>
+    <p class="mt-2 mb-8 text-muted-foreground">
+      Open source work. Everything lives on GitHub.
+    </p>
+
+    <div class="grid gap-4">
+      {
+        projects.map(project => (
+          <a
+            href={`/projects/${project.slug}`}
+            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
+          >
+            <IconGitHub class="mt-1 h-6 w-6 shrink-0 text-muted-foreground" />
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <h2 class="text-lg font-medium group-hover:text-accent">
+                  {project.name}
+                  <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </h2>
+                <span class="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                  {project.language}
+                </span>
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {project.tagline}
+              </p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {project.tags.map(tag => (
+                  <span class="rounded bg-secondary/50 px-2 py-0.5 text-xs text-secondary-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
