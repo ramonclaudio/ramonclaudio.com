@@ -5,30 +5,28 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import CodeRabbitDark from "@/assets/icons/coderabbit-dark.svg";
+import CodeRabbitLight from "@/assets/icons/coderabbit-light.svg";
 
 const features = [
   {
     title: "Framework Agnostic",
     description:
       "Core client works with any JavaScript framework. React hooks included.",
-    icon: "🔌",
   },
   {
     title: "Storage Adapters",
     description:
       "LocalStorage, Convex, Supabase, PostgreSQL, MySQL. Bring your own backend.",
-    icon: "💾",
   },
   {
     title: "shadcn Compatible",
     description:
       "Install directly with the shadcn CLI. Copy-paste ready components.",
-    icon: "🎨",
   },
   {
     title: "Type Safe",
     description: "Full TypeScript support with strict types for all APIs.",
-    icon: "🛡️",
   },
 ];
 
@@ -66,7 +64,10 @@ const storageAdapters = [
     <!-- Hero -->
     <section class="py-8">
       <div class="flex items-center gap-3">
-        <span class="text-4xl">🐰</span>
+        <div class="relative size-10">
+          <CodeRabbitLight class="absolute inset-0 size-10 dark:hidden" />
+          <CodeRabbitDark class="absolute inset-0 hidden size-10 dark:block" />
+        </div>
         <h1 class="text-3xl font-bold sm:text-4xl">CodeRabbit</h1>
       </div>
       <p class="mt-4 text-lg text-muted-foreground">
@@ -101,10 +102,7 @@ const storageAdapters = [
         {
           features.map(feature => (
             <div class="rounded-lg border border-border p-4">
-              <div class="flex items-center gap-2">
-                <span class="text-xl">{feature.icon}</span>
-                <h3 class="font-medium">{feature.title}</h3>
-              </div>
+              <h3 class="font-medium">{feature.title}</h3>
               <p class="mt-2 text-sm text-muted-foreground">
                 {feature.description}
               </p>
@@ -238,7 +236,11 @@ const { generateReport, isLoading } = useCodeRabbit({
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 text-accent hover:underline"
         >
-          🐰 CodeRabbit API
+          <span class="relative size-4">
+            <CodeRabbitLight class="absolute inset-0 size-4 dark:hidden" />
+            <CodeRabbitDark class="absolute inset-0 hidden size-4 dark:block" />
+          </span>
+          CodeRabbit API
         </a>
       </div>
     </section>

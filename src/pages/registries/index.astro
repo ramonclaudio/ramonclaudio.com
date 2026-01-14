@@ -4,6 +4,8 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import CodeRabbitDark from "@/assets/icons/coderabbit-dark.svg";
+import CodeRabbitLight from "@/assets/icons/coderabbit-light.svg";
 
 const registries = [
   {
@@ -11,7 +13,6 @@ const registries = [
     slug: "coderabbit",
     description:
       "Framework-agnostic API client with storage adapters and React components for developer activity reports.",
-    icon: "🐰",
     tags: ["shadcn", "react", "api"],
   },
 ];
@@ -37,7 +38,10 @@ const registries = [
             href={`/registries/${registry.slug}`}
             class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
           >
-            <span class="text-3xl">{registry.icon}</span>
+            <span class="relative size-8 shrink-0">
+              <CodeRabbitLight class="absolute inset-0 size-8 dark:hidden" />
+              <CodeRabbitDark class="absolute inset-0 hidden size-8 dark:block" />
+            </span>
             <div class="flex-1">
               <h2 class="text-lg font-medium group-hover:text-accent">
                 {registry.name}
