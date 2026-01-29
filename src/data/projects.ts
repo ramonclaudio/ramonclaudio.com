@@ -22,6 +22,98 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "tanstack-convex-starter",
+    name: "tanstack-convex-starter",
+    tagline: "Full-stack starter with TanStack Start + Convex.",
+    description:
+      "Full-stack starter with TanStack Start, Convex, and Better Auth. Includes email/password + username auth, user profiles with avatar uploads, row-level security, role-based access control, rate limiting, audit logging, and SSR.",
+    repo: "ramonclaudio/tanstack-convex-starter",
+    language: "TypeScript",
+    tags: ["tanstack", "convex", "better-auth", "starter"],
+    license: "MIT",
+    features: [
+      { title: "Authentication", description: "Email/password + username via Better Auth" },
+      { title: "Row-Level Security", description: "RLS with convex-helpers custom functions" },
+      { title: "Rate Limiting", description: "Token bucket and fixed window rate limiting" },
+      { title: "Profiles", description: "User profiles with avatar uploads to Convex storage" },
+    ],
+    install: `git clone https://github.com/ramonclaudio/tanstack-convex-starter.git
+cd tanstack-convex-starter
+bun install
+bun run setup        # connects Convex, generates .env.local, sets secrets
+bun run dev          # starts dev server on http://localhost:3000`,
+    usage: `bun run dev            # Start development
+bun run setup:local    # Use local Convex backend (Docker)
+bun run build          # Build for production`,
+    requirements: ["Bun", "Convex account (or Docker for local backend)"],
+  },
+  {
+    slug: "gitbar",
+    name: "gitbar",
+    tagline: "Menubar GitHub dashboard built with Tauri.",
+    description:
+      "A personal GitHub dashboard that lives in your menubar. PRs, issues, repos, and activity in one window. 3 parallel GraphQL queries, stale-while-revalidate caching, progressive rendering, and a privacy toggle for screenshots.",
+    repo: "ramonclaudio/gitbar",
+    language: "TypeScript",
+    tags: ["tauri", "rust", "github", "desktop"],
+    license: "MIT",
+    features: [
+      { title: "PRs & Issues", description: "Yours, assigned, review requested, mentioned" },
+      { title: "Activity Feed", description: "Contribution graph, stars, forks, recent events" },
+      {
+        title: "Progressive Rendering",
+        description: "IntersectionObserver, only visible items render",
+      },
+      { title: "Privacy Toggle", description: "Hide private repos/PRs/issues for screenshots" },
+    ],
+    install: `git clone https://github.com/ramonclaudio/gitbar.git
+cd gitbar
+bun install
+bun run tauri dev`,
+    usage: `bun run tauri dev      # Development mode
+bun run tauri build    # Build native binary (~5MB)`,
+    requirements: ["Bun", "Rust (required by Tauri)", "gh CLI authenticated"],
+  },
+  {
+    slug: "convex-revenuecat",
+    name: "convex-revenuecat",
+    tagline: "Convex component for RevenueCat subscriptions.",
+    description:
+      "Webhook-driven RevenueCat subscription state for Convex. Stores entitlements in your database for reactive, real-time access control. Idempotent handling of all 18 webhook events with built-in rate limiting.",
+    repo: "ramonclaudio/convex-revenuecat",
+    language: "TypeScript",
+    tags: ["convex", "revenuecat", "subscriptions", "component"],
+    license: "Apache-2.0",
+    features: [
+      {
+        title: "Webhook Processing",
+        description: "Idempotent handling of all 18 RevenueCat events",
+      },
+      { title: "Reactive Queries", description: "Real-time entitlement and subscription state" },
+      {
+        title: "Edge Cases",
+        description: "Cancellation keeps access until expiry, pause doesn't revoke",
+      },
+      { title: "Rate Limiting", description: "Built-in protection against webhook abuse" },
+    ],
+    install: `npm install convex-revenuecat`,
+    usage: `// convex/convex.config.ts
+import revenuecat from "convex-revenuecat/convex.config";
+const app = defineApp();
+app.use(revenuecat);
+
+// convex/http.ts
+const revenuecat = new RevenueCat(components.revenuecat, {
+  REVENUECAT_WEBHOOK_AUTH: process.env.REVENUECAT_WEBHOOK_AUTH,
+});
+http.route({
+  path: "/webhooks/revenuecat",
+  method: "POST",
+  handler: revenuecat.httpHandler(),
+});`,
+    requirements: ["Convex 1.31.6+", "RevenueCat account with webhook access"],
+  },
+  {
     slug: "handoff",
     name: "handoff",
     tagline: "Session continuity for Claude Code.",
@@ -38,8 +130,7 @@ export const projects: Project[] = [
       },
       {
         title: "Skill",
-        description:
-          'Claude auto-invokes when you say "handoff", "save progress", "resume"',
+        description: 'Claude auto-invokes when you say "handoff", "save progress", "resume"',
       },
       {
         title: "Agent",
@@ -126,7 +217,10 @@ import { Input } from "@/components/ui/input";`,
     tags: ["shadcn", "react", "typescript", "coderabbit"],
     license: "MIT",
     features: [
-      { title: "Multiple Backends", description: "LocalStorage, Convex, Supabase, PostgreSQL, MySQL" },
+      {
+        title: "Multiple Backends",
+        description: "LocalStorage, Convex, Supabase, PostgreSQL, MySQL",
+      },
       { title: "React Hooks", description: "useCodeRabbit hook for easy integration" },
       { title: "UI Components", description: "Ready-to-use form and card components" },
       { title: "Type Safe", description: "Full TypeScript support with strict types" },
@@ -367,10 +461,16 @@ await init('./my-project');`,
     tags: ["claude-code", "cli", "productivity"],
     license: "MIT",
     features: [
-      { title: "8 Slash Commands", description: "/commit, /explain, /fix, /optimize, /pr, /review, /test, /validate" },
+      {
+        title: "8 Slash Commands",
+        description: "/commit, /explain, /fix, /optimize, /pr, /review, /test, /validate",
+      },
       { title: "3 Subagents", description: "pre-commit, refactor, debugger specialists" },
       { title: "Safety Hooks", description: "Blocks destructive commands, confirms deletions" },
-      { title: "Advanced Statusline", description: "Git status, framework detection, color-coded info" },
+      {
+        title: "Advanced Statusline",
+        description: "Git status, framework detection, color-coded info",
+      },
     ],
     install: `npm create claude
 pnpm create claude
@@ -469,7 +569,11 @@ sudo chmod -R 755 "/Applications/Cursor.app/"
 
 # Windows: add to shortcut target:
 --disable-gpu-compositing`,
-    requirements: ["Cursor AI", "vscode-vibrancy-continued extension", "Cursor Dark Midnight theme"],
+    requirements: [
+      "Cursor AI",
+      "vscode-vibrancy-continued extension",
+      "Cursor Dark Midnight theme",
+    ],
   },
   {
     slug: "raycast-mcp-server-manager",
