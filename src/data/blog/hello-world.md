@@ -13,20 +13,12 @@ description: Hello, I'm Ray.
 
 Hello,
 
-I'm Ray. A software developer who believes in building useful tools and sharing them with the community. I write code that I'd want to use myself, and I try to make it as clean and accessible as possible.
+I'm Ray. I build tools I want to use, then open source them. This is where I write about that.
 
-### What You'll Find Here
-
-I'll be sharing:
-
-- Open source projects I'm working on
-- Technical deep-dives and tutorials
-- Tools and libraries that make my life easier
-- Occasional thoughts on the current state of development
-- Lessons learned from building
+Expect project write-ups, technical decisions I had to make, and whatever I'm building with at the time. If I shipped it, I'll probably write about it here.
 
 ### Let's Build
 
-Have a question? Shoot me a message on **_[X](https://x.com/ramonclaudio)_**. Found a bug in one of my projects? Open an issue or discussion on **_[GitHub](https://github.com/ramonclaudio)_**. Want to collaborate on something? Email me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**. I'm always looking for new opportunities to learn and grow.
+Have a question? Shoot me a message on **_[X](https://x.com/ramonclaudio)_**. Found a bug in one of my projects? Open an issue or discussion on **_[GitHub](https://github.com/ramonclaudio)_**. Want to collaborate? Email me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**.
 
-- Ray
+\- Ray

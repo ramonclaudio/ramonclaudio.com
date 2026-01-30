@@ -24,7 +24,7 @@ So I built [Gitbar](https://github.com/ramonclaudio/gitbar) — a menubar app th
 
 I'm a CLI-first person. Keyboard over mouse. Terminal over GUI. I use [Ghostty](https://ghostty.org), [yazi](https://github.com/sxyazi/yazi), [lazygit](https://github.com/jesseduffield/lazygit) — basically if it runs in a terminal, I'm interested.
 
-But this needed to be a menubar app. I wanted something that was always there, not buried in a browser tab competing with 40 others. I wanted it fast, native, and small.
+But this needed to be a menubar app. I wanted something that was always there, not buried in a browser tab competing with 40 others. Fast, native, tiny footprint.
 
 That meant Tauri.
 
@@ -34,7 +34,7 @@ I've been wanting to build something with [Tauri](https://v2.tauri.app/) for a w
 
 Tauri v2 gave me everything I needed: tray icon, menubar window positioning, macOS vibrancy (the frosted glass effect), auto-hide on blur, and a shell plugin to call `gh auth token` at runtime. No OAuth flow. No env vars. If you're logged into `gh`, you're logged into Gitbar.
 
-The Rust side is about 113 lines. Window management, tray icon, vibrancy config. That's it. Everything else is TypeScript and React.
+The Rust side is 113 lines. Window management, tray icon, vibrancy. That's it. Everything else is TypeScript and React.
 
 ### How it works
 
@@ -45,9 +45,9 @@ The app fires 3 GraphQL queries and 1 REST call in parallel the moment you open 
 3. **Issue search** — created, assigned, mentioned
 4. **Events** — recent activity via REST
 
-The left panel renders as soon as the viewer data lands. PRs and issues fill in when their searches complete. Activity loads last in the background. You never stare at a loading spinner.
+The left panel renders as soon as the viewer data lands. PRs and issues fill in when their searches complete. Activity loads last. No loading spinner.
 
-Everything is cached in localStorage with a 30-minute TTL. Cold starts are instant because the app renders stale data immediately, then refreshes behind the scenes. The username is cached separately so the events query can fire in parallel on first load instead of waiting for the viewer response.
+Everything is cached in localStorage with a 30-minute TTL. Cold starts are instant. The app renders stale data immediately, then refreshes behind the scenes. I also cache the username separately so the events query can fire in parallel on first load instead of waiting for the viewer response.
 
 ### The privacy toggle
 
@@ -68,15 +68,15 @@ Every list uses `IntersectionObserver`. Only visible items are in the DOM. Scrol
 - **react-markdown** + remark-gfm — PR/issue body rendering
 - **Bun** — package manager
 
-About 3,900 lines of TypeScript across 38 files. No state library. No data fetching library. Just `fetch`, `localStorage`, and `useState`. Sometimes the simplest approach is the right one.
+About 3,900 lines of TypeScript across 38 files. No state library. No data fetching library. Just `fetch`, `localStorage`, and `useState`.
 
 ### What I learned
 
-Tauri is good. Really good. The DX is surprisingly smooth for a Rust-based tool, and the binary size alone makes it worth the switch from Electron. The shell plugin for calling `gh` was the key insight — it meant I could skip the entire OAuth dance and just piggyback on the user's existing auth.
+Tauri is good. Really good. The DX is smoother than I expected for a Rust-based tool, and the binary size alone makes it worth the switch from Electron. The shell plugin for calling `gh` was what made it all click. I could skip the entire OAuth dance and just piggyback on the user's existing auth.
 
-The hardest part was getting the menubar window positioning right across different monitor setups. Tauri gives you the tray icon's position and the monitor's dimensions, but you still have to do the math yourself to make sure the window doesn't clip off-screen.
+The hardest part was menubar window positioning across different monitor setups. Tauri gives you the tray icon's position and the monitor's dimensions, but you have to do the math yourself so the window doesn't clip off-screen.
 
-The second hardest part was merging PR review comments with issue comments into a single timeline. GitHub's API splits them into two endpoints, and the data shapes are different. Not difficult, just annoying.
+Merging PR review comments with issue comments into a single timeline was also annoying. GitHub's API splits them into two endpoints, and the data shapes are different. Spent more time on that than I'd like to admit.
 
 ### What's next
 
