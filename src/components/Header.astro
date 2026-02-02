@@ -69,18 +69,47 @@ const isActive = (path: string) => {
             "sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
           ]}
         >
-          <li class="col-span-2">
-            <a href="/" class:list={{ "active-nav": currentPath === "/" }}>
-              [about]
-            </a>
-          </li>
-          <li class="col-span-2">
-            <a
-              href="/resume"
-              class:list={{ "active-nav": isActive("/resume") }}
+          <li class="group relative col-span-2">
+            <span
+              class:list={[
+                "block cursor-default px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
+                { "active-nav": currentPath === "/" || isActive("/resume") || isActive("/setup") },
+              ]}
             >
-              [resume]
-            </a>
+              [me]
+            </span>
+            <ul
+              class:list={[
+                "flex justify-center gap-4 sm:hidden sm:flex-col sm:gap-0",
+                "sm:pointer-events-none sm:absolute sm:top-full sm:left-0 sm:z-50 sm:min-w-32 sm:rounded-md sm:border sm:border-border sm:bg-background sm:opacity-0 sm:shadow-lg sm:transition-opacity",
+                "sm:group-hover:pointer-events-auto sm:group-hover:block sm:group-hover:opacity-100",
+              ]}
+            >
+              <li>
+                <a
+                  href="/"
+                  class="block px-4 py-2 text-sm hover:text-accent"
+                >
+                  about
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/resume"
+                  class="block px-4 py-2 text-sm hover:text-accent"
+                >
+                  resume
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/setup"
+                  class="block px-4 py-2 text-sm hover:text-accent"
+                >
+                  setup
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="group relative col-span-2">
             <span
@@ -119,11 +148,6 @@ const isActive = (path: string) => {
           <li class="col-span-2">
             <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
               [thoughts]
-            </a>
-          </li>
-          <li class="col-span-2">
-            <a href="/setup" class:list={{ "active-nav": isActive("/setup") }}>
-              [setup]
             </a>
           </li>
           {
