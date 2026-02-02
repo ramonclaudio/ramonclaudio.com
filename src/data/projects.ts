@@ -18,6 +18,7 @@ export type Project = {
   structure?: string;
   customization?: string;
   requirements?: string[];
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -51,6 +52,7 @@ bun run build          # Build for production`,
     slug: "gitbar",
     name: "gitbar",
     tagline: "Menubar GitHub dashboard built with Tauri.",
+    featured: true,
     description:
       "A personal GitHub dashboard that lives in your menubar. PRs, issues, repos, and activity in one window. 3 parallel GraphQL queries, stale-while-revalidate caching, progressive rendering, and a privacy toggle for screenshots.",
     repo: "ramonclaudio/gitbar",
@@ -78,6 +80,7 @@ bun run tauri build    # Build native binary (~5MB)`,
     slug: "convex-revenuecat",
     name: "convex-revenuecat",
     tagline: "Convex component for RevenueCat subscriptions.",
+    featured: true,
     description:
       "Webhook-driven RevenueCat subscription state for Convex. Stores entitlements in your database for reactive, real-time access control. Idempotent handling of all 18 webhook events with built-in rate limiting.",
     repo: "ramonclaudio/convex-revenuecat",
@@ -186,6 +189,7 @@ bun cli.ts vercel/next.js examples/       # Specific path
     slug: "uniwind-ui",
     name: "uniwind-ui",
     tagline: "shadcn/ui for React Native.",
+    featured: true,
     description:
       "shadcn/ui components for React Native, built on Uniwind. Copy and paste components for iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
@@ -336,6 +340,7 @@ npx shopify hydrogen deploy  # Deploy to production`,
     slug: "polar-commerce",
     name: "polar-commerce",
     tagline: "E-commerce platform with Polar payments.",
+    featured: true,
     description:
       "Experimental e-commerce built with Next.js 16, Convex, Better Auth, and Polar. Polar has no cart system so I built custom cart bundling - multiple items bundle into a single ephemeral product at checkout, then reconstruct server-side after payment via webhook.",
     repo: "ramonclaudio/polar-commerce",
@@ -492,6 +497,30 @@ cld`,
 
 CLAUDE.md                   # Project instructions`,
     requirements: ["Node.js 18+", "Claude Code CLI"],
+  },
+  {
+    slug: "skills",
+    name: "skills",
+    tagline: "Plugin system for Claude Code.",
+    featured: true,
+    description:
+      "8 Claude Code plugins installable individually: handoff (session continuity), audit, commit, frames, gif, qmd, simplify, techdebt. The handoff plugin has lifecycle hooks for automatic session state management across conversations.",
+    repo: "ramonclaudio/skills",
+    language: "Shell",
+    tags: ["claude-code", "plugin", "productivity"],
+    license: "MIT",
+    features: [
+      { title: "8 Plugins", description: "handoff, audit, commit, frames, gif, qmd, simplify, techdebt" },
+      { title: "Lifecycle Hooks", description: "Auto-init, auto-save, session-start/end/clear" },
+      { title: "State Persistence", description: "Session context survives across conversations" },
+      { title: "Marketplace Ready", description: "Each plugin installable independently" },
+    ],
+    install: `/plugin install ramonclaudio/skills`,
+    usage: `/handoff start   # Begin session with context
+/handoff end     # Archive session state
+/audit           # Run code audit
+/commit          # Guided commit flow`,
+    requirements: ["Claude Code 2.1+"],
   },
   {
     slug: "vercel-blob-client-starter",

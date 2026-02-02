@@ -3,34 +3,27 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-I'm Ray. Software engineer, 13+ years, based in New York. CS degree in 2016, mostly self-taught in practice. I build tools that solve my own problems, then open source them.
+I'm Ray. Software engineer in New York. CS degree from Long Island University (2016), 12+ years of freelance, open source, client work, and a company I co-founded.
 
-### How I Got Here
+Started by reverse engineering APIs, scraping large datasets, and working backward from how systems behaved to figure out how they were built. I still debug the same way. Start from the outside, work in.
 
-I started with Python automation. Over 1,000 scripts — sneaker bots, art drop monitors, inventory trackers, anything I could automate to gain an edge. That turned into running multiple businesses doing $100K+/year through arbitrage and automation.
+Co-founded Artistic Distributions with Kai, where we built headless Shopify storefronts handling thousands of concurrent buyers with bot protection, AR experiences in Swift, and ran collaborations with Nike, Adidas, Converse, NTWRK, and Beyond The Streets. One charity print drop raised over $80K in 24 hours.
 
-When LLM APIs started launching in late 2023, I saw the same pattern: new tools, no good wrappers. I built 7 AI toolkit libraries in 10 months. First-mover on Gemini the same month its API dropped. Same with Grok. Those libraries have 255+ stars combined.
+When LLM APIs started launching in late 2023, I shipped 7 API client libraries in 10 months. First to publish wrappers for Gemini and Grok. 280+ combined stars. That work moved me from Python to TypeScript full-time.
 
-Now I'm full-stack TypeScript. Bun, Convex, TanStack, Expo, shadcn/ui. I ship daily and contribute to the tools I use — merged PRs to Bun, TanStack, Vercel, shadcn, Raycast, and Convex.
+Now I write TypeScript across the full stack. Tauri desktop apps, Convex components, Claude Code plugins, SaaS starters, mobile component libraries.
 
-### What I Believe
+### What I Do
 
-- **Speed over perfection** — Ship first, iterate fast. My peak day had 150 contributions.
-- **Automate everything** — If I do something twice, I write a script.
-- **Open source by default** — Every tool I build goes public.
-- **CLI-first** — Keyboard over mouse. Terminal over GUI.
-- **Give back** — I PR improvements to tools I use.
-
-### Open Source
-
-35+ public repos. 330+ stars. Contributions to repos with 388,000+ combined stars — AI toolkits, dev tools, SaaS starters, browser extensions, desktop apps. See everything on the **_[projects](/projects)_** page.
-
-### Beyond Code
-
-I founded a non-profit for digital education in underserved communities. I collected art and ran operations for a street artist from 2017 to 2020 — drone footage, event coordination, edition releases. I've built 50+ websites across Shopify, WordPress, and custom stacks for clients over the years.
+- If I do something twice, I write a script.
+- Every tool I build goes public. 36 repos and counting.
+- Keyboard over mouse. Terminal over GUI.
+- I read source code and submit fixes when I find problems.
 
 ### Let's Build
 
-Questions, bugs, or ideas — reach me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**. Find my work on **_[GitHub](https://github.com/ramonclaudio)_**. Follow the stream of consciousness on **_[X](https://x.com/ramonclaudio)_**.
+Questions, bugs, or ideas? Reach me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**. Find my work on **_[GitHub](https://github.com/ramonclaudio)_**. Follow the stream of consciousness on **_[X](https://x.com/ramonclaudio)_**.
+
+For the full story, see my **_[resume](/resume)_**.
 
 \- Ray
