@@ -70,14 +70,15 @@ const isActive = (path: string) => {
           ]}
         >
           <li class="group relative col-span-2">
-            <span
+            <a
+              href="/"
               class:list={[
-                "block cursor-default px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
-                { "active-nav": currentPath === "/" || isActive("/resume") || isActive("/setup") },
+                "block px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
+                { "active-nav": currentPath === "/" || isActive("/about") || isActive("/resume") || isActive("/setup") },
               ]}
             >
               [me]
-            </span>
+            </a>
             <ul
               class:list={[
                 "flex justify-center gap-4 sm:hidden sm:flex-col sm:gap-0",
@@ -87,7 +88,7 @@ const isActive = (path: string) => {
             >
               <li>
                 <a
-                  href="/"
+                  href="/about"
                   class="block px-4 py-2 text-sm hover:text-accent"
                 >
                   about
