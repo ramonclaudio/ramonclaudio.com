@@ -82,34 +82,36 @@ const isActive = (path: string) => {
               [resume]
             </a>
           </li>
-          <li class="col-span-2">
-            <a
-              href="/projects"
-              class:list={{ "active-nav": isActive("/projects") }}
-            >
-              [projects]
-            </a>
-          </li>
           <li class="group relative col-span-2">
-            <a
-              href="/registries"
-              class:list={{ "active-nav": isActive("/registries") }}
+            <span
+              class:list={[
+                "block cursor-default px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
+                { "active-nav": isActive("/projects") || isActive("/registries") },
+              ]}
             >
-              [registries]
-            </a>
+              [work]
+            </span>
             <ul
               class:list={[
-                "hidden sm:block",
-                "pointer-events-none absolute top-full left-0 z-50 min-w-32 rounded-md border border-border bg-background opacity-0 shadow-lg transition-opacity",
-                "group-hover:pointer-events-auto group-hover:opacity-100",
+                "flex justify-center gap-4 sm:hidden sm:flex-col sm:gap-0",
+                "sm:pointer-events-none sm:absolute sm:top-full sm:left-0 sm:z-50 sm:min-w-32 sm:rounded-md sm:border sm:border-border sm:bg-background sm:opacity-0 sm:shadow-lg sm:transition-opacity",
+                "sm:group-hover:pointer-events-auto sm:group-hover:block sm:group-hover:opacity-100",
               ]}
             >
               <li>
                 <a
-                  href="/registries/coderabbit"
+                  href="/projects"
                   class="block px-4 py-2 text-sm hover:text-accent"
                 >
-                  coderabbit
+                  projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/registries"
+                  class="block px-4 py-2 text-sm hover:text-accent"
+                >
+                  registries
                 </a>
               </li>
             </ul>
