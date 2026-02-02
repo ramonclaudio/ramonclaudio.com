@@ -322,7 +322,7 @@ bun run build      # Build for production`,
       { title: "shadcn/ui", description: "Beautiful, accessible components" },
       { title: "TypeScript", description: "Full type safety with codegen" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/shopify-hydrogen-shadcn-template.git
+    install: `git clone https://github.com/ramonclaudio/shopify-hydrogen-shadcn-template.git
 cd shopify-hydrogen-shadcn-template
 npm install
 npx shopify hydrogen link
@@ -509,7 +509,7 @@ CLAUDE.md                   # Project instructions`,
       { title: "File Gallery", description: "Preview, copy, delete operations" },
       { title: "SDK Compliant", description: "Full Vercel Blob API support" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/vercel-blob-client-starter.git
+    install: `git clone https://github.com/ramonclaudio/vercel-blob-client-starter.git
 cd vercel-blob-client-starter
 npm install`,
     usage: `npm run dev        # Start development
@@ -595,7 +595,7 @@ sudo chmod -R 755 "/Applications/Cursor.app/"
 # Search "MCP Server Manager" and install
 
 # Manual:
-git clone https://github.com/rmncldyo/raycast-mcp-server-manager.git
+git clone https://github.com/ramonclaudio/raycast-mcp-server-manager.git
 cd raycast-mcp-server-manager
 npm install && npm run build`,
     usage: `# Type "MCP" in Raycast:
@@ -709,7 +709,7 @@ getToken();              // Show token instructions`,
       { title: "Private Repos", description: "Access with proper authentication" },
       { title: "Lightweight", description: "Minimal dependencies" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/github-stats-checker.git
+    install: `git clone https://github.com/ramonclaudio/github-stats-checker.git
 cd github-stats-checker
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -736,7 +736,7 @@ Stats().run(username="ramonclaudio")`,
       { title: "Custom Actions", description: "Click, scroll, form fill automation" },
       { title: "Device Emulation", description: "Mobile/desktop views, custom headers" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/firecrawl-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/firecrawl-toolkit.git
 cd firecrawl-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI - Scrape
@@ -765,7 +765,7 @@ python cli.py --map --url "https://example.com"`,
       { title: "Processing", description: "Clean and format extracted content" },
       { title: "Automation", description: "Batch documentation retrieval" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/swiftui-doc-crawler.git
+    install: `git clone https://github.com/ramonclaudio/swiftui-doc-crawler.git
 cd swiftui-doc-crawler
 pip install -r requirements.txt`,
     usage: `python crawler.py --url "https://developer.apple.com/documentation/swiftui"`,
@@ -786,7 +786,7 @@ pip install -r requirements.txt`,
       { title: "Streaming Responses", description: "Real-time output" },
       { title: "Configurable", description: "Temperature, tokens, penalties" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/grok-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/grok-ai-toolkit.git
 cd grok-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -816,7 +816,7 @@ Vision().run(prompt="Describe", image_url="https://...")`,
       { title: "Smart Filtering", description: "Exclude patterns, ignore files" },
       { title: "Codebase Analysis", description: "Full project in one file" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/project-merge.git
+    install: `git clone https://github.com/ramonclaudio/project-merge.git
 cd project-merge
 pip install -r requirements.txt`,
     usage: `python merge.py /path/to/project
@@ -841,7 +841,7 @@ python merge.py /path/to/project --exclude "*.test.js"`,
       { title: "Text Generation", description: "Contextually relevant responses" },
       { title: "Lightweight", description: "Minimal dependencies" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/groq-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/groq-ai-toolkit.git
 cd groq-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -870,7 +870,7 @@ Text().run(prompt="Write a story")`,
       { title: "Text Generation", description: "Contextually relevant text from prompts" },
       { title: "Lightweight", description: "Only requires requests package" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/claude-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/claude-ai-toolkit.git
 cd claude-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -899,7 +899,7 @@ Chat().run()`,
       { title: "Text Generation", description: "Contextually relevant responses" },
       { title: "JSON Output", description: "Structured output support" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/mistral-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/mistral-ai-toolkit.git
 cd mistral-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -927,7 +927,7 @@ Chat().run()`,
       { title: "Text Generation", description: "Contextually relevant responses" },
       { title: "Multiple Versions", description: "gemma-2b-it, gemma-7b-it" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/gemma-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/gemma-ai-toolkit.git
 cd gemma-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -955,7 +955,7 @@ Chat().run()`,
       { title: "Streaming Output", description: "Real-time response streaming" },
       { title: "Lightweight", description: "Only requires requests package" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/perplexity-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/perplexity-ai-toolkit.git
 cd perplexity-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -983,7 +983,7 @@ Chat().run()`,
       { title: "Customizable", description: "Query options, delays, result limits" },
       { title: "Parsed Results", description: "Formatted titles and links" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/Google-Reverse-Image-Search.git
+    install: `git clone https://github.com/ramonclaudio/Google-Reverse-Image-Search.git
 cd Google-Reverse-Image-Search
 pip install -r requirements.txt`,
     usage: `from reverse_image_search import GoogleReverseImageSearch
@@ -1011,7 +1011,7 @@ results = search.response(
       { title: "Formatted Results", description: "Titles, links, snippets, images" },
       { title: "Customizable", description: "Query options and result limits" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/Google-Search-API-Wrapper.git
+    install: `git clone https://github.com/ramonclaudio/Google-Search-API-Wrapper.git
 cd Google-Search-API-Wrapper
 pip install -r requirements.txt`,
     usage: `from search import GoogleSearch
@@ -1037,7 +1037,7 @@ images = search.images("cats", max_results=5)`,
       { title: "Smart File Handling", description: "Upload from paths or URLs" },
       { title: "Minimal Dependencies", description: "Primarily uses requests package" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/gemini-ai-toolkit.git
+    install: `git clone https://github.com/ramonclaudio/gemini-ai-toolkit.git
 cd gemini-ai-toolkit
 pip install -r requirements.txt`,
     usage: `# CLI
@@ -1067,7 +1067,7 @@ Text().run(prompt="Write a story")`,
       { title: "Dynamic Content", description: "Selenium WebDriver for JS-rendered pages" },
       { title: "Customizable", description: "Headers, parameters, payload options" },
     ],
-    install: `git clone https://github.com/RMNCLDYO/HTTParser.git
+    install: `git clone https://github.com/ramonclaudio/HTTParser.git
 cd HTTParser
 pip install -r requirements.txt`,
     usage: `from httparser import HTTParser
