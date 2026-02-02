@@ -31,7 +31,7 @@ Backend is **Convex**. Real-time, no infra to manage, and the DX is the best I'v
 
 Frontend is **Tailwind v4** + **shadcn/ui** for styling — if it doesn't have shadcn support, I don't want it. **React** and **React Native** for UI, **Expo** for mobile, **TanStack** for routing, state, and queries.
 
-Linting is **Oxlint** + **Oxfmt** for TypeScript, **Ruff** for Python. Type checking with **tsgo** or **tsc**.
+Linting is **Oxlint** + **Oxfmt** for TypeScript, **Ruff** for Python. Type checking with **tsgo** or **tsc** for TypeScript, **ty** for Python.
 
 ### CLI Tools
 
