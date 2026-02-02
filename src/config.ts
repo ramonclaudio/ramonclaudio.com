@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://ramonclaudio.com",
   author: "Ray",
   profile: "https://ramonclaudio.com",
-  desc: "Software Engineer",
+  desc: "Software engineer building open source tools in TypeScript",
   title: "Ray",
   ogImage: "ramonclaudio-og.jpg",
   lightAndDarkMode: true,
