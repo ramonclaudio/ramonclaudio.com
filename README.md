@@ -1,21 +1,15 @@
 ![ramonclaudio.com](public/assets/ramonclaudio-site.gif)
 
-# Hello, World!
+# ramonclaudio.com
 
-I'm Ray. A software developer who believes in building useful tools and sharing them with the community. I write code that I'd want to use myself, and I try to make it as clean and accessible as possible.
+I'm Ray. Software engineer in New York. 12+ years of freelance, open source, client work, and a company I co-founded.
 
-### What You'll Find Here
+Started by reverse engineering APIs and scraping datasets. Co-founded Artistic Distributions, where we built headless Shopify storefronts handling thousands of concurrent buyers. Shipped 7 API client libraries when LLM APIs launched (280+ stars). Now I write TypeScript across the full stack.
 
-I'll be sharing:
+36 public repos, 4 npm packages, 335+ stars. Built with Astro 5.
 
-- Open source projects I'm working on
-- Technical deep-dives and tutorials
-- Tools and libraries that make my life easier
-- Occasional thoughts on the current state of development
-- Lessons learned from building
+### Links
 
-### Let's Build
+**_[ramonclaudio.com](https://ramonclaudio.com)_** · **_[GitHub](https://github.com/ramonclaudio)_** · **_[X](https://x.com/ramonclaudio)_** · **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**
 
-Have a question? Shoot me a message on **_[X](https://x.com/ramonclaudio)_**. Found a bug in one of my projects? Open an issue or discussion on **_[GitHub](https://github.com/ramonclaudio)_**. Want to collaborate on something? Email me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**. I'm always looking for new opportunities to learn and grow.
-
-- Ray
+\- Ray
