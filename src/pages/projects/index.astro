@@ -6,6 +6,9 @@ import Breadcrumb from "@/components/Breadcrumb.astro";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import { projects } from "@/data/projects";
+
+const featured = projects.filter(p => p.featured);
+const all = projects.filter(p => !p.featured);
 ---
 
 <Layout
@@ -25,9 +28,15 @@ import { projects } from "@/data/projects";
       Open source work. Everything lives on GitHub.
     </p>
 
+    <h2 class="mb-4 text-xl font-semibold">
+      Featured
+      <span class="ml-2 text-sm font-normal text-muted-foreground">
+        ({featured.length})
+      </span>
+    </h2>
     <div class="grid gap-4">
       {
-        projects.map(project => (
+        featured.map(project => (
           <a
             href={`/projects/${project.slug}`}
             class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
@@ -35,10 +44,10 @@ import { projects } from "@/data/projects";
             <IconGitHub class="mt-1 h-6 w-6 shrink-0 text-muted-foreground" />
             <div class="flex-1">
               <div class="flex items-center gap-2">
-                <h2 class="text-lg font-medium group-hover:text-accent">
+                <h3 class="text-lg font-medium group-hover:text-accent">
                   {project.name}
                   <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </h2>
+                </h3>
                 <span class="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
                   {project.language}
                 </span>
@@ -54,6 +63,37 @@ import { projects } from "@/data/projects";
                 ))}
               </div>
             </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <h2 class="mt-12 mb-4 text-xl font-semibold">
+      All Projects
+      <span class="ml-2 text-sm font-normal text-muted-foreground">
+        ({all.length})
+      </span>
+    </h2>
+    <div class="grid gap-2">
+      {
+        all.map(project => (
+          <a
+            href={`/projects/${project.slug}`}
+            class="group flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-accent hover:bg-card/80"
+          >
+            <IconGitHub class="h-5 w-5 shrink-0 text-muted-foreground" />
+            <div class="flex flex-1 items-center gap-2 overflow-hidden">
+              <span class="font-medium group-hover:text-accent">
+                {project.name}
+              </span>
+              <span class="hidden truncate text-sm text-muted-foreground sm:inline">
+                — {project.tagline}
+              </span>
+            </div>
+            <span class="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+              {project.language}
+            </span>
+            <IconArrowRight class="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" />
           </a>
         ))
       }
