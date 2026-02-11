@@ -1,0 +1,69 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+
+const apps = [
+  {
+    name: "DreamSeeker",
+    tagline: "From dreaming to doing.",
+    description:
+      "Set ambitious goals, break them into daily micro-actions, and crush milestones with streaks, XP, and celebrations.",
+    slug: "dreamseeker",
+    platform: "iOS",
+  },
+];
+---
+
+<Layout
+  title="Apps | Ray"
+  description="Mobile apps built by Ray at RMNCLDYO, LLC"
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold sm:text-3xl">[apps]</h1>
+      <span
+        class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent"
+      >
+        {apps.length} {apps.length === 1 ? "app" : "apps"}
+      </span>
+    </div>
+    <p class="mt-2 mb-8 text-muted-foreground">
+      Mobile apps by RMNCLDYO, LLC.
+    </p>
+
+    <div class="grid gap-4">
+      {
+        apps.map(app => (
+          <a
+            href={`/apps/${app.slug}`}
+            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
+          >
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-medium group-hover:text-accent">
+                  {app.name}
+                  <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </h3>
+                <span class="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                  {app.platform}
+                </span>
+              </div>
+              <p class="mt-1 text-sm font-medium italic text-muted-foreground">
+                {app.tagline}
+              </p>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {app.description}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
