@@ -2,14 +2,10 @@
 
 # ramonclaudio.com
 
-I'm Ray. Software engineer in New York. 12+ years of freelance, open source, client work, and a company I co-founded.
+I'm Ray. Freelancing out of New York since 2013. Started with Python, reverse engineering APIs, scraping datasets. That era pulled me into TypeScript full-time and I haven't looked back.
 
-Started by reverse engineering APIs and scraping datasets. Co-founded Artistic Distributions, where we built headless Shopify storefronts handling thousands of concurrent buyers. Shipped 7 API client libraries when LLM APIs launched (280+ stars). Now I write TypeScript across the full stack.
+Now it's TypeScript across the full stack: Tauri desktop apps, Convex components, Expo mobile apps. 36 repos and counting. Built with Astro 5.
 
-36 public repos, 4 npm packages, 335+ stars. Built with Astro 5.
-
-### Links
-
-**_[ramonclaudio.com](https://ramonclaudio.com)_** · **_[GitHub](https://github.com/ramonclaudio)_** · **_[X](https://x.com/ramonclaudio)_** · **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**
+[ramonclaudio.com](https://ramonclaudio.com) · [GitHub](https://github.com/ramonclaudio) · [X](https://x.com/ramonclaudio) · [hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)
 
 \- Ray
