@@ -33,10 +33,22 @@ export const projects: Project[] = [
     tags: ["tanstack", "convex", "better-auth", "starter"],
     license: "MIT",
     features: [
-      { title: "Authentication", description: "Email/password + username via Better Auth" },
-      { title: "Row-Level Security", description: "RLS with convex-helpers custom functions" },
-      { title: "Rate Limiting", description: "Token bucket and fixed window rate limiting" },
-      { title: "Profiles", description: "User profiles with avatar uploads to Convex storage" },
+      {
+        title: "Authentication",
+        description: "Email/password + username via Better Auth",
+      },
+      {
+        title: "Row-Level Security",
+        description: "RLS with convex-helpers custom functions",
+      },
+      {
+        title: "Rate Limiting",
+        description: "Token bucket and fixed window rate limiting",
+      },
+      {
+        title: "Profiles",
+        description: "User profiles with avatar uploads to Convex storage",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/tanstack-convex-starter.git
 cd tanstack-convex-starter
@@ -60,13 +72,22 @@ bun run build          # Build for production`,
     tags: ["tauri", "rust", "github", "desktop"],
     license: "MIT",
     features: [
-      { title: "PRs & Issues", description: "Yours, assigned, review requested, mentioned" },
-      { title: "Activity Feed", description: "Contribution graph, stars, forks, recent events" },
+      {
+        title: "PRs & Issues",
+        description: "Yours, assigned, review requested, mentioned",
+      },
+      {
+        title: "Activity Feed",
+        description: "Contribution graph, stars, forks, recent events",
+      },
       {
         title: "Progressive Rendering",
         description: "IntersectionObserver, only visible items render",
       },
-      { title: "Privacy Toggle", description: "Hide private repos/PRs/issues for screenshots" },
+      {
+        title: "Privacy Toggle",
+        description: "Hide private repos/PRs/issues for screenshots",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/gitbar.git
 cd gitbar
@@ -92,12 +113,19 @@ bun run tauri build    # Build native binary (~5MB)`,
         title: "Webhook Processing",
         description: "Idempotent handling of all 18 RevenueCat events",
       },
-      { title: "Reactive Queries", description: "Real-time entitlement and subscription state" },
+      {
+        title: "Reactive Queries",
+        description: "Real-time entitlement and subscription state",
+      },
       {
         title: "Edge Cases",
-        description: "Cancellation keeps access until expiry, pause doesn't revoke",
+        description:
+          "Cancellation keeps access until expiry, pause doesn't revoke",
       },
-      { title: "Rate Limiting", description: "Built-in protection against webhook abuse" },
+      {
+        title: "Rate Limiting",
+        description: "Built-in protection against webhook abuse",
+      },
     ],
     install: `npm install convex-revenuecat`,
     usage: `// convex/convex.config.ts
@@ -133,7 +161,8 @@ http.route({
       },
       {
         title: "Skill",
-        description: 'Claude auto-invokes when you say "handoff", "save progress", "resume"',
+        description:
+          'Claude auto-invokes when you say "handoff", "save progress", "resume"',
       },
       {
         title: "Agent",
@@ -155,7 +184,11 @@ claude plugin install ramonclaudio/handoff`,
 ├── CONTEXT.md     # Project: stack, commands, critical paths, gotchas
 ├── HANDOFF.md     # Session: severity, health, done, failed, blockers, resume
 └── sessions/      # Archived handoffs`,
-    requirements: ["Claude Code 2.1+", "Git", "Optional: gh (GitHub CLI), Linear MCP"],
+    requirements: [
+      "Claude Code 2.1+",
+      "Git",
+      "Optional: gh (GitHub CLI), Linear MCP",
+    ],
   },
   {
     slug: "howold",
@@ -168,10 +201,19 @@ claude plugin install ramonclaudio/handoff`,
     tags: ["cli", "github", "developer-tools"],
     license: "MIT",
     features: [
-      { title: "Real Creation Date", description: "Finds first commit, not last update" },
+      {
+        title: "Real Creation Date",
+        description: "Finds first commit, not last update",
+      },
       { title: "Year Filtering", description: "Filter by year or year range" },
-      { title: "Path Support", description: "Scan specific paths in larger repos" },
-      { title: "Zero Dependencies", description: "Uses GitHub REST API directly" },
+      {
+        title: "Path Support",
+        description: "Scan specific paths in larger repos",
+      },
+      {
+        title: "Zero Dependencies",
+        description: "Uses GitHub REST API directly",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/howold.git
 cd howold`,
@@ -197,7 +239,10 @@ bun cli.ts vercel/next.js examples/       # Specific path
     tags: ["react-native", "shadcn", "uniwind", "mobile"],
     license: "MIT",
     features: [
-      { title: "12+ Components", description: "Button, Card, Input, Select, and more" },
+      {
+        title: "12+ Components",
+        description: "Button, Card, Input, Select, and more",
+      },
       { title: "Cross-Platform", description: "iOS, Android, and Web" },
       { title: "Uniwind Based", description: "Tailwind for React Native" },
       { title: "Copy/Paste", description: "Own and modify the code" },
@@ -225,9 +270,18 @@ import { Input } from "@/components/ui/input";`,
         title: "Multiple Backends",
         description: "LocalStorage, Convex, Supabase, PostgreSQL, MySQL",
       },
-      { title: "React Hooks", description: "useCodeRabbit hook for easy integration" },
-      { title: "UI Components", description: "Ready-to-use form and card components" },
-      { title: "Type Safe", description: "Full TypeScript support with strict types" },
+      {
+        title: "React Hooks",
+        description: "useCodeRabbit hook for easy integration",
+      },
+      {
+        title: "UI Components",
+        description: "Ready-to-use form and card components",
+      },
+      {
+        title: "Type Safe",
+        description: "Full TypeScript support with strict types",
+      },
     ],
     install: `# Choose your storage backend:
 npx shadcn@latest add https://coderabbit-shadcn-registry.vercel.app/r/coderabbit-localstorage.json
@@ -252,7 +306,10 @@ import { LocalStorageAdapter } from "@/lib/storage-localstorage";
 const { generateReport, isGenerating } = useCodeRabbit({
   storage: new LocalStorageAdapter(),
 });`,
-    requirements: ["CodeRabbit Pro plan subscription", "API key from CodeRabbit Settings"],
+    requirements: [
+      "CodeRabbit Pro plan subscription",
+      "API key from CodeRabbit Settings",
+    ],
   },
   {
     slug: "bun-react-effect-example",
@@ -265,10 +322,22 @@ const { generateReport, isGenerating } = useCodeRabbit({
     tags: ["bun", "react", "effect", "typescript"],
     license: "MIT",
     features: [
-      { title: "Zero Runtime Errors", description: "No any types, no type assertions" },
-      { title: "Tagged Errors", description: "Data.TaggedError for exhaustive matching" },
-      { title: "Schema Validation", description: "Effect Schema validates at runtime" },
-      { title: "Effect Build System", description: "CLI args, resource cleanup, error handling" },
+      {
+        title: "Zero Runtime Errors",
+        description: "No any types, no type assertions",
+      },
+      {
+        title: "Tagged Errors",
+        description: "Data.TaggedError for exhaustive matching",
+      },
+      {
+        title: "Schema Validation",
+        description: "Effect Schema validates at runtime",
+      },
+      {
+        title: "Effect Build System",
+        description: "CLI args, resource cleanup, error handling",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/bun-react-effect-example.git
 cd bun-react-effect-example
@@ -298,7 +367,10 @@ bun build --help  # CLI options`,
     tags: ["tanstack", "convex", "saas", "typescript"],
     license: "MIT",
     features: [
-      { title: "TanStack Start", description: "Full-stack React framework with SSR" },
+      {
+        title: "TanStack Start",
+        description: "Full-stack React framework with SSR",
+      },
       { title: "Convex", description: "Real-time serverless backend" },
       { title: "Better Auth", description: "Type-safe authentication" },
       { title: "Autumn Billing", description: "Stripe integration" },
@@ -321,8 +393,14 @@ bun run build      # Build for production`,
     tags: ["shopify", "hydrogen", "react", "shadcn"],
     license: "MIT",
     features: [
-      { title: "Hydrogen", description: "Shopify's React framework for storefronts" },
-      { title: "React Router 7", description: "Latest routing with SSR support" },
+      {
+        title: "Hydrogen",
+        description: "Shopify's React framework for storefronts",
+      },
+      {
+        title: "React Router 7",
+        description: "Latest routing with SSR support",
+      },
       { title: "shadcn/ui", description: "Beautiful, accessible components" },
       { title: "TypeScript", description: "Full type safety with codegen" },
     ],
@@ -348,10 +426,22 @@ npx shopify hydrogen deploy  # Deploy to production`,
     tags: ["nextjs", "convex", "e-commerce", "polar"],
     license: "MIT",
     features: [
-      { title: "Cart Bundling", description: "Multi-item checkout via ephemeral Polar products" },
-      { title: "Real-time Sync", description: "Convex subscriptions sync cart across devices" },
-      { title: "Guest Migration", description: "Anonymous cart merges on login" },
-      { title: "Product Seeding", description: "JSON to Polar to Convex in one command" },
+      {
+        title: "Cart Bundling",
+        description: "Multi-item checkout via ephemeral Polar products",
+      },
+      {
+        title: "Real-time Sync",
+        description: "Convex subscriptions sync cart across devices",
+      },
+      {
+        title: "Guest Migration",
+        description: "Anonymous cart merges on login",
+      },
+      {
+        title: "Product Seeding",
+        description: "JSON to Polar to Convex in one command",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/polar-commerce.git
 cd polar-commerce
@@ -359,7 +449,12 @@ npm install
 cp .env.example .env.local`,
     usage: `npm run polar:seed   # Seed products to Polar + Convex
 npm run dev          # Start development server`,
-    requirements: ["Node.js", "Convex account", "Polar account", "Better Auth setup"],
+    requirements: [
+      "Node.js",
+      "Convex account",
+      "Polar account",
+      "Better Auth setup",
+    ],
   },
   {
     slug: "claude-code-statusline",
@@ -372,10 +467,19 @@ npm run dev          # Start development server`,
     tags: ["claude-code", "statusline", "cli"],
     license: "MIT",
     features: [
-      { title: "Project Info", description: "Project name, git branch, framework, runtime" },
-      { title: "Git Status", description: "Commits ahead/behind, staged, modified, untracked" },
+      {
+        title: "Project Info",
+        description: "Project name, git branch, framework, runtime",
+      },
+      {
+        title: "Git Status",
+        description: "Commits ahead/behind, staged, modified, untracked",
+      },
       { title: "Model Display", description: "Current Claude model" },
-      { title: "Customizable", description: "Toggle elements, change colors, swap icons" },
+      {
+        title: "Customizable",
+        description: "Toggle elements, change colors, swap icons",
+      },
     ],
     install: `npm create claude-statusline
 
@@ -426,15 +530,18 @@ ICONS: {
     features: [
       {
         title: "Universal Compatibility",
-        description: "Works with Codex, Cursor, Aider, Jules, Zed, Windsurf, Continue",
+        description:
+          "Works with Codex, Cursor, Aider, Jules, Zed, Windsurf, Continue",
       },
       {
         title: "Intelligent Detection",
-        description: "Auto-detects runtime, framework, package manager, git info",
+        description:
+          "Auto-detects runtime, framework, package manager, git info",
       },
       {
         title: "Production-Ready",
-        description: "SHA256 verification, atomic operations, automatic backups",
+        description:
+          "SHA256 verification, atomic operations, automatic backups",
       },
       {
         title: "Zero Lock-in",
@@ -453,7 +560,10 @@ npm create codex --help       # All options
 # Programmatic usage:
 import { init } from 'create-codex';
 await init('./my-project');`,
-    requirements: ["Node.js 20+", "Any AI coding agent that supports AGENTS.md"],
+    requirements: [
+      "Node.js 20+",
+      "Any AI coding agent that supports AGENTS.md",
+    ],
   },
   {
     slug: "create-claude",
@@ -468,10 +578,17 @@ await init('./my-project');`,
     features: [
       {
         title: "8 Slash Commands",
-        description: "/commit, /explain, /fix, /optimize, /pr, /review, /test, /validate",
+        description:
+          "/commit, /explain, /fix, /optimize, /pr, /review, /test, /validate",
       },
-      { title: "3 Subagents", description: "pre-commit, refactor, debugger specialists" },
-      { title: "Safety Hooks", description: "Blocks destructive commands, confirms deletions" },
+      {
+        title: "3 Subagents",
+        description: "pre-commit, refactor, debugger specialists",
+      },
+      {
+        title: "Safety Hooks",
+        description: "Blocks destructive commands, confirms deletions",
+      },
       {
         title: "Advanced Statusline",
         description: "Git status, framework detection, color-coded info",
@@ -510,10 +627,23 @@ CLAUDE.md                   # Project instructions`,
     tags: ["claude-code", "plugin", "productivity"],
     license: "MIT",
     features: [
-      { title: "8 Plugins", description: "handoff, audit, commit, frames, gif, qmd, simplify, techdebt" },
-      { title: "Lifecycle Hooks", description: "Auto-init, auto-save, session-start/end/clear" },
-      { title: "State Persistence", description: "Session context survives across conversations" },
-      { title: "Marketplace Ready", description: "Each plugin installable independently" },
+      {
+        title: "8 Plugins",
+        description:
+          "handoff, audit, commit, frames, gif, qmd, simplify, techdebt",
+      },
+      {
+        title: "Lifecycle Hooks",
+        description: "Auto-init, auto-save, session-start/end/clear",
+      },
+      {
+        title: "State Persistence",
+        description: "Session context survives across conversations",
+      },
+      {
+        title: "Marketplace Ready",
+        description: "Each plugin installable independently",
+      },
     ],
     install: `/plugin install ramonclaudio/skills`,
     usage: `/handoff start   # Begin session with context
@@ -533,9 +663,15 @@ CLAUDE.md                   # Project instructions`,
     tags: ["nextjs", "vercel", "blob", "uploads"],
     license: "MIT",
     features: [
-      { title: "Drag and Drop", description: "Elegant upload with progress tracking" },
+      {
+        title: "Drag and Drop",
+        description: "Elegant upload with progress tracking",
+      },
       { title: "Multipart", description: "Automatic chunking for large files" },
-      { title: "File Gallery", description: "Preview, copy, delete operations" },
+      {
+        title: "File Gallery",
+        description: "Preview, copy, delete operations",
+      },
       { title: "SDK Compliant", description: "Full Vercel Blob API support" },
     ],
     install: `git clone https://github.com/ramonclaudio/vercel-blob-client-starter.git
@@ -552,14 +688,18 @@ npm run build      # Build for production
     slug: "ramonclaudio-com",
     name: "ramonclaudio.com",
     tagline: "Personal website and blog.",
-    description: "This site. Built with Astro, Tailwind, and deployed on Vercel.",
+    description:
+      "This site. Built with Astro, Tailwind, and deployed on Vercel.",
     repo: "ramonclaudio/ramonclaudio.com",
     language: "Astro",
     tags: ["astro", "tailwind", "typescript"],
     license: "MIT",
     features: [
       { title: "Blog", description: "Content collections for markdown posts" },
-      { title: "Search", description: "Pagefind-powered search indexed at build time" },
+      {
+        title: "Search",
+        description: "Pagefind-powered search indexed at build time",
+      },
       { title: "OG Images", description: "Dynamic OG image generation" },
       { title: "RSS", description: "RSS feed at /rss.xml" },
     ],
@@ -583,10 +723,19 @@ bun run format   # Prettier formatting`,
     tags: ["cursor", "theme", "vibrancy"],
     license: "MIT",
     features: [
-      { title: "Acrylic Effect", description: "Real vibrancy for authentic glass look" },
-      { title: "Dark Midnight Palette", description: "Designed for clarity and comfort" },
+      {
+        title: "Acrylic Effect",
+        description: "Real vibrancy for authentic glass look",
+      },
+      {
+        title: "Dark Midnight Palette",
+        description: "Designed for clarity and comfort",
+      },
       { title: "Cross-platform", description: "Works on macOS and Windows" },
-      { title: "Extensible", description: "Built to support additional themes" },
+      {
+        title: "Extensible",
+        description: "Built to support additional themes",
+      },
     ],
     install: `# 1. Install Vibrancy Continued extension
 # 2. Copy themes/cursor-dark-midnight/settings.json to your settings
@@ -615,9 +764,18 @@ sudo chmod -R 755 "/Applications/Cursor.app/"
     tags: ["raycast", "mcp", "cursor", "vscode"],
     license: "MIT",
     features: [
-      { title: "Multi-Editor", description: "Cursor, VS Code, Windsurf support" },
-      { title: "CRUD Operations", description: "Create, read, update, delete server configs" },
-      { title: "Connection Testing", description: "Test servers with timeout handling" },
+      {
+        title: "Multi-Editor",
+        description: "Cursor, VS Code, Windsurf support",
+      },
+      {
+        title: "CRUD Operations",
+        description: "Create, read, update, delete server configs",
+      },
+      {
+        title: "Connection Testing",
+        description: "Test servers with timeout handling",
+      },
       { title: "Transport Types", description: "stdio, SSE, HTTP support" },
     ],
     install: `# From Raycast Store:
@@ -633,7 +791,11 @@ npm install && npm run build`,
 - Search MCP Servers
 - Remove MCP Server
 - View Raw Configs`,
-    requirements: ["Raycast 1.50.0+", "Node.js 18+", "At least one supported editor"],
+    requirements: [
+      "Raycast 1.50.0+",
+      "Node.js 18+",
+      "At least one supported editor",
+    ],
   },
   {
     slug: "ny-tech-week-event-crawler",
@@ -646,9 +808,18 @@ npm install && npm run build`,
     tags: ["scraper", "browser", "events"],
     license: "MIT",
     features: [
-      { title: "Zero Dependencies", description: "Runs directly in browser console" },
-      { title: "Structured Export", description: "Clean JSON with all event details" },
-      { title: "Host Identification", description: "Filter by company/organization" },
+      {
+        title: "Zero Dependencies",
+        description: "Runs directly in browser console",
+      },
+      {
+        title: "Structured Export",
+        description: "Clean JSON with all event details",
+      },
+      {
+        title: "Host Identification",
+        description: "Filter by company/organization",
+      },
       { title: "Batch Processing", description: "Handles hundreds of events" },
     ],
     install: `# No installation needed
@@ -681,9 +852,15 @@ const byLocation = events.reduce((acc, e) => {
     tags: ["cursor", "browser", "utility"],
     license: "MIT",
     features: [
-      { title: "Spending Limits", description: "Set and manage spending limits" },
+      {
+        title: "Spending Limits",
+        description: "Set and manage spending limits",
+      },
       { title: "Usage Toggle", description: "Toggle usage-based pricing" },
-      { title: "Token Auth", description: "Secure session token authentication" },
+      {
+        title: "Token Auth",
+        description: "Secure session token authentication",
+      },
       { title: "Browser Console", description: "No installation required" },
     ],
     install: `# 1. Open browser console (F12)
@@ -733,9 +910,18 @@ getToken();              // Show token instructions`,
     tags: ["python", "github", "analytics"],
     license: "MIT",
     features: [
-      { title: "Profile Analytics", description: "Full user profile breakdown" },
-      { title: "Repository Stats", description: "Stars, forks, watchers, and more" },
-      { title: "Private Repos", description: "Access with proper authentication" },
+      {
+        title: "Profile Analytics",
+        description: "Full user profile breakdown",
+      },
+      {
+        title: "Repository Stats",
+        description: "Stars, forks, watchers, and more",
+      },
+      {
+        title: "Private Repos",
+        description: "Access with proper authentication",
+      },
       { title: "Lightweight", description: "Minimal dependencies" },
     ],
     install: `git clone https://github.com/ramonclaudio/github-stats-checker.git
@@ -747,7 +933,10 @@ python cli.py --username ramonclaudio
 # Python
 from github_stats import Stats
 Stats().run(username="ramonclaudio")`,
-    requirements: ["Python 3.x", "GitHub access token (optional, for private repos)"],
+    requirements: [
+      "Python 3.x",
+      "GitHub access token (optional, for private repos)",
+    ],
   },
   {
     slug: "firecrawl-toolkit",
@@ -760,10 +949,22 @@ Stats().run(username="ramonclaudio")`,
     tags: ["python", "scraping", "crawling"],
     license: "MIT",
     features: [
-      { title: "Web Crawling", description: "Customizable depth and path controls" },
-      { title: "Content Extraction", description: "Markdown, HTML, raw HTML output" },
-      { title: "Custom Actions", description: "Click, scroll, form fill automation" },
-      { title: "Device Emulation", description: "Mobile/desktop views, custom headers" },
+      {
+        title: "Web Crawling",
+        description: "Customizable depth and path controls",
+      },
+      {
+        title: "Content Extraction",
+        description: "Markdown, HTML, raw HTML output",
+      },
+      {
+        title: "Custom Actions",
+        description: "Click, scroll, form fill automation",
+      },
+      {
+        title: "Device Emulation",
+        description: "Mobile/desktop views, custom headers",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/firecrawl-toolkit.git
 cd firecrawl-toolkit
@@ -790,8 +991,14 @@ python cli.py --map --url "https://example.com"`,
     license: "MIT",
     features: [
       { title: "Apple Docs", description: "Scrape developer.apple.com" },
-      { title: "SwiftUI Focus", description: "Optimized for SwiftUI documentation" },
-      { title: "Processing", description: "Clean and format extracted content" },
+      {
+        title: "SwiftUI Focus",
+        description: "Optimized for SwiftUI documentation",
+      },
+      {
+        title: "Processing",
+        description: "Clean and format extracted content",
+      },
       { title: "Automation", description: "Batch documentation retrieval" },
     ],
     install: `git clone https://github.com/ramonclaudio/swiftui-doc-crawler.git
@@ -810,8 +1017,14 @@ pip install -r requirements.txt`,
     tags: ["python", "grok", "xai", "cli"],
     license: "MIT",
     features: [
-      { title: "Vision Analysis", description: "Process local images and URLs" },
-      { title: "Interactive Chat", description: "Conversation history management" },
+      {
+        title: "Vision Analysis",
+        description: "Process local images and URLs",
+      },
+      {
+        title: "Interactive Chat",
+        description: "Conversation history management",
+      },
       { title: "Streaming Responses", description: "Real-time output" },
       { title: "Configurable", description: "Temperature, tokens, penalties" },
     ],
@@ -840,9 +1053,18 @@ Vision().run(prompt="Describe", image_url="https://...")`,
     tags: ["python", "cli", "llm"],
     license: "MIT",
     features: [
-      { title: "LLM-Friendly", description: "Single file for easy context sharing" },
-      { title: "Markdown Output", description: "Well-formatted with syntax highlighting" },
-      { title: "Smart Filtering", description: "Exclude patterns, ignore files" },
+      {
+        title: "LLM-Friendly",
+        description: "Single file for easy context sharing",
+      },
+      {
+        title: "Markdown Output",
+        description: "Well-formatted with syntax highlighting",
+      },
+      {
+        title: "Smart Filtering",
+        description: "Exclude patterns, ignore files",
+      },
       { title: "Codebase Analysis", description: "Full project in one file" },
     ],
     install: `git clone https://github.com/ramonclaudio/project-merge.git
@@ -866,8 +1088,14 @@ python merge.py /path/to/project --exclude "*.test.js"`,
     license: "MIT",
     features: [
       { title: "Ultra-Fast", description: "800 tokens/sec with LPU engine" },
-      { title: "Conversational AI", description: "Interactive chatbots and assistants" },
-      { title: "Text Generation", description: "Contextually relevant responses" },
+      {
+        title: "Conversational AI",
+        description: "Interactive chatbots and assistants",
+      },
+      {
+        title: "Text Generation",
+        description: "Contextually relevant responses",
+      },
       { title: "Lightweight", description: "Minimal dependencies" },
     ],
     install: `git clone https://github.com/ramonclaudio/groq-ai-toolkit.git
@@ -894,9 +1122,18 @@ Text().run(prompt="Write a story")`,
     tags: ["python", "claude", "anthropic", "cli"],
     license: "MIT",
     features: [
-      { title: "Conversational AI", description: "Interactive chatbots and assistants" },
-      { title: "Image Captioning", description: "Generate descriptions from images" },
-      { title: "Text Generation", description: "Contextually relevant text from prompts" },
+      {
+        title: "Conversational AI",
+        description: "Interactive chatbots and assistants",
+      },
+      {
+        title: "Image Captioning",
+        description: "Generate descriptions from images",
+      },
+      {
+        title: "Text Generation",
+        description: "Contextually relevant text from prompts",
+      },
       { title: "Lightweight", description: "Only requires requests package" },
     ],
     install: `git clone https://github.com/ramonclaudio/claude-ai-toolkit.git
@@ -923,9 +1160,18 @@ Chat().run()`,
     tags: ["python", "mistral", "ai", "cli"],
     license: "MIT",
     features: [
-      { title: "Multiple Models", description: "Mistral-7b, Mixtral-8x7b, NeMo" },
-      { title: "Conversational AI", description: "Interactive chatbots and assistants" },
-      { title: "Text Generation", description: "Contextually relevant responses" },
+      {
+        title: "Multiple Models",
+        description: "Mistral-7b, Mixtral-8x7b, NeMo",
+      },
+      {
+        title: "Conversational AI",
+        description: "Interactive chatbots and assistants",
+      },
+      {
+        title: "Text Generation",
+        description: "Contextually relevant responses",
+      },
       { title: "JSON Output", description: "Structured output support" },
     ],
     install: `git clone https://github.com/ramonclaudio/mistral-ai-toolkit.git
@@ -951,9 +1197,18 @@ Chat().run()`,
     tags: ["python", "gemma", "google", "cli"],
     license: "MIT",
     features: [
-      { title: "Offline Capable", description: "Use models without internet once cached" },
-      { title: "Conversational AI", description: "Interactive chatbots and assistants" },
-      { title: "Text Generation", description: "Contextually relevant responses" },
+      {
+        title: "Offline Capable",
+        description: "Use models without internet once cached",
+      },
+      {
+        title: "Conversational AI",
+        description: "Interactive chatbots and assistants",
+      },
+      {
+        title: "Text Generation",
+        description: "Contextually relevant responses",
+      },
       { title: "Multiple Versions", description: "gemma-2b-it, gemma-7b-it" },
     ],
     install: `git clone https://github.com/ramonclaudio/gemma-ai-toolkit.git
@@ -966,7 +1221,10 @@ python cli.py --text --prompt "Write a story"
 # Python
 from gemma import Chat, Text
 Chat().run()`,
-    requirements: ["Python 3.6+", "Hugging Face API key (for initial download)"],
+    requirements: [
+      "Python 3.6+",
+      "Hugging Face API key (for initial download)",
+    ],
   },
   {
     slug: "perplexity-ai-toolkit",
@@ -979,9 +1237,18 @@ Chat().run()`,
     tags: ["python", "perplexity", "ai", "cli"],
     license: "MIT",
     features: [
-      { title: "Real-Time Search", description: "Conduct web searches with precise responses" },
-      { title: "Conversational AI", description: "Interactive chatbots and assistants" },
-      { title: "Streaming Output", description: "Real-time response streaming" },
+      {
+        title: "Real-Time Search",
+        description: "Conduct web searches with precise responses",
+      },
+      {
+        title: "Conversational AI",
+        description: "Interactive chatbots and assistants",
+      },
+      {
+        title: "Streaming Output",
+        description: "Real-time response streaming",
+      },
       { title: "Lightweight", description: "Only requires requests package" },
     ],
     install: `git clone https://github.com/ramonclaudio/perplexity-ai-toolkit.git
@@ -1007,9 +1274,18 @@ Chat().run()`,
     tags: ["python", "google", "images", "search"],
     license: "MIT",
     features: [
-      { title: "Reverse Search", description: "Find image sources and context" },
-      { title: "Higher Resolution", description: "Find better quality versions" },
-      { title: "Customizable", description: "Query options, delays, result limits" },
+      {
+        title: "Reverse Search",
+        description: "Find image sources and context",
+      },
+      {
+        title: "Higher Resolution",
+        description: "Find better quality versions",
+      },
+      {
+        title: "Customizable",
+        description: "Query options, delays, result limits",
+      },
       { title: "Parsed Results", description: "Formatted titles and links" },
     ],
     install: `git clone https://github.com/ramonclaudio/Google-Reverse-Image-Search.git
@@ -1037,7 +1313,10 @@ results = search.response(
     features: [
       { title: "Web Search", description: "Programmatic Google web searches" },
       { title: "Image Search", description: "Search for images via API" },
-      { title: "Formatted Results", description: "Titles, links, snippets, images" },
+      {
+        title: "Formatted Results",
+        description: "Titles, links, snippets, images",
+      },
       { title: "Customizable", description: "Query options and result limits" },
     ],
     install: `git clone https://github.com/ramonclaudio/Google-Search-API-Wrapper.git
@@ -1048,7 +1327,11 @@ pip install -r requirements.txt`,
 search = GoogleSearch()
 results = search.web("Python programming", max_results=10)
 images = search.images("cats", max_results=5)`,
-    requirements: ["Python 3.x", "Google Custom Search API key", "Programmable Search Engine ID"],
+    requirements: [
+      "Python 3.x",
+      "Google Custom Search API key",
+      "Programmable Search Engine ID",
+    ],
   },
   {
     slug: "gemini-ai-toolkit",
@@ -1061,10 +1344,19 @@ images = search.images("cats", max_results=5)`,
     tags: ["python", "gemini", "ai", "cli"],
     license: "MIT",
     features: [
-      { title: "Multimodal", description: "Process PDFs, images, videos, audio, code" },
+      {
+        title: "Multimodal",
+        description: "Process PDFs, images, videos, audio, code",
+      },
       { title: "Interactive Chat", description: "Context-aware conversations" },
-      { title: "Smart File Handling", description: "Upload from paths or URLs" },
-      { title: "Minimal Dependencies", description: "Primarily uses requests package" },
+      {
+        title: "Smart File Handling",
+        description: "Upload from paths or URLs",
+      },
+      {
+        title: "Minimal Dependencies",
+        description: "Primarily uses requests package",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/gemini-ai-toolkit.git
 cd gemini-ai-toolkit
@@ -1092,9 +1384,18 @@ Text().run(prompt="Write a story")`,
     license: "MIT",
     features: [
       { title: "HTTP Methods", description: "GET and POST support" },
-      { title: "Multiple Formats", description: "JSON, HTML, JavaScript responses" },
-      { title: "Dynamic Content", description: "Selenium WebDriver for JS-rendered pages" },
-      { title: "Customizable", description: "Headers, parameters, payload options" },
+      {
+        title: "Multiple Formats",
+        description: "JSON, HTML, JavaScript responses",
+      },
+      {
+        title: "Dynamic Content",
+        description: "Selenium WebDriver for JS-rendered pages",
+      },
+      {
+        title: "Customizable",
+        description: "Headers, parameters, payload options",
+      },
     ],
     install: `git clone https://github.com/ramonclaudio/HTTParser.git
 cd HTTParser

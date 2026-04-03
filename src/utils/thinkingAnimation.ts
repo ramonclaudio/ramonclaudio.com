@@ -37,13 +37,13 @@ export class ThinkingAnimation {
       'Thinking<span id="dots" style="display:inline-block;width:3ch;text-align:left">...</span> (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc to interrupt)';
 
     const newDots = this.options.thinkingContainer.querySelector(
-      "#dots"
+      "#dots",
     ) as HTMLElement;
     const newTimer = this.options.thinkingContainer.querySelector(
-      "#timer"
+      "#timer",
     ) as HTMLElement;
     const newTokens = this.options.thinkingContainer.querySelector(
-      "#tokens"
+      "#tokens",
     ) as HTMLElement;
 
     this.timerInterval = setInterval(() => {
