@@ -1,6 +1,6 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
-import type { GetStaticPathsOptions } from "astro";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -11,8 +11,8 @@ import getUniqueTags from "@/utils/getUniqueTags";
 import getPostsByTag from "@/utils/getPostsByTag";
 import { SITE } from "@/config";
 
-export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const posts = await getCollection("blog");
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
   const tags = getUniqueTags(posts);
 
   return tags.flatMap(({ tag, tagName }) => {
@@ -24,7 +24,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
       pageSize: SITE.postPerPage,
     });
   });
-}
+}) satisfies GetStaticPaths;
 
 const params = Astro.params;
 const { tag } = params;

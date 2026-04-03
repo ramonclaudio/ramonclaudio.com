@@ -32,57 +32,59 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
   </button>
 </div>
 
-<script is:inline data-astro-rerun>
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
-  function backToTop() {
+<script>
+  let lastVisible: boolean | null = null;
+
+  function handleScroll() {
     const rootElement = document.documentElement;
     const btnContainer = document.querySelector("#btt-btn-container");
-    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
-    const progressIndicator = document.querySelector("#progress-indicator");
+    const progressIndicator = document.querySelector(
+      "#progress-indicator",
+    ) as HTMLElement | null;
 
-    if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
-      return;
+    if (!btnContainer || !progressIndicator) return;
 
-    // Attach click event handler for back-to-top button
-    backToTopBtn.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    });
+    const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+    const scrollTop = rootElement.scrollTop;
+    const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
 
-    // Handle button visibility according to scroll position
-    let lastVisible = null;
-    function handleScroll() {
-      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
-      const scrollTop = rootElement.scrollTop;
-      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+    progressIndicator.style.setProperty(
+      "background-image",
+      `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`,
+    );
 
-      progressIndicator.style.setProperty(
-        "background-image",
-        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
-      );
+    const isVisible = scrollTop / scrollTotal > 0.3;
 
-      const isVisible = scrollTop / scrollTotal > 0.3;
-
-      if (isVisible !== lastVisible) {
-        btnContainer.classList.toggle("opacity-100", isVisible);
-        btnContainer.classList.toggle("translate-y-0", isVisible);
-        btnContainer.classList.toggle("opacity-0", !isVisible);
-        btnContainer.classList.toggle("translate-y-14", !isVisible);
-        lastVisible = isVisible;
-      }
+    if (isVisible !== lastVisible) {
+      btnContainer.classList.toggle("opacity-100", isVisible);
+      btnContainer.classList.toggle("translate-y-0", isVisible);
+      btnContainer.classList.toggle("opacity-0", !isVisible);
+      btnContainer.classList.toggle("translate-y-14", !isVisible);
+      lastVisible = isVisible;
     }
-
-    let ticking = false;
-    document.addEventListener("scroll", () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
   }
-  backToTop();
+
+  // Single scroll handler registered once
+  let ticking = false;
+  document.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Re-attach click handler on each navigation
+  document.addEventListener("astro:page-load", () => {
+    lastVisible = null;
+    const backToTopBtn = document.querySelector(
+      "[data-button='back-to-top']",
+    );
+    backToTopBtn?.addEventListener("click", () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  });
 </script>

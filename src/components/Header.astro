@@ -260,8 +260,5 @@ const isActive = (path: string) => {
     });
   }
 
-  toggleNav();
-
-  // Runs on view transitions navigation
-  document.addEventListener("astro:after-swap", toggleNav);
+  document.addEventListener("astro:page-load", toggleNav);
 </script>
