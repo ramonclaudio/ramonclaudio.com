@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "rm -rf node_modules .astro dist && bunx bun@1.3.11 install && ls node_modules/@astrojs/ | grep compiler && ls node_modules/@astrojs/compiler-binding-linux-x64-gnu/",
-  "buildCommand": "bun run build"
+  "installCommand": "rm -rf node_modules .astro dist && bunx bun@1.3.11 install",
+  "buildCommand": "node -e \"console.log('platform:',process.platform,'arch:',process.arch);try{console.log('ldd:',require('child_process').execSync('ldd --version 2>&1').toString().split('\\n')[0])}catch(e){console.log('no ldd')}\" && bun run build"
 }
