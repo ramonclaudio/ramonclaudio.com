@@ -1,5 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "rm -rf node_modules .astro dist && bun install",
-  "buildCommand": "node -e \"console.log('node:',process.version,'glibc:',require('child_process').execSync('ldd --version 2>&1').toString().split('\\n')[0])\" && bun --version && bun run build"
+  "buildCommand": "node -e \"console.log('node:',process.version,'glibc:',require('child_process').execSync('ldd --version 2>&1').toString().split('\\n')[0])\" && bun run build"
 }
