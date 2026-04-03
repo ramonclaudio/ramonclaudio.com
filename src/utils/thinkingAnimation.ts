@@ -34,7 +34,7 @@ export class ThinkingAnimation {
     if (!this.options.thinkingContainer) return;
 
     this.options.thinkingContainer.innerHTML =
-      'Thinking<span id="dots">...</span> (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc to interrupt)';
+      'Thinking<span id="dots" style="display:inline-block;width:3ch;text-align:left">...</span> (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc to interrupt)';
 
     const newDots = this.options.thinkingContainer.querySelector(
       "#dots"
