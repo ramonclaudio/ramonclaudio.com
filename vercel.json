@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "rm -rf node_modules .astro dist .vercel/output && bunx bun@1.3.11 install && echo '--- DEBUG: checking linux binding ---' && ls -la node_modules/@astrojs/compiler-binding-linux-x64-gnu/ && echo '--- DEBUG: checking .node file ---' && find node_modules/@astrojs/compiler-binding-linux-x64-gnu -name '*.node' 2>/dev/null && echo '--- DEBUG: all compiler packages ---' && ls node_modules/@astrojs/ | grep compiler",
+  "installCommand": "rm -rf node_modules .astro dist && bunx bun@1.3.11 install && ls node_modules/@astrojs/ | grep compiler && ls node_modules/@astrojs/compiler-binding-linux-x64-gnu/",
   "buildCommand": "bun run build"
 }
