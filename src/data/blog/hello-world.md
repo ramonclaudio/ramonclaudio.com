@@ -7,18 +7,13 @@ featured: true
 draft: false
 tags:
   - first-post
-  - hello-world
 description: Hello, I'm Ray.
 ---
 
-Hello,
+I'm Ray. I build things, open source them, and write about it here.
 
-I'm Ray. I build tools I want to use, then open source them. This is where I write about that.
+If I shipped it, I'll probably write about it. Project write-ups, technical decisions, whatever I'm working with at the time.
 
-Expect project write-ups, technical decisions I had to make, and whatever I'm building with at the time. If I shipped it, I'll probably write about it here.
-
-### Let's Build
-
-Have a question? Shoot me a message on **_[X](https://x.com/ramonclaudio)_**. Found a bug in one of my projects? Open an issue or discussion on **_[GitHub](https://github.com/ramonclaudio)_**. Want to collaborate? Email me at **_[hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)_**.
+[X](https://x.com/ramonclaudio) / [GitHub](https://github.com/ramonclaudio) / [hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)
 
 \- Ray
