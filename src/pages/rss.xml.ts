@@ -12,7 +12,6 @@ export const GET = (async ({ site }) => {
     description: SITE.desc,
     site: site!,
     customData: "<language>en-us</language>",
-    trailingSlash: false,
     items: sortedPosts.map(({ data, id }) => ({
       link: `/posts/${id}`,
       title: data.title,
