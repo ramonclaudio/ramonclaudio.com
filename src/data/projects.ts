@@ -82,7 +82,7 @@ bun run tauri build    # Build native binary (~5MB)`,
     tagline: "Convex component for RevenueCat subscriptions.",
     featured: true,
     description:
-      "Webhook-driven RevenueCat subscription state for Convex. Stores entitlements in your database for reactive, real-time access control. Idempotent handling of all 18 webhook events with built-in rate limiting.",
+      "RevenueCat subscription state for Convex. Syncs entitlements via webhooks and REST API for reactive, real-time access control. Idempotent handling of all 18 webhook events with built-in rate limiting.",
     repo: "ramonclaudio/convex-revenuecat",
     language: "TypeScript",
     tags: ["convex", "revenuecat", "subscriptions", "component"],
