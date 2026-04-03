@@ -68,7 +68,6 @@ export default defineConfig({
     rustCompiler: true,
     queuedRendering: {
       enabled: true,
-      contentCache: true,
     },
   },
 });
