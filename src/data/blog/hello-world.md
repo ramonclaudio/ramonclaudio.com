@@ -2,7 +2,6 @@
 author: Ray
 pubDatetime: 2025-07-23T22:03:00Z
 title: Hello, World!
-slug: hello-world
 featured: true
 draft: false
 tags:
