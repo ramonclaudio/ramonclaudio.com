@@ -73,7 +73,12 @@ const storageAdapters = [
       <p class="mt-4 text-lg text-muted-foreground">
         A shadcn registry for integrating with the CodeRabbit API. Build
         developer activity reports with a framework-agnostic client, pluggable
-        storage adapters, and ready-to-use React components.
+        storage adapters, and ready-to-use React components. Listed in the <a
+          href="https://ui.shadcn.com/docs/directory"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-muted-foreground hover:underline">official shadcn/ui directory</a
+        >.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a
@@ -225,16 +230,24 @@ const { generateReport, isLoading } = useCodeRabbit({
           href="https://github.com/ramonclaudio/coderabbit-shadcn-registry"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-accent hover:underline"
+          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
         >
           <IconGitHub class="h-4 w-4" />
           GitHub Repository
         </a>
         <a
+          href="https://ui.shadcn.com/docs/directory"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
+        >
+          shadcn/ui Directory
+        </a>
+        <a
           href="https://coderabbit.ai"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-accent hover:underline"
+          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
         >
           <span class="relative size-4">
             <CodeRabbitLight class="absolute inset-0 size-4 dark:hidden" />
