@@ -35,7 +35,7 @@ const apps = [
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-semibold sm:text-3xl">[apps]</h1>
       <span
-        class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent"
+        class="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
       >
         {apps.length} {apps.length === 1 ? "app" : "apps"}
       </span>
@@ -49,15 +49,15 @@ const apps = [
         apps.map(app => (
           <a
             href={`/apps/${app.slug}`}
-            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent hover:bg-card/80"
+            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary hover:bg-card/80"
           >
             <div class="flex-1">
               <div class="flex items-center gap-2">
-                <h3 class="text-lg font-medium group-hover:text-accent">
+                <h3 class="text-lg font-medium group-hover:text-primary">
                   {app.name}
                   <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </h3>
-                <span class="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                <span class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                   {app.platform}
                 </span>
               </div>

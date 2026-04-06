@@ -10,19 +10,149 @@ import Hr from "@/components/Hr.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 
 const posts = await getCollection("blog");
-
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ramon Claudio",
+  alternateName: "Ray",
+  url: "https://ramonclaudio.com",
+  image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
+  jobTitle: "Software Engineer",
+  description:
+    "Full-stack TypeScript engineer with 13 years of experience. 39 open source repos, 17 merged PRs to Expo, Bun, shadcn/ui, and more.",
+  knowsAbout: [
+    "TypeScript",
+    "React",
+    "React Native",
+    "Expo",
+    "Convex",
+    "Bun",
+    "Open Source Software",
+  ],
+  sameAs: [
+    "https://github.com/ramonclaudio",
+    "https://x.com/ramonclaudio",
+    "https://www.linkedin.com/in/ramonclaudio/",
+    "https://www.npmjs.com/~rmncldyo",
+  ],
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Long Island University",
+  },
+};
+
+const projects = [
+  {
+    name: "ccbase",
+    href: "https://github.com/ramonclaudio/ccbase",
+    stack: "TypeScript · Bun · SQLite",
+    metric: "npm package · 172 weekly downloads",
+    tags: ["claude-code", "analytics", "cli"],
+    description: "Local analytics dashboard, session history, and cost tracking for Claude Code.",
+    detail: "~172 weekly downloads",
+  },
+  {
+    name: "counter",
+    href: "https://github.com/ramonclaudio/counter",
+    stack: "Expo · Convex · TypeScript",
+    description: "Real-time deal intelligence. Voice AI that researches prices, alternatives, and negotiation leverage while you talk.",
+    detail: "ElevenLabs x Firecrawl hackathon submission",
+  },
+  {
+    name: "convex-revenuecat",
+    href: "https://github.com/ramonclaudio/convex-revenuecat",
+    stack: "TypeScript · Convex",
+    description: "RevenueCat subscription sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.",
+    detail: "~717 weekly downloads · Convex Components Directory",
+  },
+  {
+    name: "gitbar",
+    href: "https://github.com/ramonclaudio/gitbar",
+    stack: "Tauri · Rust · TypeScript · React",
+    description: "GitHub dashboard for the macOS menubar. PRs, issues, repos, and activity in one window.",
+    detail: "~5MB binary",
+  },
+  {
+    name: "coderabbit-shadcn-registry",
+    href: "https://github.com/ramonclaudio/coderabbit-shadcn-registry",
+    stack: "TypeScript · React",
+    description: "Modular shadcn registry for CodeRabbit. Framework-agnostic client, storage adapters, React components.",
+    detail: "listed in shadcn/ui registry",
+  },
+];
+
+const contributions = [
+  {
+    repo: "expo/expo",
+    href: "https://github.com/expo/expo/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    prs: 6,
+    description:
+      "SwiftUI scroll snapping, scroll anchor modifiers (iOS 17+, 18+), per-axis scale effects, shape enum fix, PersistentFileLog race condition",
+  },
+  {
+    repo: "get-convex/better-auth",
+    href: "https://github.com/get-convex/better-auth/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    prs: 4,
+    description:
+      "Stale auth state after session expiry, concurrent token fetch dedup, peer dep range, react-dom removal",
+  },
+  {
+    repo: "napi-rs/napi-rs",
+    href: "https://github.com/napi-rs/napi-rs/pull/3189",
+    prs: 1,
+    description: "Cross-compile regression in v3 CLI rewrite",
+  },
+  {
+    repo: "shadcn-ui/ui",
+    href: "https://github.com/shadcn-ui/ui/pull/9331",
+    prs: 1,
+    description: "CodeRabbit registry addition to open source directory",
+  },
+  {
+    repo: "oven-sh/bun",
+    href: "https://github.com/oven-sh/bun/pull/21855",
+    prs: 1,
+    description: "TypeScript definitions for fetch decompress option",
+  },
+  {
+    repo: "fuma-nama/fumadocs",
+    href: "https://github.com/fuma-nama/fumadocs/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    prs: 2,
+    description: "TanStack Start integration fixes, formatting for release",
+  },
+  {
+    repo: "rudrankriyam/App-Store-Connect-CLI",
+    href: "https://github.com/rudrankriyam/App-Store-Connect-CLI/pull/784",
+    prs: 1,
+    description: "macOS app capture and Mac App Store screenshot framing",
+  },
+  {
+    repo: "TanStack/db",
+    href: "https://github.com/TanStack/db/pull/17",
+    prs: 1,
+    description: "Fixed incorrect example path in README",
+  },
+];
 ---
 
 <Layout>
   <Header />
   <main id="main-content" data-layout="index">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
+
     <section id="hero" class="pt-8 pb-6">
       <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
         [about.ray]
@@ -36,27 +166,48 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         <IconRss
           width={20}
           height={20}
-          class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
+          class="scale-125 stroke-muted-foreground stroke-3 rtl:-rotate-90"
         />
         <span class="sr-only">RSS Feed</span>
       </a>
 
       <p>
-        I'm Ray. I've been freelancing since 2013 and I keep finding myself
-        at the intersection of culture and technology. Some people never find
-        what they love. I got lucky early. Coding is it for me, always has
-        been. I build software, open source it, drink way too much specialty
-        coffee, and write about it here.
+        I'm Ray. 13 years writing code, most of it in the open. TypeScript
+        across the full stack. I contribute to the tools I use and open source
+        everything I build. I also drink way too much coffee. Sey beans, V60,
+        1Zpresso ZP6, full nerd mode (<a href="/setup#coffee" class="text-foreground underline decoration-dashed underline-offset-4">I go deeper here</a>).
       </p>
 
-      <div id="thinking" class="my-4 font-mono text-sm text-muted">
-        Thinking<span id="dots" class="inline-block w-[3ch] text-left">...</span> (<span id="timer">0</span>s · <span
-          id="tokens">0</span
-        > tokens · esc to interrupt)
+      <p class="mt-3 text-sm text-muted-foreground">
+        39 repos · 16 PRs merged upstream · 5 npm packages · ~900 weekly
+        downloads
+      </p>
+
+      <div class="mt-4 flex flex-wrap items-center gap-4">
+        <LinkButton href="https://github.com/ramonclaudio">
+          <IconGitHub
+            class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom"
+          />
+          GitHub
+        </LinkButton>
+        <LinkButton href="/resume">
+          resume
+          <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </LinkButton>
+        <LinkButton href="/about">
+          the full story
+          <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </LinkButton>
+      </div>
+
+      <div id="thinking" class="my-4 font-mono text-sm text-muted-foreground">
+        Thinking<span id="dots" class="inline-block w-[3ch] text-left"
+          >...</span
+        > (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc
+        to interrupt)
       </div>
 
       {
-        // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
           <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
             <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
@@ -68,32 +219,98 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
     <Hr />
 
+    <section id="shipped" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[shipped]</h2>
+      <ul class="mt-4">
+        {
+          projects.map(project => (
+            <li class="my-5">
+              <div>
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+                >
+                  {project.name}
+                </a>
+                <span class="text-xs text-muted-foreground"> · {project.stack}</span>
+              </div>
+              <p>{project.description}</p>
+              {project.detail && (
+                <p class="text-xs text-muted-foreground">{project.detail}</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-4">
+        <LinkButton href="/projects">
+          all projects
+          <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </LinkButton>
+      </div>
+    </section>
+
+    <Hr />
+
+    <section id="open-source" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[merged.upstream]</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        17 PRs merged to projects I don't maintain.
+      </p>
+      <ul class="mt-4">
+        {
+          contributions.map(contrib => (
+            <li class="my-3">
+              <a
+                href={contrib.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+              >
+                {contrib.repo}
+              </a>
+              <span class="text-sm text-muted-foreground">
+                {" · "}
+                {contrib.prs} {contrib.prs === 1 ? "PR" : "PRs"}
+              </span>
+              <p class="text-sm text-muted-foreground">{contrib.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Hr />
+
     {
       featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">
-              [rays.thoughts-ideas-and-rants]
-            </h2>
-            <ul>
-              {featuredPosts.map(data => (
-                <Card variant="h3" {...data} />
-              ))}
-            </ul>
-          </section>
+        <section id="featured" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">
+            [recent.writing]
+          </h2>
+          <ul>
+            {featuredPosts.map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
           {recentPosts.length > 0 && <Hr />}
-        </>
+        </section>
       )
     }
 
     {
       recentPosts.length > 0 && (
         <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
+          {featuredPosts.length === 0 && (
+            <h2 class="text-2xl font-semibold tracking-wide">
+              [recent.writing]
+            </h2>
+          )}
           <ul>
             {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
+              (data, index) => index < 4 && <Card variant="h3" {...data} />
             )}
           </ul>
         </section>
@@ -102,7 +319,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
     <div class="my-8 text-center">
       <LinkButton href="/posts/">
-        i'd like more please, thanks
+        all posts
         <IconArrowRight class="inline-block rtl:-rotate-180" />
       </LinkButton>
     </div>

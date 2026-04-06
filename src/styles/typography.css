@@ -28,7 +28,7 @@
     }
 
     a {
-      @apply break-words text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply break-words text-foreground decoration-dashed underline-offset-4 hover:text-primary focus-visible:no-underline;
     }
 
     ul {
@@ -36,7 +36,7 @@
     }
 
     li {
-      @apply marker:text-accent;
+      @apply marker:text-primary;
     }
 
     hr {
@@ -75,7 +75,7 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 break-words opacity-80;
+      @apply border-s-muted-foreground/80 break-words opacity-80;
     }
 
     details {
@@ -83,11 +83,11 @@
     }
 
     summary {
-      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring focus-visible:outline-dashed;
     }
 
     pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-dashed;
     }
   }
 

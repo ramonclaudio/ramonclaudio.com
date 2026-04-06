@@ -25,7 +25,9 @@ I'm full-stack TypeScript. [Bun](https://bun.com/) runs everything: runtime, pac
 
 Backend is Convex. Real-time, no infra to manage, and the DX is the best I've used. Better Auth for auth because I got tired of rolling my own. Zod for validation because I don't trust anything that comes over the wire.
 
-Frontend is Tailwind v4 and shadcn/ui for styling. If it doesn't have shadcn support, I don't want it. React and React Native for UI, Expo for mobile, TanStack for routing, state, and queries.
+Desktop is [Tauri](https://tauri.app/) with Rust. Small binaries, native webview, no Electron. Web is [Astro](https://astro.build/) for content sites (this one) and [TanStack Start](https://tanstack.com/start) for apps.
+
+Frontend is Tailwind v4 and shadcn/ui for styling. React and React Native for UI, Expo for mobile, TanStack for routing, state, and queries.
 
 Linting is Oxlint and Oxfmt for TypeScript, Ruff for Python. Type checking with tsgo or tsc for TypeScript, ty for Python.
 
@@ -33,7 +35,15 @@ Linting is Oxlint and Oxfmt for TypeScript, Ruff for Python. Type checking with 
 
 I replaced most of the default Unix tools with faster Rust alternatives. Keyboard over mouse, terminal over GUI.
 
-yazi for file management, lazygit for git, delta for diffs, gh for GitHub, fzf for fuzzy finding. fnm for Node versions. jq and yq for JSON and YAML, jless for viewing JSON. bat instead of cat, fd instead of find, ripgrep instead of grep, eza instead of ls, zoxide instead of cd. duf and dust for disk usage, btm for system monitoring, procs instead of ps, trash instead of rm. hyperfine for benchmarking, tldr for man pages.
+[yazi](https://github.com/sxyazi/yazi) for file management, [lazygit](https://github.com/jesseduffield/lazygit) for git, [delta](https://github.com/dandavison/delta) for diffs, [gh](https://cli.github.com/) for GitHub, [fzf](https://github.com/junegunn/fzf) for fuzzy finding. [fnm](https://github.com/Schniz/fnm) for Node versions.
+
+[jq](https://jqlang.github.io/jq/) and [yq](https://github.com/mikefarah/yq) for JSON and YAML, [jless](https://github.com/PaulJuliusMartinez/jless) for viewing JSON.
+
+[bat](https://github.com/sharkdp/bat) instead of cat, [fd](https://github.com/sharkdp/fd) instead of find, [ripgrep](https://github.com/BurntSushi/ripgrep) instead of grep, [eza](https://github.com/eza-community/eza) instead of ls, [zoxide](https://github.com/ajeetdsouza/zoxide) instead of cd.
+
+[duf](https://github.com/muesli/duf) and [dust](https://github.com/bootandy/dust) for disk usage, [btm](https://github.com/ClementTsang/bottom) for system monitoring, [procs](https://github.com/dalance/procs) instead of ps, [trash](https://github.com/sindresorhus/trash-cli) instead of rm.
+
+[hyperfine](https://github.com/sharkdp/hyperfine) for benchmarking, [git-filter-repo](https://github.com/newren/git-filter-repo) for history rewrites.
 
 ### Coffee
 

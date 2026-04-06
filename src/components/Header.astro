@@ -27,7 +27,7 @@ const isActive = (path: string) => {
   <a
     id="skip-to-content"
     href="#main-content"
-    class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
+    class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-muted-foreground backdrop-blur-lg transition-all focus:top-4"
   >
     Skip to content
   </a>
@@ -64,7 +64,7 @@ const isActive = (path: string) => {
           id="menu-items"
           class:list={[
             "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
+            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-foreground sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
             "hidden",
             "sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
           ]}
@@ -73,7 +73,7 @@ const isActive = (path: string) => {
             <a
               href="/"
               class:list={[
-                "block px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
+                "block px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
                 { "active-nav": currentPath === "/" || isActive("/about") || isActive("/resume") || isActive("/setup") },
               ]}
             >
@@ -89,7 +89,7 @@ const isActive = (path: string) => {
               <li>
                 <a
                   href="/about"
-                  class="block px-4 py-2 text-sm hover:text-accent"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   about
                 </a>
@@ -97,7 +97,7 @@ const isActive = (path: string) => {
               <li>
                 <a
                   href="/resume"
-                  class="block px-4 py-2 text-sm hover:text-accent"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   resume
                 </a>
@@ -105,7 +105,7 @@ const isActive = (path: string) => {
               <li>
                 <a
                   href="/setup"
-                  class="block px-4 py-2 text-sm hover:text-accent"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   setup
                 </a>
@@ -115,8 +115,8 @@ const isActive = (path: string) => {
           <li class="group relative col-span-2">
             <span
               class:list={[
-                "block cursor-default px-4 py-3 text-center font-medium hover:text-accent sm:px-2 sm:py-1",
-                { "active-nav": isActive("/projects") || isActive("/registries") },
+                "block cursor-default px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
+                { "active-nav": isActive("/projects") || isActive("/registries") || isActive("/apps") },
               ]}
             >
               [work]
@@ -131,15 +131,23 @@ const isActive = (path: string) => {
               <li>
                 <a
                   href="/projects"
-                  class="block px-4 py-2 text-sm hover:text-accent"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   projects
                 </a>
               </li>
               <li>
                 <a
+                  href="/apps"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
+                >
+                  apps
+                </a>
+              </li>
+              <li>
+                <a
                   href="/registries"
-                  class="block px-4 py-2 text-sm hover:text-accent"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   registries
                 </a>
@@ -159,7 +167,7 @@ const isActive = (path: string) => {
                   class:list={[
                     "focus-outline flex justify-center p-3 sm:p-1",
                     {
-                      "active-nav [&>svg]:stroke-accent": isActive("/archives"),
+                      "active-nav [&>svg]:stroke-foreground": isActive("/archives"),
                     },
                   ]}
                   ariaLabel="archives"
@@ -177,7 +185,7 @@ const isActive = (path: string) => {
             href="/search"
             class:list={[
               "focus-outline flex p-1",
-              { "[&>svg]:stroke-accent": isActive("/search") },
+              { "[&>svg]:stroke-foreground": isActive("/search") },
             ]}
             ariaLabel="search"
             title="Search"
@@ -190,7 +198,7 @@ const isActive = (path: string) => {
             SITE.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline relative size-8 hover:[&>svg]:stroke-accent"
+                class="focus-outline relative size-8 hover:[&>svg]:stroke-foreground"
                 title="Toggles light & dark"
                 aria-label="auto"
                 aria-live="polite"
@@ -206,7 +214,7 @@ const isActive = (path: string) => {
             href="/search"
             class:list={[
               "focus-outline flex p-3",
-              { "[&>svg]:stroke-accent": isActive("/search") },
+              { "[&>svg]:stroke-foreground": isActive("/search") },
             ]}
             ariaLabel="search"
             title="Search"
@@ -218,7 +226,7 @@ const isActive = (path: string) => {
             SITE.lightAndDarkMode && (
               <button
                 id="theme-btn-mobile"
-                class="focus-outline relative size-12 p-4 hover:[&>svg]:stroke-accent"
+                class="focus-outline relative size-12 p-4 hover:[&>svg]:stroke-foreground"
                 title="Toggles light & dark"
                 aria-label="auto"
                 aria-live="polite"
