@@ -23,6 +23,75 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "ccbase",
+    name: "ccbase",
+    tagline: "Local analytics dashboard for Claude Code.",
+    featured: true,
+    description:
+      "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code. Tracks costs, token usage, and session replays. Published on npm.",
+    repo: "ramonclaudio/ccbase",
+    language: "TypeScript",
+    tags: ["claude-code", "analytics", "dashboard", "npm"],
+    license: "MIT",
+    features: [
+      {
+        title: "Session History",
+        description: "Searchable conversation history across sessions",
+      },
+      {
+        title: "Cost Tracking",
+        description: "Token usage and spending analytics",
+      },
+      {
+        title: "Session Replay",
+        description: "Replay past conversations step by step",
+      },
+      {
+        title: "Local Only",
+        description: "All data stays on your machine",
+      },
+    ],
+    install: `npm install -g @ramonclaudio/ccbase`,
+    usage: `ccbase            # Launch dashboard
+ccbase --help     # All options`,
+    requirements: ["Node.js 18+", "Claude Code CLI"],
+  },
+  {
+    slug: "counter",
+    name: "counter",
+    tagline: "Real-time deal intelligence powered by AI agents.",
+    featured: true,
+    description:
+      "Stop overpaying, start negotiating. Real-time deal intelligence powered by ElevenLabs conversational agents and Firecrawl search. Finds comparable prices, surfaces leverage points, and coaches you through negotiations.",
+    repo: "ramonclaudio/counter",
+    language: "TypeScript",
+    tags: ["elevenlabs", "firecrawl", "agents", "ai"],
+    license: "MIT",
+    features: [
+      {
+        title: "Voice Agents",
+        description: "ElevenLabs conversational AI for live coaching",
+      },
+      {
+        title: "Price Intelligence",
+        description: "Firecrawl-powered comparable price search",
+      },
+      {
+        title: "Leverage Points",
+        description: "Surfaces negotiation angles from market data",
+      },
+      {
+        title: "Real-Time",
+        description: "Live deal analysis as you negotiate",
+      },
+    ],
+    install: `git clone https://github.com/ramonclaudio/counter.git
+cd counter
+bun install`,
+    usage: `bun run dev        # Start development`,
+    requirements: ["Bun", "ElevenLabs API key", "Firecrawl API key"],
+  },
+  {
     slug: "tanstack-convex-starter",
     name: "tanstack-convex-starter",
     tagline: "Full-stack starter with TanStack Start + Convex.",
@@ -145,52 +214,6 @@ http.route({
     requirements: ["Convex 1.31.6+", "RevenueCat account with webhook access"],
   },
   {
-    slug: "handoff",
-    name: "handoff",
-    tagline: "Session continuity for Claude Code.",
-    description:
-      "Every Claude session starts fresh. You remember what you were working on yesterday - what got done, what broke, where you left off. Claude doesn't. This plugin fixes that. Think hospital shift change. Doctors don't try to remember everything about every patient. They do structured handoffs: current status, what happened, what to watch for, what's next. Same idea here.",
-    repo: "ramonclaudio/handoff",
-    language: "Shell",
-    tags: ["claude-code", "plugin", "session-management"],
-    license: "MIT",
-    features: [
-      {
-        title: "Command",
-        description: "Explicit control with /handoff start, /handoff end",
-      },
-      {
-        title: "Skill",
-        description:
-          'Claude auto-invokes when you say "handoff", "save progress", "resume"',
-      },
-      {
-        title: "Agent",
-        description: "Delegate to specialized agent for autonomous management",
-      },
-      {
-        title: "Severity Levels",
-        description: "Critical, In Progress, Ready status tracking",
-      },
-    ],
-    install: `/plugin install ramonclaudio/handoff
-
-# Or from terminal:
-claude plugin install ramonclaudio/handoff`,
-    usage: `/handoff init    # First time: create .handoff/ structure
-/handoff start   # Beginning of session: gather context
-/handoff end     # End of session: archive state`,
-    structure: `.handoff/
-├── CONTEXT.md     # Project: stack, commands, critical paths, gotchas
-├── HANDOFF.md     # Session: severity, health, done, failed, blockers, resume
-└── sessions/      # Archived handoffs`,
-    requirements: [
-      "Claude Code 2.1+",
-      "Git",
-      "Optional: gh (GitHub CLI), Linear MCP",
-    ],
-  },
-  {
     slug: "howold",
     name: "howold",
     tagline: "Find the latest examples in GitHub repos.",
@@ -231,7 +254,6 @@ bun cli.ts vercel/next.js examples/       # Specific path
     slug: "uniwind-ui",
     name: "uniwind-ui",
     tagline: "shadcn/ui for React Native.",
-    featured: true,
     description:
       "shadcn/ui components for React Native, built on Uniwind. Copy and paste components for iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
@@ -259,6 +281,7 @@ import { Input } from "@/components/ui/input";`,
     slug: "coderabbit-shadcn-registry",
     name: "coderabbit-shadcn-registry",
     tagline: "shadcn registry for CodeRabbit API integration.",
+    featured: true,
     description:
       "Install components directly with the shadcn CLI. Supports multiple storage backends: LocalStorage, Convex, Supabase, PostgreSQL, and MySQL. Framework-agnostic client with React hooks included.",
     repo: "ramonclaudio/coderabbit-shadcn-registry",
@@ -386,6 +409,7 @@ bun run build      # Build for production`,
     slug: "shopify-hydrogen-shadcn-template",
     name: "shopify-hydrogen-shadcn-template",
     tagline: "Modern Shopify storefront template.",
+    featured: true,
     description:
       "Modern Shopify storefront built with Hydrogen, React Router 7, and shadcn/ui. Made for selling physical products with a modern stack.",
     repo: "ramonclaudio/shopify-hydrogen-shadcn-template",
@@ -1267,6 +1291,7 @@ Chat().run()`,
     slug: "google-reverse-image-search",
     name: "Google-Reverse-Image-Search",
     tagline: "Python library for reverse image search.",
+    featured: true,
     description:
       "A Python library for Google reverse image search. Look up where an image appears, find higher-resolution versions, or identify what's in it.",
     repo: "ramonclaudio/Google-Reverse-Image-Search",
@@ -1371,6 +1396,41 @@ from gemini import Chat, Text, Multimodal
 Chat().run()
 Text().run(prompt="Write a story")`,
     requirements: ["Python 3.x", "Google AI Studio API key"],
+  },
+  {
+    slug: "patches",
+    name: "patches",
+    tagline: "Drop-in fixes for packages awaiting upstream merges.",
+    featured: true,
+    description:
+      "Patch files for bugs, missing features, and type errors in dependencies. Drop them into your project and apply with your package manager's built-in patch support. Covers @convex-dev, @expo, @shopify, @tobilu, convex, and oven-sh packages.",
+    repo: "ramonclaudio/patches",
+    language: "Diff",
+    tags: ["patches", "dependencies", "bugfixes"],
+    license: "MIT",
+    features: [
+      {
+        title: "Drop-In Fixes",
+        description: "Copy patch, apply with bun/pnpm/yarn patch support",
+      },
+      {
+        title: "Pre-Upstream",
+        description: "Fixes for bugs awaiting merge in upstream repos",
+      },
+      {
+        title: "Multi-Package",
+        description: "@convex-dev, @expo, @shopify, @tobilu, convex, oven-sh",
+      },
+      {
+        title: "Zero Overhead",
+        description: "Standard .patch files, no runtime dependency",
+      },
+    ],
+    install: `# Copy the patch file for your package
+# Apply with your package manager:
+# bun: patches in package.json "patchedDependencies"
+# pnpm: pnpm patch-commit
+# yarn: yarn patch`,
   },
   {
     slug: "httparser",
