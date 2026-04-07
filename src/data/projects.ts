@@ -23,6 +23,40 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "skills",
+    name: "skills",
+    tagline: "9 plugins for Claude Code, distributed as a marketplace.",
+    featured: true,
+    description:
+      "Marketplace of 9 plugins I built for Claude Code: handoff (session continuity across compactions and machines), qmd (on-device docs search exposed as an MCP server with 21 commands), commit (atomic conventional commits with a PreToolUse hook that blocks force-push and GPG bypass), polish/audit/techdebt (three code-quality sweeps with up to 5 parallel agents each), teams (multi-session orchestration with file ownership), gif and frames (ffmpeg wrappers for screen recording analysis). Install with /plugin marketplace add ramonclaudio/skills.",
+    repo: "ramonclaudio/skills",
+    language: "TypeScript",
+    tags: ["claude-code", "plugins", "marketplace", "developer-tools"],
+    license: "MIT",
+    features: [
+      {
+        title: "9 Plugins",
+        description:
+          "handoff, qmd, commit, polish, audit, techdebt, teams, gif, frames",
+      },
+      {
+        title: "Marketplace Install",
+        description: "/plugin marketplace add ramonclaudio/skills",
+      },
+      {
+        title: "Hooks + MCP",
+        description:
+          "PreToolUse guards, SessionStart/PostCompact rehydration, MCP server for docs search",
+      },
+      {
+        title: "Parallel Agents",
+        description: "polish, audit, and techdebt run multiple agents in parallel",
+      },
+    ],
+    install: `/plugin marketplace add ramonclaudio/skills
+/plugin install handoff@skills`,
+  },
+  {
     slug: "ccbase",
     name: "ccbase",
     tagline: "Local analytics dashboard for Claude Code.",
