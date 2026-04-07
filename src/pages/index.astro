@@ -13,6 +13,9 @@ import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
+import { projects as allProjects } from "@/data/projects";
+
+const featuredProjects = allProjects.filter(p => p.featured);
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -49,46 +52,6 @@ const personSchema = {
     name: "Long Island University",
   },
 };
-
-const projects = [
-  {
-    name: "ccbase",
-    href: "https://github.com/ramonclaudio/ccbase",
-    stack: "TypeScript · Bun · SQLite",
-    metric: "npm package · 172 weekly downloads",
-    tags: ["claude-code", "analytics", "cli"],
-    description: "Local analytics dashboard, session history, and cost tracking for Claude Code.",
-    detail: "~172 weekly downloads",
-  },
-  {
-    name: "counter",
-    href: "https://github.com/ramonclaudio/counter",
-    stack: "Expo · Convex · TypeScript",
-    description: "Voice AI that listens while you negotiate a deal. Pulls prices, alternatives, and angles to push on in real time.",
-    detail: "ElevenLabs x Firecrawl hackathon submission",
-  },
-  {
-    name: "convex-revenuecat",
-    href: "https://github.com/ramonclaudio/convex-revenuecat",
-    stack: "TypeScript · Convex",
-    description: "RevenueCat subscription sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.",
-    detail: "~717 weekly downloads · Convex Components Directory",
-  },
-  {
-    name: "gitbar",
-    href: "https://github.com/ramonclaudio/gitbar",
-    stack: "Tauri · Rust · TypeScript · React",
-    description: "GitHub dashboard for the macOS menubar. PRs, issues, repos, and activity in one window.",
-    detail: "~5MB binary",
-  },
-  {
-    name: "coderabbit-shadcn-registry",
-    href: "https://github.com/ramonclaudio/coderabbit-shadcn-registry",
-    stack: "TypeScript · React",
-    description: "Ships the CodeRabbit API as a shadcn registry. Framework-agnostic client, storage adapters, React components.",
-    detail: "listed in shadcn/ui registry",
-  },
-];
 
 const contributions = [
   {
@@ -327,13 +290,11 @@ const contributions = [
       <h2 class="text-2xl font-semibold tracking-wide">[shipped]</h2>
       <ul class="mt-4">
         {
-          projects.map(project => (
+          featuredProjects.map(project => (
             <li class="my-5">
               <div>
                 <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/projects/${project.slug}`}
                   class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
                 >
                   {project.name}
