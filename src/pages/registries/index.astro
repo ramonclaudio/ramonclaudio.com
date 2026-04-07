@@ -3,17 +3,15 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import CodeRabbitDark from "@/assets/icons/coderabbit-dark.svg";
-import CodeRabbitLight from "@/assets/icons/coderabbit-light.svg";
 
 const registries = [
   {
     name: "CodeRabbit",
     slug: "coderabbit",
+    stack: "shadcn · React · TypeScript",
     description:
-      "Framework-agnostic API client with storage adapters and React components for developer activity reports.",
-    tags: ["shadcn", "react", "api"],
+      "Framework-agnostic API client with 5 storage adapters and React components for developer activity reports.",
+    detail: "listed in the shadcn/ui registry",
   },
 ];
 ---
@@ -25,43 +23,38 @@ const registries = [
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
-    <h1 class="text-2xl font-semibold sm:text-3xl">[registries]</h1>
-    <p class="mt-2 mb-8 text-muted-foreground">
-      Open source shadcn registries. Install components directly into your
-      projects.
-    </p>
-
-    <div class="grid gap-4">
-      {
-        registries.map(registry => (
-          <a
-            href={`/registries/${registry.slug}`}
-            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary hover:bg-card/80"
-          >
-            <span class="relative size-8 shrink-0">
-              <CodeRabbitLight class="absolute inset-0 size-8 dark:hidden" />
-              <CodeRabbitDark class="absolute inset-0 hidden size-8 dark:block" />
-            </span>
-            <div class="flex-1">
-              <h2 class="text-lg font-medium group-hover:text-primary">
-                {registry.name}
-                <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </h2>
-              <p class="mt-1 text-sm text-muted-foreground">
-                {registry.description}
-              </p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                {registry.tags.map(tag => (
-                  <span class="rounded bg-secondary/50 px-2 py-0.5 text-xs text-secondary-foreground">
-                    {tag}
-                  </span>
-                ))}
+    <section class="pt-4 pb-6">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        [registries]
+      </h1>
+      <p>
+        Open source shadcn registries. Install components directly with the shadcn CLI.
+      </p>
+      <ul class="mt-6">
+        {
+          registries.map(registry => (
+            <li class="my-5">
+              <div>
+                <a
+                  href={`/registries/${registry.slug}`}
+                  class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+                >
+                  {registry.name}
+                </a>
+                <span class="text-xs text-muted-foreground">
+                  {" · "}
+                  {registry.stack}
+                </span>
               </div>
-            </div>
-          </a>
-        ))
-      }
-    </div>
+              <p>{registry.description}</p>
+              {registry.detail && (
+                <p class="text-xs text-muted-foreground">{registry.detail}</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </main>
   <Footer />
 </Layout>

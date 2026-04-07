@@ -5,257 +5,80 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import CodeRabbitDark from "@/assets/icons/coderabbit-dark.svg";
-import CodeRabbitLight from "@/assets/icons/coderabbit-light.svg";
 
-const features = [
-  {
-    title: "Framework Agnostic",
-    description:
-      "Core client works with any JavaScript framework. React hooks included.",
-  },
-  {
-    title: "Storage Adapters",
-    description:
-      "LocalStorage, Convex, Supabase, PostgreSQL, MySQL. Bring your own backend.",
-  },
-  {
-    title: "shadcn Compatible",
-    description:
-      "Install directly with the shadcn CLI. Copy-paste ready components.",
-  },
-  {
-    title: "Type Safe",
-    description: "Full TypeScript support with strict types for all APIs.",
-  },
-];
-
-const components = [
-  {
-    name: "coderabbit-report-form",
-    description: "Form component for generating developer activity reports",
-  },
-  {
-    name: "coderabbit-report-card",
-    description: "Display card for showing report summaries",
-  },
-  {
-    name: "use-coderabbit",
-    description: "React hook for CodeRabbit API integration",
-  },
-];
-
-const storageAdapters = [
-  { name: "LocalStorage", description: "Browser-based, no backend required" },
-  { name: "Convex", description: "Real-time database with automatic sync" },
+const adapters = [
+  { name: "LocalStorage", description: "Browser-based, no backend" },
+  { name: "Convex", description: "Real-time, reactive queries" },
   { name: "Supabase", description: "Open source Firebase alternative" },
-  { name: "PostgreSQL", description: "Traditional relational database" },
-  { name: "MySQL", description: "Popular relational database" },
+  { name: "PostgreSQL", description: "Traditional relational" },
+  { name: "MySQL", description: "Traditional relational" },
 ];
+
+const repoUrl = "https://github.com/ramonclaudio/coderabbit-shadcn-registry";
+const installCmd =
+  "npx shadcn@latest add https://coderabbit-shadcn-registry.vercel.app/r/coderabbit.json";
 ---
 
 <Layout
   title="CodeRabbit Registry | Ray"
-  description="A framework-agnostic API client with storage adapters and React components for generating developer activity reports."
+  description="Framework-agnostic CodeRabbit API client with 5 storage adapters and React components, distributed as a shadcn registry."
 >
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
-    <!-- Hero -->
-    <section class="py-8">
-      <div class="flex items-center gap-3">
-        <div class="relative size-10">
-          <CodeRabbitLight class="absolute inset-0 size-10 dark:hidden" />
-          <CodeRabbitDark class="absolute inset-0 hidden size-10 dark:block" />
-        </div>
-        <h1 class="text-3xl font-bold sm:text-4xl">CodeRabbit</h1>
-      </div>
-      <p class="mt-4 text-lg text-muted-foreground">
-        A shadcn registry for integrating with the CodeRabbit API. Build
-        developer activity reports with a framework-agnostic client, pluggable
-        storage adapters, and ready-to-use React components. Listed in the <a
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        CodeRabbit
+      </h1>
+      <p class="text-sm text-muted-foreground">shadcn · React · TypeScript</p>
+      <p class="mt-4">
+        Ships the CodeRabbit API as a shadcn registry. Framework-agnostic
+        client, 5 storage adapters, React components for developer activity
+        reports. Listed in the <a
           href="https://ui.shadcn.com/docs/directory"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-muted-foreground hover:underline">official shadcn/ui directory</a
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >shadcn/ui directory</a
+        > via <a
+          href="https://github.com/shadcn-ui/ui/pull/9331"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >#9331</a
         >.
       </p>
-      <div class="mt-6 flex flex-wrap gap-3">
+      <div class="mt-6">
         <a
-          href="https://github.com/ramonclaudio/coderabbit-shadcn-registry"
+          href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          class="inline-flex items-center gap-2 text-foreground decoration-dashed underline-offset-4 hover:underline"
         >
-          <IconGitHub class="h-4 w-4" />
-          View on GitHub
-        </a>
-        <a
-          href="#install"
-          class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/50"
-        >
-          Get Started
-          <IconArrowRight class="h-4 w-4" />
+          <IconGitHub class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom" />
+          ramonclaudio/coderabbit-shadcn-registry
+          <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
         </a>
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[features]</h2>
-      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+    <section id="install" class="scroll-mt-20 pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[install]</h2>
+      <pre class="mt-4 overflow-x-auto rounded-md border border-border bg-card p-3 text-sm"><code>{installCmd}</code></pre>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[adapters]</h2>
+      <ul class="mt-4">
         {
-          features.map(feature => (
-            <div class="rounded-lg border border-border p-4">
-              <h3 class="font-medium">{feature.title}</h3>
-              <p class="mt-2 text-sm text-muted-foreground">
-                {feature.description}
-              </p>
-            </div>
+          adapters.map(a => (
+            <li class="my-2">
+              <span class="font-mono text-foreground">{a.name}</span>
+              <span class="text-muted-foreground"> — {a.description}</span>
+            </li>
           ))
         }
-      </div>
-    </section>
-
-    <!-- Install -->
-    <section id="install" class="scroll-mt-20 py-8">
-      <h2 class="text-xl font-semibold">[install]</h2>
-      <p class="mt-2 text-muted-foreground">
-        Add components directly to your project using the shadcn CLI.
-      </p>
-
-      <div class="mt-4 space-y-4">
-        <div>
-          <h3 class="mb-2 text-sm font-medium text-muted-foreground">
-            Full installation (recommended)
-          </h3>
-          <div
-            class="overflow-x-auto rounded-lg border border-border bg-card p-4"
-          >
-            <code class="text-sm"
-              >npx shadcn@latest add https://coderabbit-shadcn-registry.vercel.app/r/coderabbit.json</code
-            >
-          </div>
-        </div>
-
-        <div>
-          <h3 class="mb-2 text-sm font-medium text-muted-foreground">
-            Or install individual components
-          </h3>
-          <div class="space-y-2">
-            {
-              components.map(component => (
-                <div class="overflow-x-auto rounded-lg border border-border bg-card p-3">
-                  <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                    <code class="text-sm">{component.name}</code>
-                    <span class="text-xs text-muted-foreground">
-                      {component.description}
-                    </span>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Storage Adapters -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[storage-adapters]</h2>
-      <p class="mt-2 text-muted-foreground">
-        Choose the storage backend that fits your stack. All adapters implement
-        the same interface.
-      </p>
-      <div class="mt-4 overflow-hidden rounded-lg border border-border">
-        <table class="w-full text-sm">
-          <thead class="border-b border-border bg-secondary/30">
-            <tr>
-              <th class="px-4 py-2 text-left font-medium">Adapter</th>
-              <th class="px-4 py-2 text-left font-medium">Description</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-border">
-            {
-              storageAdapters.map(adapter => (
-                <tr class="hover:bg-secondary/20">
-                  <td class="px-4 py-2 font-mono">{adapter.name}</td>
-                  <td class="px-4 py-2 text-muted-foreground">
-                    {adapter.description}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Quick Start -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[quick-start]</h2>
-      <div class="mt-4 space-y-4">
-        <div class="rounded-lg border border-border bg-card p-4">
-          <h3 class="mb-2 text-sm font-medium">1. Install the registry</h3>
-          <code class="text-sm text-muted-foreground"
-            >npx shadcn@latest add
-            https://coderabbit-shadcn-registry.vercel.app/r/coderabbit.json</code
-          >
-        </div>
-        <div class="rounded-lg border border-border bg-card p-4">
-          <h3 class="mb-2 text-sm font-medium">2. Import and use</h3>
-          <pre
-            class="overflow-x-auto text-sm text-muted-foreground"><code>{`import { useCodeRabbit } from "@/hooks/use-coderabbit";
-
-const { generateReport, isLoading } = useCodeRabbit({
-  apiKey: process.env.CODERABBIT_API_KEY,
-});`}</code></pre>
-        </div>
-        <div class="rounded-lg border border-border bg-card p-4">
-          <h3 class="mb-2 text-sm font-medium">3. Generate reports</h3>
-          <pre
-            class="overflow-x-auto text-sm text-muted-foreground"><code>{`const report = await generateReport({
-  username: "ramonclaudio",
-  dateRange: "last-7-days",
-});`}</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- Links -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[links]</h2>
-      <div class="mt-4 flex flex-wrap gap-4">
-        <a
-          href="https://github.com/ramonclaudio/coderabbit-shadcn-registry"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
-        >
-          <IconGitHub class="h-4 w-4" />
-          GitHub Repository
-        </a>
-        <a
-          href="https://ui.shadcn.com/docs/directory"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
-        >
-          shadcn/ui Directory
-        </a>
-        <a
-          href="https://coderabbit.ai"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-muted-foreground hover:underline"
-        >
-          <span class="relative size-4">
-            <CodeRabbitLight class="absolute inset-0 size-4 dark:hidden" />
-            <CodeRabbitDark class="absolute inset-0 hidden size-4 dark:block" />
-          </span>
-          CodeRabbit API
-        </a>
-      </div>
+      </ul>
     </section>
   </main>
   <Footer />
