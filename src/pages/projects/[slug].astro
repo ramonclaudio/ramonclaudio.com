@@ -18,164 +18,68 @@ export const getStaticPaths = (() => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { project } = Astro.props as Props;
 const repoUrl = `https://github.com/${project.repo}`;
+
+const idx = projects.findIndex(p => p.slug === project.slug);
+const related = [1, 2, 3]
+  .map(i => projects[(idx + i) % projects.length])
+  .filter(p => p && p.slug !== project.slug);
 ---
 
-<Layout title={`${project.name} | Ray`} description={project.tagline}>
+<Layout title={`${project.name} | Ray`} description={project.description}>
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
-    <!-- Hero -->
-    <section class="py-8">
-      <div class="flex items-center gap-3">
-        <h1 class="text-3xl font-bold sm:text-4xl">{project.name}</h1>
-        <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          {project.language}
-        </span>
-      </div>
-      <p class="mt-2 text-lg font-medium text-primary">{project.tagline}</p>
-      <p class="mt-4 text-muted-foreground">{project.description}</p>
-      <div class="mt-4 flex flex-wrap gap-2">
-        {
-          project.tags.map(tag => (
-            <span class="rounded bg-secondary/50 px-2 py-0.5 text-xs text-secondary-foreground">
-              {tag}
-            </span>
-          ))
-        }
-      </div>
-      <div class="mt-6 flex flex-wrap gap-3">
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        {project.name}
+      </h1>
+      <p class="text-sm text-muted-foreground">{project.stack}</p>
+      <p class="mt-4">{project.description}</p>
+      {
+        project.detail && (
+          <p class="mt-2 text-sm text-muted-foreground">{project.detail}</p>
+        )
+      }
+      <div class="mt-6">
         <a
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          class="inline-flex items-center gap-2 text-foreground decoration-dashed underline-offset-4 hover:underline"
         >
-          <IconGitHub class="h-4 w-4" />
-          View on GitHub
+          <IconGitHub class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom" />
+          {project.repo}
+          <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
         </a>
-        {
-          project.install && (
-            <a
-              href="#install"
-              class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/50"
-            >
-              Get Started
-              <IconArrowRight class="h-4 w-4" />
-            </a>
-          )
-        }
       </div>
     </section>
 
-    <!-- Features -->
     {
-      project.features && project.features.length > 0 && (
-        <section class="py-8">
-          <h2 class="text-xl font-semibold">[features]</h2>
-          <div class="mt-4 grid gap-3 sm:grid-cols-2">
-            {project.features.map(feature => (
-              <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium">{feature.title}</h3>
-                <p class="mt-1 text-sm text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Install -->
-    {
-      project.install && (
-        <section id="install" class="scroll-mt-20 py-8">
-          <h2 class="text-xl font-semibold">[install]</h2>
-          <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-card p-4">
-            <pre class="text-sm"><code>{project.install}</code></pre>
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Usage -->
-    {
-      project.usage && (
-        <section class="py-8">
-          <h2 class="text-xl font-semibold">[usage]</h2>
-          <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-card p-4">
-            <pre class="text-sm"><code>{project.usage}</code></pre>
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Structure -->
-    {
-      project.structure && (
-        <section class="py-8">
-          <h2 class="text-xl font-semibold">[structure]</h2>
-          <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-card p-4">
-            <pre class="text-sm"><code>{project.structure}</code></pre>
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Customization -->
-    {
-      project.customization && (
-        <section class="py-8">
-          <h2 class="text-xl font-semibold">[customization]</h2>
-          <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-card p-4">
-            <pre class="text-sm"><code>{project.customization}</code></pre>
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Requirements -->
-    {
-      project.requirements && project.requirements.length > 0 && (
-        <section class="py-8">
-          <h2 class="text-xl font-semibold">[requirements]</h2>
-          <ul class="mt-4 list-inside list-disc space-y-1 text-muted-foreground">
-            {project.requirements.map(req => (
-              <li>{req}</li>
+      related.length > 0 && (
+        <section class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">[related]</h2>
+          <ul class="mt-4">
+            {related.map(p => (
+              <li class="my-5">
+                <div>
+                  <a
+                    href={`/projects/${p.slug}`}
+                    class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+                  >
+                    {p.name}
+                  </a>
+                  <span class="text-xs text-muted-foreground">
+                    {" · "}
+                    {p.stack}
+                  </span>
+                </div>
+                <p>{p.description}</p>
+              </li>
             ))}
           </ul>
         </section>
       )
     }
-
-    <!-- License -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[license]</h2>
-      <p class="mt-2 text-muted-foreground">
-        This project is licensed under the <a
-          href={`${repoUrl}/blob/main/LICENSE`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-primary hover:underline">{project.license}</a
-        > license.
-      </p>
-    </section>
-
-    <!-- Links -->
-    <section class="py-8">
-      <h2 class="text-xl font-semibold">[links]</h2>
-      <div class="mt-4 flex flex-wrap gap-4">
-        <a
-          href={repoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-primary hover:underline"
-        >
-          <IconGitHub class="h-4 w-4" />
-          GitHub Repository
-        </a>
-      </div>
-    </section>
   </main>
   <Footer />
 </Layout>
