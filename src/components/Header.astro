@@ -116,7 +116,7 @@ const isActive = (path: string) => {
             <span
               class:list={[
                 "block cursor-default px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
-                { "active-nav": isActive("/projects") || isActive("/registries") || isActive("/apps") },
+                { "active-nav": isActive("/projects") || isActive("/contributions") || isActive("/registries") || isActive("/apps") },
               ]}
             >
               [work]
@@ -134,6 +134,14 @@ const isActive = (path: string) => {
                   class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contributions"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
+                >
+                  contributions
                 </a>
               </li>
               <li>
