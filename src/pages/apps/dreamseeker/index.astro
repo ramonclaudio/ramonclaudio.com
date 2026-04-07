@@ -4,41 +4,68 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
+
+const features = [
+  "Long-term goals with progress visualization",
+  "Daily micro-actions broken down from big dreams",
+  "Focus sessions to stay locked in",
+  "Journal entries to reflect on your journey",
+  "Streaks, XP, and milestones to keep you motivated",
+  "Community features to share and inspire",
+];
 ---
 
-<Layout title={`DreamSeeker | ${SITE.title}`} description="From dreaming to doing. Set ambitious goals, break them into daily micro-actions, and crush milestones with streaks, XP, and celebrations.">
+<Layout
+  title={`DreamSeeker | ${SITE.title}`}
+  description="From dreaming to doing. Set ambitious goals, break them into daily micro-actions, and crush milestones with streaks, XP, and celebrations."
+>
   <Header />
   <Breadcrumb />
-  <main id="main-content">
-    <section class="app-prose mb-28 max-w-app prose-img:border-0">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">DreamSeeker</h1>
-      <p class="text-lg italic text-muted-foreground">From dreaming to doing.</p>
-      <p>
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        DreamSeeker
+      </h1>
+      <p class="text-sm italic text-muted-foreground">From dreaming to doing. iOS.</p>
+      <p class="mt-4">
         Set ambitious goals, break them into daily micro-actions, and crush
         milestones with streaks, XP, and celebrations.
       </p>
-
-      <h3>Features</h3>
-      <ul>
-        <li>Dream big — set long-term goals and visualize your progress</li>
-        <li>Break dreams into daily micro-actions</li>
-        <li>Focus sessions to stay locked in</li>
-        <li>Journal entries to reflect on your journey</li>
-        <li>Streaks, XP, and milestones to keep you motivated</li>
-        <li>Community features to share and inspire</li>
-      </ul>
-
-      <h3>Links</h3>
-      <ul>
-        <li><a href="/apps/dreamseeker/privacy">Privacy Policy</a></li>
-        <li><a href="/apps/dreamseeker/terms">Terms of Service</a></li>
-      </ul>
-
-      <p class="text-sm text-muted-foreground">
-        Built by <a href="/">Ray</a> at RMNCLDYO, LLC.
-        Questions? <a href="mailto:team@rmncldyo.com">team@rmncldyo.com</a>
-      </p>
     </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[features]</h2>
+      <ul class="mt-4 ml-4 list-disc text-muted-foreground">
+        {features.map(f => <li class="my-1">{f}</li>)}
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[legal]</h2>
+      <ul class="mt-4">
+        <li class="my-2">
+          <a
+            href="/apps/dreamseeker/privacy"
+            class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >
+            Privacy Policy
+          </a>
+        </li>
+        <li class="my-2">
+          <a
+            href="/apps/dreamseeker/terms"
+            class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >
+            Terms of Service
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <p class="mt-12 text-sm text-muted-foreground">
+      Built by <a href="/" class="decoration-dashed underline-offset-4 hover:underline">Ray</a>.
+      Questions? <a href="mailto:team@rmncldyo.com" class="decoration-dashed underline-offset-4 hover:underline">team@rmncldyo.com</a>
+    </p>
   </main>
   <Footer />
 </Layout>

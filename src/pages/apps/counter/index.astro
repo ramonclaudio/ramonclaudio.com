@@ -4,48 +4,88 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
+
+const modes = [
+  { name: "Research", description: "Get instant market intel on any product or service." },
+  { name: "Practice", description: "Rehearse a negotiation with AI coaching before the real thing." },
+  { name: "Live", description: "Put Counter in your ear during an actual purchase or call." },
+];
+
+const features = [
+  "Real-time web search during voice conversations",
+  "Intel cards with prices, sources, and direct links",
+  "Immersive full-screen voice mode",
+  "Session history with full transcripts and intel",
+  "Post-session summaries with follow-up suggestions",
+];
 ---
 
-<Layout title={`Counter | ${SITE.title}`} description="Real-time deal intelligence. A voice AI that researches deals, prices, and alternatives while you talk.">
+<Layout
+  title={`Counter | ${SITE.title}`}
+  description="Real-time deal intelligence. A voice AI that researches deals, prices, and alternatives while you talk."
+>
   <Header />
   <Breadcrumb />
-  <main id="main-content">
-    <section class="app-prose mb-28 max-w-app prose-img:border-0">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">Counter</h1>
-      <p class="text-lg italic text-muted-foreground">Real-time deal intelligence.</p>
-      <p>
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        Counter
+      </h1>
+      <p class="text-sm italic text-muted-foreground">Real-time deal intelligence. iOS.</p>
+      <p class="mt-4">
         A voice AI that researches deals while you talk. Say what you're buying
-        and it pulls prices, alternatives, warnings, and negotiation leverage
-        in real time.
-      </p>
-
-      <h3>Modes</h3>
-      <ul>
-        <li>Research: get instant market intel on any product or service</li>
-        <li>Practice: rehearse a negotiation with AI coaching before the real thing</li>
-        <li>Live: put Counter in your ear during an actual purchase or call</li>
-      </ul>
-
-      <h3>Features</h3>
-      <ul>
-        <li>Real-time web search during voice conversations</li>
-        <li>Intel cards with prices, sources, and direct links</li>
-        <li>Immersive full-screen voice mode</li>
-        <li>Session history with full transcripts and intel</li>
-        <li>Post-session summaries with follow-up suggestions</li>
-      </ul>
-
-      <h3>Links</h3>
-      <ul>
-        <li><a href="/apps/counter/privacy">Privacy Policy</a></li>
-        <li><a href="/apps/counter/terms">Terms of Service</a></li>
-      </ul>
-
-      <p class="text-sm text-muted-foreground">
-        Built by <a href="/">Ray</a> at RMNCLDYO, LLC.
-        Questions? <a href="mailto:team@rmncldyo.com">team@rmncldyo.com</a>
+        and it pulls prices, alternatives, warnings, and negotiation leverage in
+        real time.
       </p>
     </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[modes]</h2>
+      <ul class="mt-4">
+        {
+          modes.map(mode => (
+            <li class="my-3">
+              <span class="font-medium text-foreground">{mode.name}</span>
+              <span class="text-muted-foreground"> — {mode.description}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[features]</h2>
+      <ul class="mt-4 ml-4 list-disc text-muted-foreground">
+        {features.map(f => <li class="my-1">{f}</li>)}
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[legal]</h2>
+      <ul class="mt-4">
+        <li class="my-2">
+          <a
+            href="/apps/counter/privacy"
+            class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >
+            Privacy Policy
+          </a>
+        </li>
+        <li class="my-2">
+          <a
+            href="/apps/counter/terms"
+            class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >
+            Terms of Service
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <p class="mt-12 text-sm text-muted-foreground">
+      Built by <a href="/" class="decoration-dashed underline-offset-4 hover:underline">Ray</a>.
+      Questions? <a href="mailto:team@rmncldyo.com" class="decoration-dashed underline-offset-4 hover:underline">team@rmncldyo.com</a>
+    </p>
   </main>
   <Footer />
 </Layout>

@@ -3,75 +3,61 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 
 const apps = [
   {
     name: "Counter",
-    tagline: "Real-time deal intelligence.",
-    description:
-      "A voice AI that researches deals, prices, and alternatives while you talk.",
     slug: "counter",
     platform: "iOS",
+    tagline: "Real-time deal intelligence.",
+    description:
+      "Voice AI that researches deals while you talk. Pulls prices, alternatives, and negotiation leverage in real time.",
   },
   {
     name: "DreamSeeker",
+    slug: "dreamseeker",
+    platform: "iOS",
     tagline: "From dreaming to doing.",
     description:
       "Set ambitious goals, break them into daily micro-actions, and crush milestones with streaks, XP, and celebrations.",
-    slug: "dreamseeker",
-    platform: "iOS",
   },
 ];
 ---
 
-<Layout
-  title="Apps | Ray"
-  description="Mobile apps built by Ray at RMNCLDYO, LLC"
->
+<Layout title="Apps | Ray" description="Mobile apps built by Ray">
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold sm:text-3xl">[apps]</h1>
-      <span
-        class="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
-      >
-        {apps.length} {apps.length === 1 ? "app" : "apps"}
-      </span>
-    </div>
-    <p class="mt-2 mb-8 text-muted-foreground">
-      Mobile apps by RMNCLDYO, LLC.
-    </p>
-
-    <div class="grid gap-4">
-      {
-        apps.map(app => (
-          <a
-            href={`/apps/${app.slug}`}
-            class="group flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary hover:bg-card/80"
-          >
-            <div class="flex-1">
-              <div class="flex items-center gap-2">
-                <h3 class="text-lg font-medium group-hover:text-primary">
+    <section class="pt-4 pb-6">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        [apps]
+      </h1>
+      <p>
+        {apps.length} mobile {apps.length === 1 ? "app" : "apps"} on iOS.
+      </p>
+      <ul class="mt-6">
+        {
+          apps.map(app => (
+            <li class="my-5">
+              <div>
+                <a
+                  href={`/apps/${app.slug}`}
+                  class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+                >
                   {app.name}
-                  <IconArrowRight class="inline-block h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </h3>
-                <span class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                </a>
+                <span class="text-xs text-muted-foreground">
+                  {" · "}
                   {app.platform}
                 </span>
               </div>
-              <p class="mt-1 text-sm font-medium italic text-muted-foreground">
-                {app.tagline}
-              </p>
-              <p class="mt-1 text-sm text-muted-foreground">
-                {app.description}
-              </p>
-            </div>
-          </a>
-        ))
-      }
-    </div>
+              <p class="text-sm italic text-muted-foreground">{app.tagline}</p>
+              <p>{app.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </main>
   <Footer />
 </Layout>
