@@ -28,7 +28,7 @@ const personSchema = {
   image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
   jobTitle: "Software Engineer",
   description:
-    "Full-stack TypeScript engineer with 13 years of experience. 39 open source repos, 17 merged PRs to Expo, Bun, shadcn/ui, and more.",
+    "Full-stack TypeScript engineer, 13 years in. 39 open source repos, 19 merged PRs to Expo, Convex, Bun, shadcn/ui, napi-rs, fumadocs, and more.",
   knowsAbout: [
     "TypeScript",
     "React",
@@ -64,7 +64,7 @@ const projects = [
     name: "counter",
     href: "https://github.com/ramonclaudio/counter",
     stack: "Expo · Convex · TypeScript",
-    description: "Real-time deal intelligence. Voice AI that researches prices, alternatives, and negotiation leverage while you talk.",
+    description: "Voice AI that listens while you negotiate a deal. Pulls prices, alternatives, and angles to push on in real time.",
     detail: "ElevenLabs x Firecrawl hackathon submission",
   },
   {
@@ -85,7 +85,7 @@ const projects = [
     name: "coderabbit-shadcn-registry",
     href: "https://github.com/ramonclaudio/coderabbit-shadcn-registry",
     stack: "TypeScript · React",
-    description: "Modular shadcn registry for CodeRabbit. Framework-agnostic client, storage adapters, React components.",
+    description: "Ships the CodeRabbit API as a shadcn registry. Framework-agnostic client, storage adapters, React components.",
     detail: "listed in shadcn/ui registry",
   },
 ];
@@ -94,52 +94,145 @@ const contributions = [
   {
     repo: "expo/expo",
     href: "https://github.com/expo/expo/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    prs: 6,
-    description:
-      "SwiftUI scroll snapping, scroll anchor modifiers (iOS 17+, 18+), per-axis scale effects, shape enum fix, PersistentFileLog race condition",
+    items: [
+      {
+        pr: 44548,
+        href: "https://github.com/expo/expo/pull/44548",
+        text: "textContentType modifier wrapping all 45 UITextContentType values to wire @expo/ui text fields into iOS keychain autofill (passwords, addresses, cards, OTP)",
+      },
+      {
+        pr: 44547,
+        href: "https://github.com/expo/expo/pull/44547",
+        text: "textInputAutocapitalization modifier so TextField can finally turn off auto-caps without forcing an ASCII keyboard layout",
+      },
+      {
+        pr: 43955,
+        href: "https://github.com/expo/expo/pull/43955",
+        text: "scrollTargetBehavior and scrollTargetLayout modifiers (iOS 17+) for paging and view-aligned scroll snapping",
+      },
+      {
+        pr: 43923,
+        href: "https://github.com/expo/expo/pull/43923",
+        text: "defaultScrollAnchorForRole modifier (iOS 18+) for per-role anchor overrides on initialOffset, sizeChanges, and alignment",
+      },
+      {
+        pr: 43914,
+        href: "https://github.com/expo/expo/pull/43914",
+        text: "defaultScrollAnchor modifier (iOS 17+) so chat UIs no longer need scaleEffect(y: -1) flips, reversed data, and inverted scroll indicators",
+      },
+      {
+        pr: 43228,
+        href: "https://github.com/expo/expo/pull/43228",
+        text: "per-axis scaleEffect accepting { x, y } for inverted-list message threads",
+      },
+      {
+        pr: 43158,
+        href: "https://github.com/expo/expo/pull/43158",
+        text: "ShapeType enum fix unblocking capsule and ellipse in clipShape and mask (they were silently rendering Rectangle)",
+      },
+      {
+        pr: 43958,
+        href: "https://github.com/expo/expo/pull/43958",
+        text: "PersistentFileLog serial queue race fix that was flaking expo-updates log tests in CI",
+      },
+    ],
   },
   {
     repo: "get-convex/better-auth",
     href: "https://github.com/get-convex/better-auth/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    prs: 4,
-    description:
-      "Stale auth state after session expiry, concurrent token fetch dedup, peer dep range, react-dom removal",
+    items: [
+      {
+        pr: 218,
+        href: "https://github.com/get-convex/better-auth/pull/218",
+        text: "four bugs causing stale auth state: cookie expiry comparison NaN-coerced because JSON.parse turned the Date into a string, stale cookies persisting after session expiry, getSessionData returning truthy {} after sign-out, and isAuthenticated true for {} and undefined sessions",
+      },
+      {
+        pr: 245,
+        href: "https://github.com/get-convex/better-auth/pull/245",
+        text: "widened better-auth peer dep from exact 1.4.9 to >=1.4.9 <1.5.0 to cover 1.4.9 through 1.4.18, excluding 1.5.0 which moved createAuthEndpoint and createAuthMiddleware out of better-auth/plugins",
+      },
+      {
+        pr: 267,
+        href: "https://github.com/get-convex/better-auth/pull/267",
+        text: "concurrent fetchAccessToken dedup via useRef so React 18 StrictMode and ConvexProviderWithAuth setAuth re-renders no longer fire N redundant /convex/token round-trips on page load",
+      },
+      {
+        pr: 278,
+        href: "https://github.com/get-convex/better-auth/pull/278",
+        text: "dead react-dom peer dep removal that was generating warnings in bun and pnpm projects (zero react-dom imports across all 32 files in src/)",
+      },
+    ],
   },
   {
     repo: "napi-rs/napi-rs",
-    href: "https://github.com/napi-rs/napi-rs/pull/3189",
-    prs: 1,
-    description: "Cross-compile regression in v3 CLI rewrite",
+    href: "https://github.com/napi-rs/napi-rs/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      {
+        pr: 3189,
+        href: "https://github.com/napi-rs/napi-rs/pull/3189",
+        text: "cross-compile regression in the v3 CLI rewrite where passing --cross-compile silently fell through to cargo build when host matched target on linux or darwin, linking against the host glibc instead of zig's pinned version. Broke deploys to Amazon Linux 2023 and Vercel build containers (glibc 2.34) when binaries were built on ubuntu-latest (glibc 2.39). The v2 fix from #1432 wasn't carried over during the v3 rewrite",
+      },
+    ],
   },
   {
     repo: "shadcn-ui/ui",
-    href: "https://github.com/shadcn-ui/ui/pull/9331",
-    prs: 1,
-    description: "CodeRabbit registry addition to open source directory",
+    href: "https://github.com/shadcn-ui/ui/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      {
+        pr: 9331,
+        href: "https://github.com/shadcn-ui/ui/pull/9331",
+        text: "registered the @ramonclaudio-coderabbit shadcn registry in the official open source directory per #8892. The registry ships a framework-agnostic CodeRabbit API client, pluggable storage adapters (LocalStorage, Convex, Supabase, PostgreSQL, MySQL), and React components for developer activity reports",
+      },
+    ],
   },
   {
     repo: "oven-sh/bun",
-    href: "https://github.com/oven-sh/bun/pull/21855",
-    prs: 1,
-    description: "TypeScript definitions for fetch decompress option",
+    href: "https://github.com/oven-sh/bun/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      {
+        pr: 21855,
+        href: "https://github.com/oven-sh/bun/pull/21855",
+        text: "added the decompress property to the BunFetchRequestInit interface with JSDoc, removing the need for @ts-ignore when disabling response decompression in Bun fetch (the option already worked at runtime)",
+      },
+    ],
   },
   {
     repo: "fuma-nama/fumadocs",
     href: "https://github.com/fuma-nama/fumadocs/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    prs: 2,
-    description: "TanStack Start integration fixes, formatting for release",
+    items: [
+      {
+        pr: 2092,
+        href: "https://github.com/fuma-nama/fumadocs/pull/2092",
+        text: "fixed the TanStack Start template in create-fumadocs-app by wiring the vite-react plugin with the required customViteReactPlugin: true flag, configuring a custom NotFound component for TanStack Router, and bumping deps. Resolved four issues at once: vite-react plugin warning, missing custom 404 warning, module resolution errors during navigation, and React hydration errors from useMemo null references",
+      },
+      {
+        pr: 2095,
+        href: "https://github.com/fuma-nama/fumadocs/pull/2095",
+        text: "prettier formatting fix that unblocked the changesets release PR #2093 for create-fumadocs-app@15.7.0",
+      },
+    ],
   },
   {
     repo: "rudrankriyam/App-Store-Connect-CLI",
-    href: "https://github.com/rudrankriyam/App-Store-Connect-CLI/pull/784",
-    prs: 1,
-    description: "macOS app capture and Mac App Store screenshot framing",
+    href: "https://github.com/rudrankriyam/App-Store-Connect-CLI/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      {
+        pr: 784,
+        href: "https://github.com/rudrankriyam/App-Store-Connect-CLI/pull/784",
+        text: "added Mac App Store screenshot support to the asc CLI. New --provider macos grabs the frontmost window of a running app by bundle ID via screencapture -l <windowID>, with the window ID coming from a Swift one-liner piped through swift - (no cgo, no extra binaries). New --device mac renders to the 2880x1800 APP_DESKTOP canvas without a device bezel, with optional title, subtitle, and background color overlays. Also fixed ASC_TIMEOUT being silently ignored for screenshots capture and frame, both now use ContextWithTimeout",
+      },
+    ],
   },
   {
     repo: "TanStack/db",
-    href: "https://github.com/TanStack/db/pull/17",
-    prs: 1,
-    description: "Fixed incorrect example path in README",
+    href: "https://github.com/TanStack/db/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      {
+        pr: 17,
+        href: "https://github.com/TanStack/db/pull/17",
+        text: "corrected the README link to the example todo app, which pointed at a stale path. Now resolves to examples/react/todo so first-time visitors landing on the repo can actually open the example. Was PR #17 in the repo (early days)",
+      },
+    ],
   },
 ];
 ---
@@ -179,8 +272,19 @@ const contributions = [
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        39 repos · 16 PRs merged upstream · 5 npm packages · ~900 weekly
+        39 repos · 19 PRs merged upstream · 5 npm packages · ~900 weekly
         downloads
+      </p>
+
+      <p class="mt-2 text-sm text-muted-foreground">
+        Every merged PR shipped as a drop-in <a
+          href="https://github.com/ramonclaudio/patches"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+        >
+          patch
+        </a> first. Bun, npm, pnpm, Yarn.
       </p>
 
       <div class="mt-4 flex flex-wrap items-center gap-4">
@@ -257,7 +361,8 @@ const contributions = [
     <section id="open-source" class="pt-12 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[merged.upstream]</h2>
       <p class="mt-2 text-sm text-muted-foreground">
-        17 PRs merged to projects I don't maintain.
+        {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged to
+        projects I don't maintain.
       </p>
       <ul class="mt-4">
         {
@@ -273,9 +378,24 @@ const contributions = [
               </a>
               <span class="text-sm text-muted-foreground">
                 {" · "}
-                {contrib.prs} {contrib.prs === 1 ? "PR" : "PRs"}
+                {contrib.items.length}{" "}
+                {contrib.items.length === 1 ? "PR" : "PRs"}
               </span>
-              <p class="text-sm text-muted-foreground">{contrib.description}</p>
+              <ul class="mt-1 ml-4 list-disc text-sm text-muted-foreground">
+                {contrib.items.map(item => (
+                  <li class="my-1">
+                    {item.text}{" "}
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+                    >
+                      #{item.pr}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))
         }

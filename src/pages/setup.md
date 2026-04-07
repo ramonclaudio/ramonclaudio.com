@@ -15,9 +15,23 @@ All of this runs on a [MacBook Pro 14" M4 Pro](https://www.apple.com/shop/buy-ma
 
 ### Apps
 
-[Zed](https://zed.dev/) is my editor. Fast, and I switched from VS Code without looking back. [Ghostty](https://ghostty.org/) for terminal because it's GPU-accelerated, native on macOS, and the config is just a text file. I run zsh with a [starship](https://starship.rs/) prompt.
+[Zed](https://zed.dev/) is my editor. Fast. Switched from VS Code and never looked back. [Ghostty](https://ghostty.org/) is my terminal. GPU-accelerated, native on macOS, and the config is just a text file. I run zsh with a [starship](https://starship.rs/) prompt. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) runs inside it, pretty much where I spend the whole day.
 
 [Helium](https://helium.computer/) for browsing.
+
+### Skills
+
+I built 9 plugins for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and open sourced them all at [ramonclaudio/skills](https://github.com/ramonclaudio/skills). Context kept vanishing between sessions. Commits took too many steps. No good way to audit a codebase or coordinate parallel agents. So I built the tools I wanted. `/plugin marketplace add ramonclaudio/skills` installs the whole set.
+
+Honestly [handoff](https://github.com/ramonclaudio/skills/tree/main/plugins/handoff) is the one I'd keep if I could only keep one. Two hooks (`SessionStart` and `PostCompact`) auto-inject resume context. `/handoff:end` archives session state with build, test, and lint checks. I don't lose anything between days or machines anymore.
+
+[qmd](https://github.com/ramonclaudio/skills/tree/main/plugins/qmd) is my second brain for docs. It clones GitHub repos, indexes them with BM25 + vector + hybrid search, and exposes an MCP `query` tool so Claude checks the source before guessing. Convex, Expo, AI SDK, Better Auth, RevenueCat, Remotion, Ghostty, and the Claude Code docs all indexed locally. All on-device. The CLI is [`@tobilu/qmd`](https://github.com/tobi/qmd). Node or Bun, SQLite for storage, GGUF models for embeddings. My plugin wraps it as an MCP server with 21 `/qmd:*` commands.
+
+[commit](https://github.com/ramonclaudio/skills/tree/main/plugins/commit) ships atomic conventional commits grouped by architectural layer. GPG-signed. A `PreToolUse` hook blocks force-push, `--no-verify`, and GPG bypass so I can't accidentally ship a dirty commit. `--push`, `--pr`, and `--merge PR#` all work from one command.
+
+[polish](https://github.com/ramonclaudio/skills/tree/main/plugins/polish), [audit](https://github.com/ramonclaudio/skills/tree/main/plugins/audit), and [techdebt](https://github.com/ramonclaudio/skills/tree/main/plugins/techdebt) are my three code-quality sweeps. Polish scores every file 0-10 and refines anything 5+ with up to 5 parallel agents. Audit runs 4 agents in parallel for architecture, bugs, security, and convention compliance. Techdebt runs 3 agents for duplicated code, dead exports, unused deps, stale TODOs, and bloated files. Polish after a feature. Audit periodically. Techdebt at end-of-session.
+
+[teams](https://github.com/ramonclaudio/skills/tree/main/plugins/teams) orchestrates multiple Claude Code sessions in parallel with file ownership so they don't clobber each other. When a task has two or three independent concerns (frontend plus backend, feature plus docs), I use this instead of going sequential. [gif](https://github.com/ramonclaudio/skills/tree/main/plugins/gif) and [frames](https://github.com/ramonclaudio/skills/tree/main/plugins/frames) are my ffmpeg wrappers. Gif does a two-pass palette for compressed GIFs from screen recordings. Frames extracts 3 to 15 frames from a video so Claude can analyze bug repros visually.
 
 ### Stack
 
@@ -33,7 +47,7 @@ Linting is Oxlint and Oxfmt for TypeScript, Ruff for Python. Type checking with 
 
 ### CLI Tools
 
-I replaced most of the default Unix tools with faster Rust alternatives. Keyboard over mouse, terminal over GUI.
+I replaced most of the default Unix tools with faster Rust alternatives. Keyboard over mouse, terminal over GUI. If it's written in Rust and saves me a keystroke I'll probably try it.
 
 [yazi](https://github.com/sxyazi/yazi) for file management, [lazygit](https://github.com/jesseduffield/lazygit) for git, [delta](https://github.com/dandavison/delta) for diffs, [gh](https://cli.github.com/) for GitHub, [fzf](https://github.com/junegunn/fzf) for fuzzy finding. [fnm](https://github.com/Schniz/fnm) for Node versions.
 
