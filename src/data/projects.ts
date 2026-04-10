@@ -74,7 +74,7 @@ export const projects: Project[] = [
     description:
       "Drop-in patch files for bugs and missing features in upstream packages awaiting merge.",
     repo: "ramonclaudio/patches",
-    detail: "@convex-dev, @expo, @shopify, oven-sh, more",
+    detail: "@convex-dev, @expo, @shopify, better-auth, shadcn, jose, oven-sh, more",
   },
   {
     slug: "tanstack-convex-starter",
