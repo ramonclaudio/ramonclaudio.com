@@ -11,7 +11,7 @@ I've been collecting art since 2015. Got to work with a lot of artists I admired
 
 That era pulled me from Python to TypeScript full-time and I haven't looked back. Now it's TypeScript across the full stack. Tauri desktop apps, Convex components, Claude Code plugins, Expo mobile apps. If I do something twice I write a script. Every tool I build goes public, 39 repos and counting.
 
-When I hit a bug in a dep, I don't just fix it locally. I file the issue, open the upstream PR, and drop a patch in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects (and anyone else hitting the same bug) can ship without waiting for the merge. When the release lands, I bump the dep and delete the patch. Works in Bun, npm, pnpm, and Yarn, so the format doesn't matter. Every PR I've merged upstream shipped as a patch first. Small habit. Adds up.
+When I hit a bug in a dep, I don't just fix it locally. I file the issue, open the upstream PR, and drop a patch in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects (and anyone else hitting the same bug) can ship without waiting for the merge. 103 patch files across Bun, npm, pnpm, and Yarn. When the release lands, I bump the dep and delete the patch. 23 PRs merged across 10 repos so far, 10 of those to [@expo/ui](https://github.com/expo/expo/pulls?q=is:pr+author:ramonclaudio) building out the SwiftUI modifier layer. Every merged PR shipped as a patch first. Small habit. Adds up.
 
 I have a CS degree from Long Island University (2016), but most of what I actually know came from building things, breaking them, and reading other people's code.
 
