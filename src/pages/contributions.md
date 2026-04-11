@@ -77,6 +77,7 @@ Closed (patches dropped after upstream fixed the underlying issue a different wa
 - `expo-router`: update `RNSBottomTabs*` class names to `RNSTabs*` for react-native-screens. [expo/expo#43484](https://github.com/expo/expo/pull/43484) (closed)
 - `@astrojs/compiler`: add `-x` to `x86_64-unknown-linux-gnu` build for glibc compat (predecessor of #22). [withastro/compiler-rs#21](https://github.com/withastro/compiler-rs/pull/21) (closed, rebuilt as [#22](https://github.com/withastro/compiler-rs/pull/22))
 - `convex`: add `signal` parameter to `NextjsOptions` for React 19.2 `cacheSignal()` abort support. [get-convex/convex-js#95](https://github.com/get-convex/convex-js/pull/95) (closed)
+- `@tanstack/start-server-core` `1.167.10`: add missing `pluginAdapters` to `VIRTUAL_MODULES` export. `start-plugin-core@1.167.19` was published referencing it before `start-server-core` got a matching release, crashing `vite dev`. [TanStack/router#7146](https://github.com/TanStack/router/pull/7146) (closed by me; Tanner synced versions manually, fixed in `1.167.11`)
 
 ### Issues I filed upstream
 
