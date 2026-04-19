@@ -46,21 +46,6 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
     },
-    build: {
-      rollupOptions: {
-        // Suppress spurious unused-import warning from astro assets internals.
-        // Upstream: https://github.com/withastro/astro/issues/15957
-        onwarn(warning, warn) {
-          if (
-            warning.code === "UNUSED_EXTERNAL_IMPORT" &&
-            warning.exporter === "@astrojs/internal-helpers/remote"
-          ) {
-            return;
-          }
-          warn(warning);
-        },
-      },
-    },
   },
   image: {
     responsiveStyles: true,
