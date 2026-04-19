@@ -74,7 +74,8 @@ export const projects: Project[] = [
     description:
       "Drop-in patch files for bugs and missing features in upstream packages awaiting merge.",
     repo: "ramonclaudio/patches",
-    detail: "@convex-dev, @expo, @shopify, better-auth, shadcn, jose, oven-sh, more",
+    detail:
+      "@convex-dev, @expo, @shopify, better-auth, shadcn, jose, oven-sh, more",
   },
   {
     slug: "tanstack-convex-starter",
@@ -231,8 +232,7 @@ export const projects: Project[] = [
     slug: "swiftui-doc-crawler",
     name: "swiftui-doc-crawler",
     stack: "Python · Selenium",
-    description:
-      "Scrape SwiftUI documentation from developer.apple.com.",
+    description: "Scrape SwiftUI documentation from developer.apple.com.",
     repo: "ramonclaudio/swiftui-doc-crawler",
   },
   {
@@ -271,8 +271,7 @@ export const projects: Project[] = [
     slug: "groq-ai-toolkit",
     name: "groq-ai-toolkit",
     stack: "Python · Groq",
-    description:
-      "Python wrapper and CLI for Groq's LPU inference engine.",
+    description: "Python wrapper and CLI for Groq's LPU inference engine.",
     repo: "ramonclaudio/groq-ai-toolkit",
   },
   {
@@ -311,8 +310,7 @@ export const projects: Project[] = [
     slug: "google-search-api-wrapper",
     name: "Google-Search-API-Wrapper",
     stack: "Python · Google",
-    description:
-      "Python wrapper for Google's Custom Search JSON API.",
+    description: "Python wrapper for Google's Custom Search JSON API.",
     repo: "ramonclaudio/Google-Search-API-Wrapper",
   },
   {
