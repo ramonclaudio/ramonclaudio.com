@@ -14,6 +14,7 @@
     "postinstall": "test -d node_modules/@astrojs/compiler-binding-linux-x64-gnu && cp vendor/compiler-binding-linux-x64-gnu/astro.linux-x64-gnu.node node_modules/@astrojs/compiler-binding-linux-x64-gnu/astro.linux-x64-gnu.node && echo 'Swapped linux-x64-gnu binary with vendored version' || true"
   },
   "dependencies": {
+    "@astrojs/compiler-binding-linux-x64-gnu": "0.1.7",
     "@astrojs/compiler-rs": "^0.1.7",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
