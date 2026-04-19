@@ -65,6 +65,7 @@ export default defineConfig({
     svgo: true,
     contentIntellisense: true,
     clientPrerender: true,
+    rustCompiler: true,
     queuedRendering: {
       enabled: true,
     },

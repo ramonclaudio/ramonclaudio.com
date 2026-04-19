@@ -13,6 +13,7 @@
     "lint": "oxlint src --deny-warnings"
   },
   "dependencies": {
+    "@astrojs/compiler-rs": "^0.1.7",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/geist-mono": "^5.2.7",
@@ -41,6 +42,9 @@
   },
   "engines": {
     "node": "24.x"
+  },
+  "overrides": {
+    "@astrojs/compiler-binding-linux-x64-gnu": "file:./vendor/compiler-binding-linux-x64-gnu"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
