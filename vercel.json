@@ -1,4 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "bun run build"
+  "installCommand": "rm -rf node_modules && bun install",
+  "buildCommand": "ls -la node_modules/@astrojs/compiler-binding-linux-x64-gnu/ && objdump -T node_modules/@astrojs/compiler-binding-linux-x64-gnu/astro.linux-x64-gnu.node 2>&1 | grep -oE 'GLIBC_2\\.[0-9]+' | sort -V -u | tail -3 && bun run build"
 }

@@ -10,7 +10,8 @@
     "astro": "astro",
     "format": "oxfmt --write src",
     "format:check": "oxfmt --check src",
-    "lint": "oxlint src --deny-warnings"
+    "lint": "oxlint src --deny-warnings",
+    "postinstall": "test -d node_modules/@astrojs/compiler-binding-linux-x64-gnu && cp vendor/compiler-binding-linux-x64-gnu/astro.linux-x64-gnu.node node_modules/@astrojs/compiler-binding-linux-x64-gnu/astro.linux-x64-gnu.node && echo 'Swapped linux-x64-gnu binary with vendored version' || true"
   },
   "dependencies": {
     "@astrojs/compiler-rs": "^0.1.7",
