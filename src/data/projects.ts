@@ -16,7 +16,7 @@ export const projects: Project[] = [
     description:
       "Local analytics dashboard, session history, and cost tracking for Claude Code.",
     repo: "ramonclaudio/ccbase",
-    detail: "~172 weekly downloads",
+    detail: "~50 weekly downloads",
     featured: true,
   },
   {
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     description:
       "RevenueCat subscription sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "~717 weekly downloads · Convex Components Directory",
+    detail: "~738 weekly downloads · Convex Components Directory",
     featured: true,
   },
   {
@@ -78,20 +78,30 @@ export const projects: Project[] = [
       "@convex-dev, @expo, @shopify, better-auth, shadcn, jose, oven-sh, more",
   },
   {
-    slug: "tanstack-convex-starter",
-    name: "tanstack-convex-starter",
-    stack: "TanStack Start · Convex · Better Auth",
+    slug: "tanstack-cn",
+    name: "tanstack-cn",
+    stack: "TanStack Start · Vite 8 · Tailwind v4",
     description:
-      "Full-stack starter with email/username auth, RLS, rate limiting, audit logs, and avatar uploads.",
-    repo: "ramonclaudio/tanstack-convex-starter",
+      "TanStack Start starter on the latest majors. Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt.",
+    repo: "ramonclaudio/tanstack-cn",
+    detail: "~624 weekly downloads (starter + create-tanstack-cn CLI)",
+    featured: true,
   },
   {
     slug: "tanvex",
     name: "tanvex",
+    stack: "TanStack Start · Convex · Better Auth",
+    description:
+      "TanStack Start + Convex + Better Auth starter. SSR auth, email OTP, user profiles, rate limiting, one-command setup.",
+    repo: "ramonclaudio/tanvex",
+  },
+  {
+    slug: "tanstack-start-hackathon",
+    name: "tanstack-start-hackathon",
     stack: "TanStack Start · Convex · Autumn",
     description:
-      "SaaS starter with TanStack Start, Convex, Better Auth, and Autumn billing.",
-    repo: "ramonclaudio/tanvex",
+      "SaaS starter with TanStack Start, Convex real-time backend, Better Auth, Autumn billing, and Sentry monitoring.",
+    repo: "ramonclaudio/tanstack-start-hackathon",
   },
   {
     slug: "polar-commerce",
