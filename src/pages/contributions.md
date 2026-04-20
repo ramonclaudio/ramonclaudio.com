@@ -54,18 +54,13 @@ Open (PRs still awaiting upstream merge):
 
 Released (PR merged, patch either still active until the next release or already dropped):
 
-Active, awaiting next release:
-
-- `@expo/ui` `56.0.0-canary-20260212-4f61309`: `textContentType` modifier, merged in [expo/expo#44548](https://github.com/expo/expo/pull/44548), awaiting the next canary
-- `@expo/ui` `56.0.0-canary-20260212-4f61309`: `textInputAutocapitalization` modifier, merged in [expo/expo#44547](https://github.com/expo/expo/pull/44547), awaiting the next canary
-- `@expo/ui` `56.0.0-canary-20260212-4f61309`: `scrollTargetBehavior` and `scrollTargetLayout` modifiers, merged in [expo/expo#43955](https://github.com/expo/expo/pull/43955), awaiting the next canary
-
 Dropped after release:
 
 - `better-auth` `1.6.2` -> `1.6.5`: [#9087](https://github.com/better-auth/better-auth/pull/9087)
 - `@expo/ui` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260305-5163746`: [#43158](https://github.com/expo/expo/pull/43158), [#43228](https://github.com/expo/expo/pull/43228)
 - `@expo/ui` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260401-5e87ef7`: [#43914](https://github.com/expo/expo/pull/43914), [#43923](https://github.com/expo/expo/pull/43923)
-- `expo-modules-core` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260401-5e87ef7`: [#43958](https://github.com/expo/expo/pull/43958)
+- `@expo/ui` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260409-6fc2991`: [#43955](https://github.com/expo/expo/pull/43955), [#44547](https://github.com/expo/expo/pull/44547), [#44548](https://github.com/expo/expo/pull/44548)
+- `expo-modules-core` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260402-87c5ce2`: [#43958](https://github.com/expo/expo/pull/43958)
 - `@convex-dev/better-auth` `0.10.10` -> `0.10.11`: [#218](https://github.com/get-convex/better-auth/pull/218), [#245](https://github.com/get-convex/better-auth/pull/245)
 - `@convex-dev/better-auth` `0.10.11` -> `0.10.12`: [#267](https://github.com/get-convex/better-auth/pull/267)
 - `@convex-dev/better-auth` `0.10.12` -> `0.10.13`: [#278](https://github.com/get-convex/better-auth/pull/278)
