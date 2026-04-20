@@ -34,6 +34,8 @@ export const projects: Project[] = [
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
     liveLabel: "npm",
+    backstory:
+      "Got curious how much value I'm actually getting out of the Claude Code Max plan, so I started digging into <code>~/.claude/</code>. Turns out I'm saving a ton. Built a dashboard that parses everything into SQLite and stays local: commits per day, cache hit rates, session history, full-text chat search across every project (the CLI only shows sessions for the project you're in).\n\nAlso shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history: Claude Code stores absolute paths and doesn't handle moves. Now it does.",
   },
   {
     slug: "counter",
@@ -46,10 +48,11 @@ export const projects: Project[] = [
     status: "live",
     liveUrl: "/apps/counter",
     hackathon: {
-      name: "ElevenLabs x Firecrawl",
+      name: "ElevenHacks (ElevenLabs × Firecrawl)",
       date: "Mar 2026",
-      outcome: "Submitted",
     },
+    backstory:
+      "Three voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during the actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place in the hackathon. Kept building anyway.",
   },
   {
     slug: "dreamseeker",
@@ -64,8 +67,9 @@ export const projects: Project[] = [
     hackathon: {
       name: "RevenueCat Shipyard",
       date: "Feb 2026",
-      outcome: "Submitted",
     },
+    backstory:
+      "Pick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.\n\nDidn't place in the hackathon. The app keeps going.",
   },
   {
     slug: "convex-revenuecat",
@@ -79,6 +83,8 @@ export const projects: Project[] = [
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
     liveLabel: "npm",
+    backstory:
+      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in the database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles all 18 webhook event types, dedupes by event ID, and gets the edge cases right: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
   },
   {
     slug: "gitbar",
@@ -90,6 +96,8 @@ export const projects: Project[] = [
     detail: "~5MB binary",
     featured: true,
     status: "maintained",
+    backstory:
+      "Got tired of context-switching between GitHub tabs. PRs here, issues there, notifications somewhere else. Every time I wanted to check \"what needs my attention?\" I'd open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.",
   },
   {
     slug: "coderabbit-shadcn-registry",
@@ -103,6 +111,8 @@ export const projects: Project[] = [
     status: "live",
     liveUrl: "https://coderabbit-shadcn-registry.vercel.app",
     liveLabel: "Demo",
+    backstory:
+      "CodeRabbit has a thorough code review API, but wiring it up with a storage backend meant writing the same boilerplate every time. Shipped it as a shadcn registry instead: framework-agnostic client, 5 storage adapters (LocalStorage, Convex, Supabase, PostgreSQL, MySQL), and React components for developer activity reports.\n\nFiled <a href=\"https://github.com/shadcn-ui/ui/issues/8892\">shadcn-ui/ui#8892</a> asking to list it. <a href=\"https://github.com/shadcn\">@shadcn</a> asked me to send a PR, I shipped <a href=\"https://github.com/shadcn-ui/ui/pull/9331\">#9331</a>, it merged. Now the registry is discoverable through the shadcn CLI.",
   },
   {
     slug: "skills",
@@ -134,6 +144,8 @@ export const projects: Project[] = [
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
     liveLabel: "Demo",
+    backstory:
+      "Every TanStack Start + shadcn starter on GitHub ships last year's choices: Radix, ESLint, Prettier, Webpack-era Vite. This one doesn't. Latest majors across the board (Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt), SEO and security plumbing wired, nothing to strip out.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), <code>tanstack-cn</code> is the shared package the scaffolded project consumes. CLI detects your package manager (bun / pnpm / yarn / npm), installs dependencies, and initializes git with an initial commit.",
   },
   {
     slug: "tanvex",
@@ -151,6 +163,12 @@ export const projects: Project[] = [
       "SaaS starter with TanStack Start, Convex real-time backend, Better Auth, Autumn billing, and Sentry monitoring.",
     repo: "ramonclaudio/tanstack-start-hackathon",
     status: "maintained",
+    hackathon: {
+      name: "TanStack Start Hackathon",
+      date: "Oct–Nov 2025",
+    },
+    backstory:
+      "Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn't place. Starter still works.",
   },
   {
     slug: "polar-commerce",
