@@ -30,7 +30,7 @@ const personSchema = {
   image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
   jobTitle: "Software Engineer",
   description:
-    "Full-stack TypeScript engineer, 13 years in. 39 open source repos, 23 merged PRs to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, and more.",
+    "Full-stack TypeScript engineer, 13 years in. 39 open source repos, 24 merged PRs to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, and more.",
   knowsAbout: [
     "TypeScript",
     "React",
@@ -211,9 +211,14 @@ const contributions = [
     href: "https://github.com/withastro/compiler-rs/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
       {
+        pr: 25,
+        href: "https://github.com/withastro/compiler-rs/pull/25",
+        text: "switched linux-gnu builds from -x (zigbuild) to --use-napi-cross after #22 turned out to be insufficient. Zigbuild without an explicit glibc suffix falls back to zig's per-arch baseline (GLIBC_2.35 on x86_64, GLIBC_2.30 on aarch64 for zig 0.15), so the 0.1.7 binary still couldn't load on Vercel, Amazon Linux 2023, AWS Lambda, RHEL/CentOS 7, or Debian 10. --use-napi-cross downloads @napi-rs/cross-toolchain with a sysroot pinned to glibc 2.17, matching the pattern used by oxc, swc, canvas, lightningcss, and the official napi-rs/package-template. Verified on a fork CI run plus a live Vercel preview deploy with experimental.rustCompiler: true. Shipped in @astrojs/compiler-rs@0.1.8",
+      },
+      {
         pr: 22,
         href: "https://github.com/withastro/compiler-rs/pull/22",
-        text: "added -x flag to x86_64-unknown-linux-gnu CI build for glibc compat, same class of issue as the napi-rs regression",
+        text: "first-attempt glibc compat fix, added -x to x86_64-unknown-linux-gnu. Turned out to be insufficient, superseded by #25",
       },
     ],
   },
@@ -267,7 +272,7 @@ const contributions = [
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        39 repos · 23 PRs merged upstream · 5 npm packages · ~900 weekly
+        39 repos · 24 PRs merged upstream · 5 npm packages · ~900 weekly
         downloads
       </p>
 
