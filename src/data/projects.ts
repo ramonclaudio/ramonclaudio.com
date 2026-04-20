@@ -1,3 +1,11 @@
+export type ProjectStatus = "live" | "archived" | "wip" | "maintained";
+
+export type ProjectHackathon = {
+  name: string;
+  date?: string;
+  outcome?: string;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -6,6 +14,11 @@ export type Project = {
   repo: string;
   detail?: string;
   featured?: boolean;
+  backstory?: string;
+  hackathon?: ProjectHackathon;
+  liveUrl?: string;
+  liveLabel?: string;
+  status?: ProjectStatus;
 };
 
 export const projects: Project[] = [
@@ -18,6 +31,9 @@ export const projects: Project[] = [
     repo: "ramonclaudio/ccbase",
     detail: "~50 weekly downloads",
     featured: true,
+    status: "maintained",
+    liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
+    liveLabel: "npm",
   },
   {
     slug: "counter",
@@ -26,8 +42,30 @@ export const projects: Project[] = [
     description:
       "Voice AI that listens while you negotiate a deal. Pulls prices, alternatives, and angles to push on in real time.",
     repo: "ramonclaudio/counter",
-    detail: "ElevenLabs x Firecrawl hackathon submission",
     featured: true,
+    status: "live",
+    liveUrl: "/apps/counter",
+    hackathon: {
+      name: "ElevenLabs x Firecrawl",
+      date: "Mar 2026",
+      outcome: "Submitted",
+    },
+  },
+  {
+    slug: "dreamseeker",
+    name: "dreamseeker",
+    stack: "Expo · Convex · RevenueCat",
+    description:
+      "Goal-achievement app. Break long-term goals into daily actions. Track streaks and XP.",
+    repo: "ramonclaudio/dreamseeker",
+    featured: true,
+    status: "live",
+    liveUrl: "/apps/dreamseeker",
+    hackathon: {
+      name: "RevenueCat Shipyard",
+      date: "Feb 2026",
+      outcome: "Submitted",
+    },
   },
   {
     slug: "convex-revenuecat",
@@ -38,6 +76,9 @@ export const projects: Project[] = [
     repo: "ramonclaudio/convex-revenuecat",
     detail: "~738 weekly downloads · Convex Components Directory",
     featured: true,
+    status: "maintained",
+    liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
+    liveLabel: "npm",
   },
   {
     slug: "gitbar",
@@ -48,6 +89,7 @@ export const projects: Project[] = [
     repo: "ramonclaudio/gitbar",
     detail: "~5MB binary",
     featured: true,
+    status: "maintained",
   },
   {
     slug: "coderabbit-shadcn-registry",
@@ -58,6 +100,9 @@ export const projects: Project[] = [
     repo: "ramonclaudio/coderabbit-shadcn-registry",
     detail: "listed in shadcn/ui registry",
     featured: true,
+    status: "live",
+    liveUrl: "https://coderabbit-shadcn-registry.vercel.app",
+    liveLabel: "Demo",
   },
   {
     slug: "skills",
@@ -86,6 +131,9 @@ export const projects: Project[] = [
     repo: "ramonclaudio/tanstack-cn",
     detail: "~624 weekly downloads (starter + create-tanstack-cn CLI)",
     featured: true,
+    status: "live",
+    liveUrl: "https://tanstack-cn.vercel.app",
+    liveLabel: "Demo",
   },
   {
     slug: "tanvex",
@@ -102,6 +150,7 @@ export const projects: Project[] = [
     description:
       "SaaS starter with TanStack Start, Convex real-time backend, Better Auth, Autumn billing, and Sentry monitoring.",
     repo: "ramonclaudio/tanstack-start-hackathon",
+    status: "maintained",
   },
   {
     slug: "polar-commerce",
@@ -110,6 +159,8 @@ export const projects: Project[] = [
     description:
       "Experimental e-commerce on Polar. Custom cart bundling for multi-item checkout via ephemeral products.",
     repo: "ramonclaudio/polar-commerce",
+    liveUrl: "https://polar-commerce.vercel.app",
+    liveLabel: "Demo",
   },
   {
     slug: "shopify-hydrogen-shadcn-template",

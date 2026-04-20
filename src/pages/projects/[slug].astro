@@ -6,7 +6,7 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { projects } from "@/data/projects";
+import { projects, type ProjectStatus } from "@/data/projects";
 
 export const getStaticPaths = (() => {
   return projects.map(project => ({
@@ -23,6 +23,17 @@ const idx = projects.findIndex(p => p.slug === project.slug);
 const related = [1, 2, 3]
   .map(i => projects[(idx + i) % projects.length])
   .filter(p => p && p.slug !== project.slug);
+
+const statusLabel: Record<ProjectStatus, string> = {
+  live: "live",
+  maintained: "maintained",
+  wip: "wip",
+  archived: "archived",
+};
+
+const isExternalLive = project.liveUrl?.startsWith("http");
+const liveLabel = project.liveLabel ?? (project.liveUrl?.startsWith("/apps/") ? "App page" : "Live");
+const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean) ?? [];
 ---
 
 <Layout title={`${project.name} | Ray`} description={project.description}>
@@ -33,14 +44,24 @@ const related = [1, 2, 3]
       <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
         {project.name}
       </h1>
-      <p class="text-sm text-muted-foreground">{project.stack}</p>
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+        <span>{project.stack}</span>
+        {
+          project.status && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span class="font-mono text-xs">{statusLabel[project.status]}</span>
+            </>
+          )
+        }
+      </div>
       <p class="mt-4">{project.description}</p>
       {
         project.detail && (
           <p class="mt-2 text-sm text-muted-foreground">{project.detail}</p>
         )
       }
-      <div class="mt-6">
+      <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
         <a
           href={repoUrl}
           target="_blank"
@@ -51,8 +72,51 @@ const related = [1, 2, 3]
           {project.repo}
           <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
         </a>
+        {
+          project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target={isExternalLive ? "_blank" : undefined}
+              rel={isExternalLive ? "noopener noreferrer" : undefined}
+              class="inline-flex items-center gap-2 text-foreground decoration-dashed underline-offset-4 hover:underline"
+            >
+              {liveLabel}
+              <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
+            </a>
+          )
+        }
       </div>
     </section>
+
+    {
+      backstoryParagraphs.length > 0 && (
+        <section class="pt-8 pb-2">
+          <h2 class="text-2xl font-semibold tracking-wide">[why]</h2>
+          <div class="mt-4 space-y-4">
+            {backstoryParagraphs.map(p => (
+              <p set:html={p} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      project.hackathon && (
+        <section class="pt-8 pb-2">
+          <h2 class="text-2xl font-semibold tracking-wide">[hackathon]</h2>
+          <p class="mt-4">
+            <span class="font-medium text-foreground">{project.hackathon.name}</span>
+            {project.hackathon.date && (
+              <span class="text-sm text-muted-foreground">{` · ${project.hackathon.date}`}</span>
+            )}
+            {project.hackathon.outcome && (
+              <span class="text-sm text-muted-foreground">{` · ${project.hackathon.outcome}`}</span>
+            )}
+          </p>
+        </section>
+      )
+    }
 
     {
       related.length > 0 && (
