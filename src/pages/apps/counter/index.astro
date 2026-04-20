@@ -14,7 +14,7 @@ const modes = [
 const features = [
   "Real-time web search during voice conversations",
   "Intel cards with prices, sources, and direct links",
-  "Immersive full-screen voice mode",
+  "Full-screen voice mode",
   "Session history with full transcripts and intel",
   "Post-session summaries with follow-up suggestions",
 ];
@@ -34,8 +34,8 @@ const features = [
       <p class="text-sm italic text-muted-foreground">Real-time deal intelligence. iOS.</p>
       <p class="mt-4">
         A voice AI that researches deals while you talk. Say what you're buying
-        and it pulls prices, alternatives, warnings, and negotiation leverage in
-        real time.
+        and it pulls prices, alternatives, warnings, and counterpoints in real
+        time.
       </p>
     </section>
 
@@ -46,7 +46,7 @@ const features = [
           modes.map(mode => (
             <li class="my-3">
               <span class="font-medium text-foreground">{mode.name}</span>
-              <span class="text-muted-foreground"> — {mode.description}</span>
+              <span class="text-muted-foreground"> · {mode.description}</span>
             </li>
           ))
         }

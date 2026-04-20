@@ -7,11 +7,11 @@ Software engineer in New York. Full-stack TypeScript across dev tools: Convex co
 
 ### Selected projects
 
-- [convex-revenuecat](/projects/convex-revenuecat) — **~738 weekly downloads**, listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). RevenueCat sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.
-- [tanstack-cn](/projects/tanstack-cn) — **~624 weekly downloads** across [tanstack-cn](https://www.npmjs.com/package/tanstack-cn) and [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn). TanStack Start starter on Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt.
-- [ccbase](/projects/ccbase) — **~50 weekly downloads**. Local analytics dashboard, session history, and cost tracking for Claude Code. [npm](https://www.npmjs.com/package/@ramonclaudio/ccbase).
-- [coderabbit-shadcn-registry](/projects/coderabbit-shadcn-registry) — **listed in the [shadcn/ui registry](https://github.com/shadcn-ui/ui/pull/9331)**. Ships the CodeRabbit API as a shadcn registry. Framework-agnostic client, 5 storage adapters, React components.
-- [gitbar](/projects/gitbar) — **~5MB Tauri binary**. Menubar GitHub dashboard. 3 parallel GraphQL queries, stale-while-revalidate caching, progressive rendering.
+- [convex-revenuecat](/projects/convex-revenuecat): **~738 weekly downloads**, listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). RevenueCat sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.
+- [tanstack-cn](/projects/tanstack-cn): **~624 weekly downloads** across [tanstack-cn](https://www.npmjs.com/package/tanstack-cn) and [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn). TanStack Start starter on Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt.
+- [ccbase](/projects/ccbase): **~50 weekly downloads**. Local analytics dashboard, session history, and cost tracking for Claude Code. [npm](https://www.npmjs.com/package/@ramonclaudio/ccbase).
+- [coderabbit-shadcn-registry](/projects/coderabbit-shadcn-registry): **listed in the [shadcn/ui registry](https://github.com/shadcn-ui/ui/pull/9331)**. Ships the CodeRabbit API as a shadcn registry. Framework-agnostic client, 5 storage adapters, React components.
+- [gitbar](/projects/gitbar): **~5MB Tauri binary**. Menubar GitHub dashboard. 3 parallel GraphQL queries, stale-while-revalidate caching, progressive rendering.
 
 [Full project list →](/projects)
 

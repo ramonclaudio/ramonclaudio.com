@@ -356,7 +356,7 @@ Rather than ship the PR and wait, I turned the pattern into a working starter so
 
 Two npm packages back it:
 
-- [`create-tanstack-cn`](https://www.npmjs.com/package/create-tanstack-cn) scaffolds a new project — `bun create tanstack-cn my-app`
+- [`create-tanstack-cn`](https://www.npmjs.com/package/create-tanstack-cn) scaffolds a new project via `bun create tanstack-cn my-app`
 - [`tanstack-cn`](https://www.npmjs.com/package/tanstack-cn) is the shared package the scaffolded project consumes
 
 Live demo: [tanstack-cn.vercel.app](https://tanstack-cn.vercel.app/).
