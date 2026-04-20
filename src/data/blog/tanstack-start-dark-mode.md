@@ -346,6 +346,8 @@ Drop `<ModeToggle />` wherever you want the toggle to appear.
 
 After doing this manually enough times I opened [shadcn-ui/ui#10396](https://github.com/shadcn-ui/ui/pull/10396) adding TanStack Start as a fifth dark mode guide alongside Next.js, Vite, Astro, and Remix. Three files: the MDX guide with a `ThemeProvider`, root layout, and mode toggle; an index card with the TanStack logo; and a `meta.json` update. Still open at the time of writing.
 
+Drop-in source patch lives in [ramonclaudio/patches](https://github.com/ramonclaudio/patches/blob/main/packages/shadcn-ui/shadcn-ui-pr10396.patch) if you want to preview the docs locally against a `shadcn-ui/ui` clone while the PR sits in review: `git apply shadcn-ui-pr10396.patch`.
+
 ### The starter and the live demo
 
 Rather than ship the PR and wait, I turned the pattern into a working starter so anyone can grab it today.
