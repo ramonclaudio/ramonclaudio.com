@@ -42,3 +42,7 @@ src/
 - View transitions via Astro `ClientRouter`
 - Dark mode with system preference detection
 - Shiki syntax highlighting (min-light / night-owl)
+
+## License
+
+MIT
