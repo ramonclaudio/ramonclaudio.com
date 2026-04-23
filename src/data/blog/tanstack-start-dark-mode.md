@@ -1,6 +1,7 @@
 ---
 author: Ray
 pubDatetime: 2026-04-12T16:00:00Z
+modDatetime: 2026-04-21T12:25:00Z
 title: "Dark Mode in TanStack Start with shadcn (and the PR)"
 slug: tanstack-start-dark-mode
 featured: true
@@ -11,7 +12,7 @@ tags:
   - dark-mode
   - ssr
   - open-source
-description: shadcn documents dark mode for Next.js, Vite, Remix, and Astro. TanStack Start was missing. I built the pattern and opened a PR.
+description: shadcn documents dark mode for Next.js, Vite, Remix, and Astro. TanStack Start was missing. I opened a PR. It merged.
 ---
 
 I build all my web apps on TanStack Start with shadcn. Every new project starts the same way: `shadcn init`, add components, build. It's been this way for a while now.
@@ -66,47 +67,56 @@ The Next.js guide sidesteps this with `next-themes`. Remix uses `remix-themes` w
 
 The solution is two layers. `ScriptOnce` handles the DOM before React touches it. A React Context handles state after hydration.
 
-The inline script reads `localStorage`, resolves the preference, and adds the class to `<html>` before the browser paints:
+The inline script reads `localStorage`, resolves the preference, and adds the class to `<html>` before the browser paints. Wrapping it in a function threads the provider's `storageKey` and `defaultTheme` props through `JSON.stringify`, so custom configs actually reach the pre-hydration pass:
 
 ```tsx
-const themeScript = `(function(){
-  try {
-    var t = localStorage.getItem('theme');
-    if (t !== 'light' && t !== 'dark' && t !== 'system') { t = 'system' }
-    var d = matchMedia('(prefers-color-scheme: dark)').matches;
-    var r = t === 'system' ? (d ? 'dark' : 'light') : t;
-    var e = document.documentElement;
-    e.classList.add(r);
-    e.style.colorScheme = r;
-  } catch(e) {}
-})();`;
+function getThemeScript(storageKey: string, defaultTheme: Theme) {
+  const key = JSON.stringify(storageKey);
+  const fallback = JSON.stringify(defaultTheme);
+
+  return `(function(){
+    try {
+      var t = localStorage.getItem(${key});
+      if (t !== 'light' && t !== 'dark' && t !== 'system') { t = ${fallback} }
+      var d = matchMedia('(prefers-color-scheme: dark)').matches;
+      var r = t === 'system' ? (d ? 'dark' : 'light') : t;
+      var e = document.documentElement;
+      e.classList.add(r);
+      e.style.colorScheme = r;
+    } catch(e) {}
+  })();`;
+}
 ```
 
 The `colorScheme` line is easy to miss. Without it, native browser controls (scrollbars, form inputs, color picker) ignore your theme and render in their default scheme. None of the three open PRs set it. None of the community guides set it. TanStack's own [document head management example](https://tanstack.com/router/latest/docs/framework/react/guide/document-head-management#inline-scripts-with-scriptonce) doesn't set it. There's an [open PR to the Vite guide](https://github.com/shadcn-ui/ui/pull/7599) that adds it, but it's been sitting since June 2025.
 
-On the React side, `useState` initializes to `defaultTheme` (not from storage) so server and client produce the same initial render. A separate `useEffect` syncs from `localStorage` after mount:
+On the React side, `useState` initializes to `defaultTheme` (not from storage) so server and client produce the same initial render. A `mounted` flag gates the apply-side effects so the inline script's work isn't clobbered before `localStorage` is read:
 
 ```tsx
 const [theme, setThemeState] = useState<Theme>(defaultTheme);
+const [mounted, setMounted] = useState(false);
 
 useEffect(() => {
   const stored = localStorage.getItem(storageKey);
-  if (stored === "light" || stored === "dark" || stored === "system") {
-    setThemeState(stored);
-  }
-}, [storageKey]);
+  setThemeState(
+    stored === "light" || stored === "dark" || stored === "system"
+      ? stored
+      : defaultTheme
+  );
+  setMounted(true);
+}, [defaultTheme, storageKey]);
 ```
 
 Server renders "system". Client hydrates "system". No mismatch. The effect fires, state updates, and React re-renders with the stored value. The user never sees a flash because `ScriptOnce` already applied the right class before any of this ran.
 
-A second effect applies the resolved class whenever theme changes. A third listens for OS-level `prefers-color-scheme` changes when mode is "system", so toggling your Mac between light and dark while the tab is open actually updates the page. Neither [#7173](https://github.com/shadcn-ui/ui/pull/7173) nor [#7490](https://github.com/shadcn-ui/ui/pull/7490) include this listener.
+A second effect applies the resolved class whenever theme changes. A third listens for OS-level `prefers-color-scheme` changes when mode is "system", so toggling your Mac between light and dark while the tab is open actually updates the page. Both route through a shared `applyTheme` helper and both wait on `mounted`. Neither [#7173](https://github.com/shadcn-ui/ui/pull/7173) nor [#7490](https://github.com/shadcn-ui/ui/pull/7490) include this listener.
 
 The provider wraps it all:
 
 ```tsx
 return (
   <ThemeProviderContext value={{ theme, setTheme }}>
-    <ScriptOnce>{themeScript}</ScriptOnce>
+    <ScriptOnce>{getThemeScript(storageKey, defaultTheme)}</ScriptOnce>
     {children}
   </ThemeProviderContext>
 );
@@ -190,12 +200,32 @@ type ThemeProviderState = {
   setTheme: (theme: Theme) => void;
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'&&t!=='system'){t='system'}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`;
+function getThemeScript(storageKey: string, defaultTheme: Theme) {
+  const key = JSON.stringify(storageKey);
+  const fallback = JSON.stringify(defaultTheme);
+
+  return `(function(){try{var t=localStorage.getItem(${key});if(t!=='light'&&t!=='dark'&&t!=='system'){t=${fallback}}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`;
+}
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
   setTheme: () => {},
 });
+
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  root.classList.remove("light", "dark");
+
+  const resolved =
+    theme === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme;
+
+  root.classList.add(resolved);
+  root.style.colorScheme = resolved;
+}
 
 export function ThemeProvider({
   children,
@@ -203,43 +233,31 @@ export function ThemeProvider({
   storageKey = "theme",
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(storageKey);
-    if (stored === "light" || stored === "dark" || stored === "system") {
-      setThemeState(stored);
-    }
-  }, [storageKey]);
+    setThemeState(
+      stored === "light" || stored === "dark" || stored === "system"
+        ? stored
+        : defaultTheme
+    );
+    setMounted(true);
+  }, [defaultTheme, storageKey]);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-
-    const resolved =
-      theme === "system"
-        ? window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light"
-        : theme;
-
-    root.classList.add(resolved);
-    root.style.colorScheme = resolved;
-  }, [theme]);
+    if (!mounted) return;
+    applyTheme(theme);
+  }, [theme, mounted]);
 
   useEffect(() => {
-    if (theme !== "system") return undefined;
+    if (!mounted || theme !== "system") return;
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      const root = document.documentElement;
-      root.classList.remove("light", "dark");
-      const resolved = media.matches ? "dark" : "light";
-      root.classList.add(resolved);
-      root.style.colorScheme = resolved;
-    };
+    const onChange = () => applyTheme("system");
     media.addEventListener("change", onChange);
     return () => media.removeEventListener("change", onChange);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const setTheme = (next: Theme) => {
     localStorage.setItem(storageKey, next);
@@ -248,7 +266,7 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext value={{ theme, setTheme }}>
-      <ScriptOnce>{themeScript}</ScriptOnce>
+      <ScriptOnce>{getThemeScript(storageKey, defaultTheme)}</ScriptOnce>
       {children}
     </ThemeProviderContext>
   );
@@ -344,9 +362,11 @@ Drop `<ModeToggle />` wherever you want the toggle to appear.
 
 ### The PR
 
-After doing this manually enough times I opened [shadcn-ui/ui#10396](https://github.com/shadcn-ui/ui/pull/10396) adding TanStack Start as a fifth dark mode guide alongside Next.js, Vite, Astro, and Remix. Three files: the MDX guide with a `ThemeProvider`, root layout, and mode toggle; an index card with the TanStack logo; and a `meta.json` update. Still open at the time of writing.
+After doing this manually enough times I opened [shadcn-ui/ui#10396](https://github.com/shadcn-ui/ui/pull/10396) adding TanStack Start as a fifth dark mode guide alongside Next.js, Vite, Astro, and Remix. Three files: the MDX guide with a `ThemeProvider`, root layout, and mode toggle; an index card with the TanStack logo; and a `meta.json` update.
 
-Drop-in source patch lives in [ramonclaudio/patches](https://github.com/ramonclaudio/patches/blob/main/packages/shadcn-ui/shadcn-ui-pr10396.patch) if you want to preview the docs locally against a `shadcn-ui/ui` clone while the PR sits in review: `git apply shadcn-ui-pr10396.patch`.
+Merged on April 21, 2026. It's now the [official TanStack Start dark mode guide](https://ui.shadcn.com/docs/dark-mode/tanstack-start).
+
+In review shadcn pushed a refactor worth calling out. My draft hardcoded `'theme'` and `'system'` inside the inline script string, so custom `storageKey` or `defaultTheme` props on the provider would silently get ignored by the pre-hydration pass. He wrapped the string in `getThemeScript(storageKey, defaultTheme)` and threaded the props through `JSON.stringify`. Same commit also extracted the class-swap into an `applyTheme` helper and added a `mounted` gate so the inline script's work isn't overwritten with `defaultTheme` on first mount before `localStorage` is read. All three changes are reflected in the code above.
 
 ### The starter and the live demo
 
@@ -361,6 +381,6 @@ Two npm packages back it:
 
 Live demo: [tanstack-cn.vercel.app](https://tanstack-cn.vercel.app/).
 
-If #10396 lands, great. If it doesn't, the starter plus this post still document the canonical pattern for anyone hitting the same wall.
+#10396 shipped. The starter mirrors the official guide for anyone hitting the same wall.
 
 \- Ray
