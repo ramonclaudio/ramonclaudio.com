@@ -9,22 +9,24 @@ const apps = [
     name: "Counter",
     slug: "counter",
     platform: "iOS",
-    tagline: "Real-time deal intelligence.",
+    hackathon: "ElevenHacks Season 1",
+    tagline: "Voice AI for deal research, practice negotiations, and live coaching.",
     description:
-      "Voice AI that researches deals while you talk. Pulls prices, alternatives, and counterpoints in real time.",
+      "Say what you're buying and it pulls prices, alternatives, and counterpoints in real time.",
   },
   {
     name: "DreamSeeker",
     slug: "dreamseeker",
     platform: "iOS",
-    tagline: "From dreaming to doing.",
+    hackathon: "RevenueCat Shipyard 2026",
+    tagline: "Goal-achievement app.",
     description:
       "Set goals, break them into daily actions, track streaks and XP.",
   },
 ];
 ---
 
-<Layout title="Apps | Ray" description="Mobile apps built by Ray">
+<Layout title="Apps | Ray" description="Hackathon submissions on iOS.">
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
@@ -33,7 +35,7 @@ const apps = [
         [apps]
       </h1>
       <p>
-        {apps.length} mobile {apps.length === 1 ? "app" : "apps"} on iOS.
+        Hackathon submissions. {apps.length} on iOS. Neither placed. Both still run.
       </p>
       <ul class="mt-6">
         {
@@ -47,6 +49,8 @@ const apps = [
                   {app.name}
                 </a>
                 <span class="text-xs text-muted-foreground">
+                  {" · "}
+                  {app.hackathon}
                   {" · "}
                   {app.platform}
                 </span>
