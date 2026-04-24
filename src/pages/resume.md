@@ -29,7 +29,7 @@ Other highlights: a `napi-rs` v3 cross-compile regression breaking deploys to Am
 
 I build tools for people who build things. When their dep breaks, I fix it upstream. When they can't wait for the release, I ship a patch. When they need a reference implementation, I put mine on GitHub. That's the whole thing.
 
-I read code before I change it. Most of my merged PRs start by grep'ing for every place a pattern is already used. The `@expo/ui` `ClipShapeModifier` silent fallthrough to `Rectangle` was obvious once I lined it up against the four other shape modifiers in the same directory already using `ShapeType`. The `PersistentFileLog.readEntries` race was obvious once I noticed it was the only reader bypassing the serial queue every writer relied on. The `napi-rs` v3 cross-compile regression was obvious once I found the v2 fix the rewrite dropped. The fix is usually in the diff. The understanding is in the adjacent code.
+I read code before I change it. Most of my merged PRs start by grep'ing for every place a pattern is already used. Once I find the places that already do the thing right, the broken one is obvious. The fix is usually in the diff. The understanding is in the adjacent code.
 
 Some fixes span more than one repo. The session rotation fix is two PRs: [better-auth#9087](https://github.com/better-auth/better-auth/pull/9087) adds `/change-password` to the upstream `atomListeners` matcher, [get-convex/better-auth#329](https://github.com/get-convex/better-auth/pull/329) invalidates the cached JWT in the Convex adapter. Neither is useful alone. The better-auth 1.6 migration touches validators, plugins, schema, and hooks across 17 files in a single atomic PR because shipping any piece without the others breaks production auth.
 
@@ -37,9 +37,9 @@ The merged PRs span four languages. Swift for `@expo/ui` modifiers. Rust for the
 
 I ship the fix before the merge lands. Bug, upstream PR, drop-in patch in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects (and anyone else hitting the same bug) ship without waiting for review. 109 patch files across Bun, npm, pnpm, and Yarn. Every PR above shipped as a patch first. When the release lands, I bump the dep and delete the patch.
 
-Most of the bugs I fix passed CI. Cookie expiry NaN coercion where `NaN < anything` is always `false`. A `shouldReturnResponse` flip in better-auth 1.6 that tests missed because test contexts lack a real `Request`. A `clipShape` silent fallthrough to `Rectangle` because nobody tested `capsule`. I found them, I fixed them.
+Most of the bugs I fix passed CI. Silent fallthroughs to defaults nobody tested. Type coercion that reads sensible but evaluates false. Test setups that don't match production. I found them, I fixed them.
 
-I file detailed issue reports. `jose` `process.getBuiltinModule` Edge Runtime bug got fixed in [`v6.0.4`](https://github.com/panva/jose/releases/tag/v6.0.4) after my traces convinced [@panva](https://github.com/panva) it was real. The `shadcn/ui` registry directory submission led [@shadcn](https://github.com/shadcn) to invite a PR, which I shipped as [#9331](https://github.com/shadcn-ui/ui/pull/9331). The Claude Code symlink bug got a same-day "Fix incoming" from [@bcherny](https://github.com/bcherny) and a close.
+I file detailed issue reports with traces that convince maintainers the bug is real. Bugs fixed in next-patch releases, invites to send the PR myself, same-day `Fix incoming` replies from the people who own the code.
 
 I take destructive operations seriously. The early pentesting work made me paranoid about side effects, and that paranoia ships in the tools I build. My commit guard blocks force-push, `--no-verify`, and GPG bypass so I can't accidentally ship a dirty commit. I `trash` instead of `rm`. If I can't undo it, I check the diff one more time first.
 
