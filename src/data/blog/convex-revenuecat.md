@@ -1,7 +1,7 @@
 ---
 author: Ray
 pubDatetime: 2026-04-02T23:00:00Z
-title: "Building convex-revenuecat: Server-Side Entitlements for Expo"
+title: "Building convex-revenuecat: Server-Side Entitlements for Convex"
 slug: building-convex-revenuecat
 featured: true
 draft: false
@@ -9,31 +9,86 @@ tags:
   - project
   - convex
   - revenuecat
-  - expo
   - typescript
 description: I needed server-side entitlement checks in my Convex app. No component existed. So I built one.
 ---
 
-I was building an app for the [RevenueCat Shipyard Hackathon](https://www.revenuecat.com/shipyard) (Expo, Convex, Better Auth), the usual stack, and everything was pretty much wired up when I realized the SDK doesn't support server-side entitlement checks. It handles purchases on the client fine, but on the server the only option was hitting their [REST API](https://www.revenuecat.com/docs/customers/customer-info) on every request. No caching, no reactivity, just a blocking HTTP call every time someone opened a gated screen. That just felt wrong.
+I wanted to enter my first hackathon. [RevenueCat Shipyard](https://www.revenuecat.com/shipyard) was running, so I joined. The app was Expo with Convex and Better Auth, and I needed to gate features by subscription. RevenueCat's SDK handles purchases on the client fine, but checking entitlements on the server meant hitting their [REST API](https://www.revenuecat.com/docs/customers/customer-info) on every request. No caching, no reactivity, a blocking HTTP call every time someone opened a gated screen.
 
-I went looking for a Convex component that handled this. Nothing existed. So I ended up building one during the hackathon, testing it against real sandbox purchases in the app as I went.
+No Convex component existed, so I built one during the hackathon as a side project, tested it against real sandbox purchases in the app, and published it to npm as [`convex-revenuecat`](https://www.npmjs.com/package/convex-revenuecat) in case anyone else hit the same wall.
 
-I'd been pretty deep in the Convex ecosystem for a while at that point, PRing bug fixes to their better-auth component ([#218](https://github.com/get-convex/better-auth/pull/218), [#245](https://github.com/get-convex/better-auth/pull/245), [#267](https://github.com/get-convex/better-auth/pull/267), [#278](https://github.com/get-convex/better-auth/pull/278)) and using components in basically every new project. Turns out they were running a [component authoring challenge](https://www.convex.dev/component-authoring?ref=ramonclaudio.com) at the same time as the hackathon. I submitted what I had, it got accepted, won a $100 gift card, and it's been on [convex.dev/components](https://www.convex.dev/components/ramonclaudio-convex-revenuecat) since.
+```bash
+npm install convex-revenuecat
+```
 
-I didn't win the hackathon. Honestly I spent way more time on the component than the actual submission, but it was my first hackathon so I'll take it as a learning experience.
+Convex happened to be running a [component authoring challenge](https://www.convex.dev/component-authoring?ref=ramonclaudio.com) at the same time, so I submitted what I had. It got accepted, won a $100 gift card, and is now listed on [convex.dev/components](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). I'd already been PRing bug fixes to their better-auth component ([#218](https://github.com/get-convex/better-auth/pull/218), [#245](https://github.com/get-convex/better-auth/pull/245), [#267](https://github.com/get-convex/better-auth/pull/267), [#278](https://github.com/get-convex/better-auth/pull/278)) so I was deep in the Convex ecosystem already.
+
+I didn't place in the RevenueCat hackathon. Spent way more time on the component than the submission.
 
 ### How it works
 
-You mount a webhook handler, point RevenueCat at it, and the component just keeps subscription state in your Convex database. The core query is `hasEntitlement()`. Returns a boolean. Since it's a Convex query, it's reactive: user buys premium, webhook fires, UI unlocks. No polling.
+RevenueCat emits a webhook for every subscription event: purchase, renewal, cancellation, pause, transfer, refund, and around a dozen others. The component registers one HTTP handler at `/webhooks/revenuecat`. On each POST it does four things before dispatch:
 
-The edge cases took way longer than the happy path. Cancellation got me. I assumed it revoked access. It doesn't. The user actually keeps access until their subscription expires. I shipped a broken version of the app before I figured that out, then went back and fixed it in the component so the default behavior is correct.
+1. Validates the `Authorization` header against `REVENUECAT_WEBHOOK_AUTH`
+2. Rate limits 100 requests/minute per webhook secret
+3. Dedupes on `event.id` (UUID, capped at 128 bytes so a compromised token can't inflate storage with megabyte keys)
+4. Routes the payload to the matching internal handler by `event.type`
+
+Each handler upserts into the right table (`customers`, `subscriptions`, `entitlements`, `invoices`, `virtualCurrencyBalances`, `experimentEnrollments`, etc.), then records a before/after snapshot of the user's entitlement state in `webhookEvents` so any transition can be audited. The whole thing runs inside a single Convex mutation, so every write in one event either lands or none do.
+
+### Entitlement checks
+
+`hasEntitlement` is a Convex query. Queries are reactive by default, so any UI bound to it updates the moment a webhook flips the state:
+
+```typescript
+export const checkPremium = query({
+  args: { appUserId: v.string() },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    return await revenuecat.hasEntitlement(ctx, {
+      appUserId: args.appUserId,
+      entitlementId: "premium",
+    });
+  },
+});
+```
+
+No polling, no client-side state to invalidate, no REST call to RevenueCat on the read path.
+
+### The edge cases
+
+The happy path was the easy part. The RC docs bury the subtleties:
+
+- **Cancellation doesn't revoke access.** The user keeps the entitlement until `expirationAtMs`. I shipped a broken version of the app before I figured this out.
+- **Pause doesn't revoke either.** The entitlement stays active through a billing pause.
+- **Grace periods stay active.** A failed charge starts a grace window and access continues until it expires.
+- **Refunds revoke immediately.** RC sends a `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"`. The component detects that and expires the entitlement right away instead of waiting for the billing window to close.
+- **Transfers shift entitlement between users atomically.** A single webhook deactivates on one `appUserId` and activates on another in the same mutation.
+
+### Transition hooks
+
+When an entitlement flips between active and not-active, the component fires user-supplied callbacks. They fire exactly once per `(appUserId, entitlementId)` transition regardless of the trigger (`INITIAL_PURCHASE`, `RENEWAL`, `REFUND_REVERSED`, a transfer, or a sync), and the `sourceEventType` arg tells you which. Handy for "thanks for subscribing" emails, feature-flag backfills, or revenue logging without duplicating logic across every event handler.
+
+```typescript
+const revenuecat = new RevenueCat(components.revenuecat, {
+  REVENUECAT_WEBHOOK_AUTH: process.env.REVENUECAT_WEBHOOK_AUTH,
+  hooks: {
+    onEntitlementActivated: internal.revenuecat.onActivated,
+    onEntitlementDeactivated: internal.revenuecat.onDeactivated,
+  },
+});
+```
 
 ### Sync
 
 I left sync out of the initial release on purpose. Webhooks only, one data path, keep it simple.
 
-Then someone [opened an issue](https://github.com/ramonclaudio/convex-revenuecat/issues/12) saying webhooks weren't always firing in their setup. They'd been calling RevenueCat's REST API manually as a workaround. The thing is the component owns the tables, so if a webhook gets dropped there's really no way to fix the data from the outside. I added `syncSubscriber` in [v0.1.11](https://github.com/ramonclaudio/convex-revenuecat/releases/tag/v0.1.11): you just fetch from their API, pass the raw subscriber object, and the component upserts everything. If a webhook shows up later, it reconciles instead of duplicating.
+Then someone [opened an issue](https://github.com/ramonclaudio/convex-revenuecat/issues/12) saying webhooks weren't always firing in their setup. They'd been calling RevenueCat's REST API manually as a workaround. The component owns the tables, so if a webhook drops there's no way to patch the data from outside. I added `syncSubscriber` in [v0.1.11](https://github.com/ramonclaudio/convex-revenuecat/releases/tag/v0.1.11): fetch the subscriber from RC's `/v1/subscribers` endpoint, pass the raw payload in, and the component upserts everything. Writes are idempotent and indexed by `originalTransactionId`, so if a delayed webhook arrives after a sync, it reconciles instead of duplicating.
 
-[`convex-revenuecat`](https://www.npmjs.com/package/convex-revenuecat) is on npm and gets about 700 downloads a week. [Repo here](https://github.com/ramonclaudio/convex-revenuecat).
+Same transition hooks fire on sync-driven transitions with `sourceEventType: "SYNC"`.
+
+### Where it is now
+
+First release was January 2026. 14 versions later it does ~750 weekly downloads on npm and 3,700+ all-time. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
 
 \- Ray
