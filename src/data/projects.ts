@@ -27,71 +27,70 @@ export const projects: Project[] = [
     name: "ccbase",
     stack: "TypeScript · Bun · SQLite",
     description:
-      "Local analytics dashboard, session history, and cost tracking for Claude Code.",
+      "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code.",
     repo: "ramonclaudio/ccbase",
-    detail: "~50 weekly downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
     liveLabel: "npm",
     backstory:
-      "Got curious how much value I'm actually getting out of the Claude Code Max plan, so I started digging into <code>~/.claude/</code>. Turns out I'm saving a ton. Built a dashboard that parses everything into SQLite and stays local: commits per day, cache hit rates, session history, full-text chat search across every project (the CLI only shows sessions for the project you're in).\n\nAlso shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history: Claude Code stores absolute paths and doesn't handle moves. Now it does.",
+      "I use Claude Code every day. Got curious how much value I'm actually getting out of the Max plan, so I started digging into <code>~/.claude/</code>. Turns out I'm saving a ton. That got me looking at the rest of the data: commits per day, cache hit rates, what sessions I'm working on, all of it.\n\nBuilt a dashboard that parses everything into SQLite and stays local. Full-text chat search across every project (the CLI only shows sessions for the project you're in). Also shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history: Claude Code stores absolute paths and doesn't handle moves. Now it does.",
   },
   {
     slug: "counter",
     name: "counter",
-    stack: "Expo · Convex · TypeScript",
+    stack: "Expo · Convex · ElevenLabs · Firecrawl",
     description:
-      "Voice AI that listens while you negotiate a deal. Pulls prices, alternatives, and angles to push on in real time.",
+      "My ElevenHacks Season 1 submission. Voice AI with three modes: research products, live negotiation coaching, and practice against an AI salesman. ElevenLabs agents plus Firecrawl search.",
     repo: "ramonclaudio/counter",
     featured: true,
     status: "live",
     liveUrl: "/apps/counter",
     hackathon: {
-      name: "ElevenHacks (ElevenLabs × Firecrawl)",
+      name: "ElevenHacks Season 1 (ElevenLabs × Firecrawl)",
       date: "Mar 2026",
     },
     backstory:
-      "Three voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during the actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place in the hackathon. Kept building anyway.",
+      "Hackathon submission for ElevenHacks Season 1, the ElevenLabs × Firecrawl collab. Not a product, not for sale, just what I shipped in a weekend.\n\nThree voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during an actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place. Kept building anyway.",
   },
   {
     slug: "dreamseeker",
     name: "dreamseeker",
     stack: "Expo · Convex · RevenueCat",
     description:
-      "Goal-achievement app. Break long-term goals into daily actions. Track streaks and XP.",
+      "My RevenueCat Shipyard 2026 submission. Goal-achievement app: break goals into daily micro-actions, track with streaks and XP, save inspiration to community pin boards.",
     repo: "ramonclaudio/dreamseeker",
     featured: true,
     status: "live",
     liveUrl: "/apps/dreamseeker",
     hackathon: {
-      name: "RevenueCat Shipyard",
+      name: "RevenueCat Shipyard 2026",
       date: "Feb 2026",
     },
     backstory:
-      "Pick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.\n\nDidn't place in the hackathon. The app keeps going.",
+      "Hackathon submission for RevenueCat Shipyard 2026. Not a product, not for sale, just what I shipped in a weekend.\n\nPick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.\n\nDidn't place. The app keeps running.",
   },
   {
     slug: "convex-revenuecat",
     name: "convex-revenuecat",
     stack: "TypeScript · Convex",
     description:
-      "RevenueCat subscription sync for Convex. All 18 webhook event types, REST API sync, entitlement checking.",
+      "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "~738 weekly downloads · Convex Components Directory",
+    detail: "~750 weekly downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
     liveLabel: "npm",
     backstory:
-      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in the database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles all 18 webhook event types, dedupes by event ID, and gets the edge cases right: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
+      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and gets the edge cases right: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
   },
   {
     slug: "gitbar",
     name: "gitbar",
     stack: "Tauri · Rust · TypeScript · React",
     description:
-      "GitHub dashboard for the macOS menubar. PRs, issues, repos, and activity in one window.",
+      "Menubar GitHub dashboard built with Tauri. PRs, issues, repos, and activity in one window.",
     repo: "ramonclaudio/gitbar",
     detail: "~5MB binary",
     featured: true,
@@ -104,7 +103,7 @@ export const projects: Project[] = [
     name: "coderabbit-shadcn-registry",
     stack: "TypeScript · React",
     description:
-      "Ships the CodeRabbit API as a shadcn registry. Framework-agnostic client, storage adapters, React components.",
+      "shadcn registry for CodeRabbit API integration, with framework-agnostic client, storage adapters, and React components.",
     repo: "ramonclaudio/coderabbit-shadcn-registry",
     detail: "listed in shadcn/ui registry",
     featured: true,
@@ -112,14 +111,14 @@ export const projects: Project[] = [
     liveUrl: "https://coderabbit-shadcn-registry.vercel.app",
     liveLabel: "Demo",
     backstory:
-      "CodeRabbit has a thorough code review API, but wiring it up with a storage backend meant writing the same boilerplate every time. Shipped it as a shadcn registry instead: framework-agnostic client, 5 storage adapters (LocalStorage, Convex, Supabase, PostgreSQL, MySQL), and React components for developer activity reports.\n\nFiled <a href=\"https://github.com/shadcn-ui/ui/issues/8892\">shadcn-ui/ui#8892</a> asking to list it. <a href=\"https://github.com/shadcn\">@shadcn</a> asked me to send a PR, I shipped <a href=\"https://github.com/shadcn-ui/ui/pull/9331\">#9331</a>, it merged. Now the registry is discoverable through the shadcn CLI.",
+      "CodeRabbit was a sponsor of the TanStack Start hackathon. I built a reports integration into my submission, then pulled it out, made it swappable across storage backends (LocalStorage, Convex, Supabase, Postgres, MySQL), and packaged it as a standalone shadcn registry.\n\nFiled <a href=\"https://github.com/shadcn-ui/ui/issues/8892\">shadcn-ui/ui#8892</a> asking to list it. <a href=\"https://github.com/shadcn\">@shadcn</a> asked me to send a PR, I shipped <a href=\"https://github.com/shadcn-ui/ui/pull/9331\">#9331</a>, it merged. Now the registry is discoverable through the shadcn CLI.",
   },
   {
     slug: "skills",
     name: "skills",
     stack: "TypeScript · Bun · Claude Code",
     description:
-      "9 plugins for Claude Code distributed as a marketplace. handoff, qmd, commit, polish, audit, techdebt, teams, gif, frames.",
+      "Custom Claude Code skills, installable individually as plugins. handoff, qmd, commit, polish, audit, techdebt, teams, gif, frames.",
     repo: "ramonclaudio/skills",
   },
   {
@@ -127,7 +126,7 @@ export const projects: Project[] = [
     name: "patches",
     stack: "Diff · Bun · pnpm · yarn",
     description:
-      "Drop-in patch files for bugs and missing features in upstream packages awaiting merge.",
+      "Patch files for packages and dependencies. Drop-in fixes for bugs, missing features, and type errors awaiting upstream merges.",
     repo: "ramonclaudio/patches",
     detail:
       "@convex-dev, @expo, @shopify, better-auth, shadcn, jose, oven-sh, more",
@@ -137,9 +136,9 @@ export const projects: Project[] = [
     name: "tanstack-cn",
     stack: "TanStack Start · Vite 8 · Tailwind v4",
     description:
-      "TanStack Start starter on the latest majors. Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt.",
+      "TanStack Start starter on the latest majors. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt. No Radix, no ESLint, no Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "~624 weekly downloads (starter + create-tanstack-cn CLI)",
+    detail: "~657 weekly downloads (starter + create-tanstack-cn CLI)",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -160,22 +159,22 @@ export const projects: Project[] = [
     name: "tanstack-start-hackathon",
     stack: "TanStack Start · Convex · Autumn",
     description:
-      "SaaS starter with TanStack Start, Convex real-time backend, Better Auth, Autumn billing, and Sentry monitoring.",
+      "My TanStack Start hackathon submission. SaaS starter with Convex, Better Auth, Autumn billing, and Sentry. Active version at tanvex.",
     repo: "ramonclaudio/tanstack-start-hackathon",
-    status: "maintained",
+    status: "archived",
     hackathon: {
       name: "TanStack Start Hackathon",
       date: "Oct–Nov 2025",
     },
     backstory:
-      "Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn't place. Starter still works.",
+      "Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn't place. This repo is the original snapshot. Active version lives at <a href=\"https://github.com/ramonclaudio/tanvex\">tanvex</a>.",
   },
   {
     slug: "polar-commerce",
     name: "polar-commerce",
     stack: "Next.js · Convex · Polar",
     description:
-      "Experimental e-commerce on Polar. Custom cart bundling for multi-item checkout via ephemeral products.",
+      "Experimental e-commerce on Polar with custom cart bundling, Convex real-time sync, and Better Auth.",
     repo: "ramonclaudio/polar-commerce",
     liveUrl: "https://polar-commerce.vercel.app",
     liveLabel: "Demo",
@@ -185,7 +184,7 @@ export const projects: Project[] = [
     name: "shopify-hydrogen-shadcn-template",
     stack: "Hydrogen · React Router 7 · shadcn/ui",
     description:
-      "Shopify storefront template built on Hydrogen, React Router 7, and shadcn/ui.",
+      "Shopify storefront template with Hydrogen, React Router 7, and shadcn/ui.",
     repo: "ramonclaudio/shopify-hydrogen-shadcn-template",
   },
   {
@@ -193,15 +192,15 @@ export const projects: Project[] = [
     name: "uniwind-ui",
     stack: "React Native · Uniwind · Tailwind",
     description:
-      "shadcn/ui for React Native. Copy-paste components for iOS, Android, and Web from one codebase.",
+      "shadcn/ui for React Native. Copy and paste components built on Uniwind. iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
   },
   {
     slug: "vercel-blob-client-starter",
     name: "vercel-blob-client-starter",
-    stack: "Next.js · Vercel Blob",
+    stack: "Next.js 16 · React 19 · Vercel Blob",
     description:
-      "Client-side Vercel Blob starter with drag-and-drop, multipart uploads, and a file gallery.",
+      "Next.js 16 + React 19 starter exercising every client-side Vercel Blob SDK feature.",
     repo: "ramonclaudio/vercel-blob-client-starter",
   },
   {
@@ -209,7 +208,7 @@ export const projects: Project[] = [
     name: "bun-react-effect-example",
     stack: "Bun · React · Effect",
     description:
-      "End-to-end type safety on top of bun init's React + shadcn starter via Effect TypeScript.",
+      "bun init React + shadcn/ui starter, made type-safe end-to-end with Effect TypeScript.",
     repo: "ramonclaudio/bun-react-effect-example",
   },
   {
@@ -217,7 +216,7 @@ export const projects: Project[] = [
     name: "howold",
     stack: "Bun · TypeScript",
     description:
-      "Find the freshest examples in any GitHub repo by first-commit date instead of last-update.",
+      "Find the latest examples, templates, and starters in GitHub repos by first-commit date instead of last-update.",
     repo: "ramonclaudio/howold",
   },
   {
@@ -225,7 +224,7 @@ export const projects: Project[] = [
     name: "claude-code-statusline",
     stack: "TypeScript · Claude Code",
     description:
-      "Customizable status line for Claude Code. Project, branch, framework, git status, model.",
+      "Customizable status line for Claude Code with project, git, runtime, and model info.",
     repo: "ramonclaudio/claude-code-statusline",
   },
   {
@@ -233,7 +232,7 @@ export const projects: Project[] = [
     name: "create-claude",
     stack: "JavaScript · CLI",
     description:
-      "Bootstrap Claude Code projects with commands, hooks, agents, and a statusline.",
+      "Bootstrap Claude Code into any project with hooks, agents, slash commands, and safety in one command.",
     repo: "ramonclaudio/create-claude",
   },
   {
@@ -241,7 +240,7 @@ export const projects: Project[] = [
     name: "create-codex",
     stack: "TypeScript · CLI",
     description:
-      "Bootstrap AGENTS.md across any AI coding agent. One command, zero deps.",
+      "Bootstrap AGENTS.md into any project with auto-detection of your stack.",
     repo: "ramonclaudio/create-codex",
   },
   {
@@ -251,12 +250,14 @@ export const projects: Project[] = [
     description:
       "Raycast extension for managing MCP servers across Cursor, VS Code, and Windsurf.",
     repo: "ramonclaudio/raycast-mcp-server-manager",
+    status: "archived",
   },
   {
     slug: "cursor-ai-liquid-glass-themes",
     name: "cursor-ai-liquid-glass-themes",
     stack: "CSS · Cursor",
-    description: "Liquid glass theme mod for Cursor with real OS vibrancy.",
+    description:
+      "Liquid glass / acrylic theme mod for Cursor, built on Vibrancy Continued.",
     repo: "ramonclaudio/cursor-ai-liquid-glass-themes",
   },
   {
@@ -264,15 +265,16 @@ export const projects: Project[] = [
     name: "cursor-ai-usage-spending-limit-manager",
     stack: "JavaScript · Browser",
     description:
-      "Browser console workaround for managing Cursor AI spending limits when the UI locks you out.",
+      "Browser console script for managing Cursor's spending limit and usage-based pricing. Cursor eventually fixed the bug.",
     repo: "ramonclaudio/cursor-ai-usage-spending-limit-manager",
+    status: "archived",
   },
   {
     slug: "tempo-panel-manager",
     name: "tempo-panel-manager",
     stack: "JavaScript · Extension",
     description:
-      "Browser extension that opens Tempo chat and canvas panels in standalone windows.",
+      "Browser extension that pops Tempo's chat and canvas panels into clean standalone windows.",
     repo: "ramonclaudio/tempo-panel-manager",
   },
   {
@@ -280,38 +282,39 @@ export const projects: Project[] = [
     name: "ny-tech-week-event-crawler",
     stack: "JavaScript · Browser",
     description:
-      "Browser console scraper for NY Tech Week events. Zero deps, exports JSON.",
+      "Browser console script that scrapes the NY Tech Week calendar into structured JSON.",
     repo: "ramonclaudio/ny-tech-week-event-crawler",
   },
   {
     slug: "ramonclaudio-com",
     name: "ramonclaudio.com",
-    stack: "Astro · Tailwind",
+    stack: "Astro 6 · Tailwind v4 · TypeScript",
     description:
-      "This site. Astro, Tailwind, content collections, dynamic OG images. Deployed on Vercel.",
+      "Personal site at ramonclaudio.com. Astro 6 + Tailwind v4 + TypeScript, deployed on Vercel.",
     repo: "ramonclaudio/ramonclaudio.com",
   },
   {
     slug: "firecrawl-toolkit",
     name: "firecrawl-toolkit",
     stack: "Python · Firecrawl",
-    description:
-      "Python wrapper for Firecrawl crawl, scrape, and map APIs with custom actions and device emulation.",
+    description: "Python wrapper around the Firecrawl REST API.",
     repo: "ramonclaudio/firecrawl-toolkit",
+    status: "archived",
   },
   {
     slug: "github-stats-checker",
     name: "github-stats-checker",
     stack: "Python · GitHub API",
     description:
-      "GitHub profile and repo statistics. Stars, forks, watchers, languages.",
+      "Python tool for analyzing GitHub profiles and repository statistics.",
     repo: "ramonclaudio/github-stats-checker",
   },
   {
     slug: "swiftui-doc-crawler",
     name: "swiftui-doc-crawler",
     stack: "Python · Selenium",
-    description: "Scrape SwiftUI documentation from developer.apple.com.",
+    description:
+      "Python crawler for Apple Developer SwiftUI documentation. Outputs Markdown.",
     repo: "ramonclaudio/swiftui-doc-crawler",
   },
   {
@@ -319,7 +322,7 @@ export const projects: Project[] = [
     name: "project-merge",
     stack: "Python · CLI",
     description:
-      "Merge an entire codebase into a single Markdown file for LLM context.",
+      "Python utility that consolidates a codebase into a single LLM-friendly Markdown file.",
     repo: "ramonclaudio/project-merge",
   },
   {
@@ -327,77 +330,85 @@ export const projects: Project[] = [
     name: "gemini-ai-toolkit",
     stack: "Python · Google",
     description:
-      "Python wrapper and CLI for Google Gemini with multimodal PDF, image, video, and audio support.",
+      "Python wrapper and CLI for Google's Gemini models, with multimodal.",
     repo: "ramonclaudio/gemini-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "claude-ai-toolkit",
     name: "claude-ai-toolkit",
     stack: "Python · Anthropic",
     description:
-      "Python wrapper and CLI for Anthropic Claude with chat, text, and vision.",
+      "Python wrapper and CLI for Anthropic's Claude models, with vision.",
     repo: "ramonclaudio/claude-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "grok-ai-toolkit",
     name: "grok-ai-toolkit",
     stack: "Python · xAI",
     description:
-      "Python wrapper and CLI for xAI Grok with chat, completion, and vision.",
+      "Python wrapper and CLI for xAI's Grok models, with vision.",
     repo: "ramonclaudio/grok-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "groq-ai-toolkit",
     name: "groq-ai-toolkit",
     stack: "Python · Groq",
-    description: "Python wrapper and CLI for Groq's LPU inference engine.",
+    description:
+      "Python wrapper and CLI for Groq's LPU inference API.",
     repo: "ramonclaudio/groq-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "mistral-ai-toolkit",
     name: "mistral-ai-toolkit",
     stack: "Python · Mistral",
     description:
-      "Python wrapper and CLI for Mistral's Mixtral, Mistral, and NeMo models.",
+      "Python wrapper and CLI for Mistral's open and closed models.",
     repo: "ramonclaudio/mistral-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "perplexity-ai-toolkit",
     name: "perplexity-ai-toolkit",
     stack: "Python · Perplexity",
     description:
-      "Python wrapper and CLI for Perplexity Sonar with real-time web search.",
+      "Python wrapper and CLI for Perplexity's Sonar models, with real-time search.",
     repo: "ramonclaudio/perplexity-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "gemma-ai-toolkit",
     name: "gemma-ai-toolkit",
     stack: "Python · Google",
     description:
-      "Python wrapper and CLI for Google's open-source Gemma instruct models. Offline-capable once cached.",
+      "Python wrapper and CLI for Google's Gemma open-source models.",
     repo: "ramonclaudio/gemma-ai-toolkit",
+    status: "archived",
   },
   {
     slug: "google-reverse-image-search",
-    name: "Google-Reverse-Image-Search",
+    name: "google-reverse-image-search",
     stack: "Python · Google",
-    description:
-      "Python library for Google reverse image search. Find sources and higher-resolution versions.",
-    repo: "ramonclaudio/Google-Reverse-Image-Search",
+    description: "Python wrapper for Google's reverse image search.",
+    repo: "ramonclaudio/google-reverse-image-search",
   },
   {
     slug: "google-search-api-wrapper",
-    name: "Google-Search-API-Wrapper",
+    name: "google-search-api-wrapper",
     stack: "Python · Google",
-    description: "Python wrapper for Google's Custom Search JSON API.",
-    repo: "ramonclaudio/Google-Search-API-Wrapper",
+    description:
+      "Python wrapper for Google's Custom Search JSON API. Text and image search.",
+    repo: "ramonclaudio/google-search-api-wrapper",
   },
   {
     slug: "httparser",
     name: "HTTParser",
     stack: "Python · Selenium",
     description:
-      "Python library for parsing static and JS-rendered web content.",
+      "Python library for parsing web content over HTTP, with optional JavaScript rendering via Selenium.",
     repo: "ramonclaudio/HTTParser",
   },
 ];
