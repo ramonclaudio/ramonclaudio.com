@@ -29,6 +29,7 @@ export const projects: Project[] = [
     description:
       "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code.",
     repo: "ramonclaudio/ccbase",
+    detail: "200 total downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
@@ -77,7 +78,7 @@ export const projects: Project[] = [
     description:
       "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "~750 weekly downloads · Convex Components Directory",
+    detail: "3,767 total downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
@@ -138,7 +139,7 @@ export const projects: Project[] = [
     description:
       "TanStack Start starter on the latest majors. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt. No Radix, no ESLint, no Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "~657 weekly downloads (starter + create-tanstack-cn CLI)",
+    detail: "657 total downloads (starter + create-tanstack-cn CLI)",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -226,6 +227,7 @@ export const projects: Project[] = [
     description:
       "Customizable status line for Claude Code with project, git, runtime, and model info.",
     repo: "ramonclaudio/claude-code-statusline",
+    detail: "391 total downloads",
   },
   {
     slug: "create-claude",
@@ -234,6 +236,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap Claude Code into any project with hooks, agents, slash commands, and safety in one command.",
     repo: "ramonclaudio/create-claude",
+    detail: "1,498 total downloads",
   },
   {
     slug: "create-codex",
@@ -242,6 +245,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap AGENTS.md into any project with auto-detection of your stack.",
     repo: "ramonclaudio/create-codex",
+    detail: "269 total downloads",
   },
   {
     slug: "raycast-mcp-server-manager",
