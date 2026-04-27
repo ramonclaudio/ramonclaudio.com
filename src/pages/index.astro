@@ -33,6 +33,11 @@ const personSchema = {
     "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 28 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, Astro, and TanStack.",
   knowsAbout: [
     "TypeScript",
+    "Swift",
+    "Rust",
+    "Zig",
+    "Go",
+    "Python",
     "React",
     "React Native",
     "Expo",
@@ -40,6 +45,8 @@ const personSchema = {
     "Better Auth",
     "Bun",
     "Tauri",
+    "Claude Code",
+    "AI SDK",
     "Open Source Software",
   ],
   sameAs: [
@@ -287,19 +294,19 @@ const contributions = [
 
       <p>
         I'm Ray. Writing code since 2013, mostly solo. Most of what's on my
-        GitHub started as friction in my own app: a dep behaves weird, I read
-        the source to figure out why, end up filing a PR and keeping a patch
-        around so my projects don't sit waiting on review. Right now that's
-        mostly React Native apps on Expo with Convex for backend and Better
-        Auth for auth. Canary across the stack, because I like being close to
-        the platform. I'm not the kind of engineer who has framework internals
-        memorized, but give me a real problem and time to read the source and
-        I'll ship the fix. Also drink way too much coffee. Sey beans, V60,
-        1Zpresso ZP6, full nerd mode (<a href="/setup#coffee" class="text-foreground underline decoration-dashed underline-offset-4">I go deeper here</a>).
+        GitHub started as friction in my own app: a dep behaves weird, I cut
+        the stack down to a minimal repro to find the cause, end up filing a
+        PR and keeping a patch around so my projects don't sit waiting on
+        review. Right now that's mostly React Native apps on Expo with Convex
+        for backend and Better Auth for auth. Canary across the stack, because
+        I like being close to the platform. I'm not the kind of engineer who
+        has framework internals memorized, but give me a real problem and time
+        to read the source and I'll ship the fix. Also drink way too much
+        coffee. Sey beans, V60, 1Zpresso ZP6, full nerd mode (<a href="/setup#coffee" class="text-foreground underline decoration-dashed underline-offset-4">I go deeper here</a>).
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        28 PRs merged upstream · 9 to <a
+        28 PRs merged across 10 repos · 8 to <a
           href="https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged"
           target="_blank"
           rel="noopener noreferrer"
@@ -351,8 +358,8 @@ const contributions = [
     <section id="open-source-top" class="pt-12 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[merged.upstream]</h2>
       <p class="mt-2 text-sm text-muted-foreground">
-        {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged to
-        projects I don't maintain.
+        {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged
+        into projects I don't maintain.
       </p>
       <ul class="mt-4">
         {
