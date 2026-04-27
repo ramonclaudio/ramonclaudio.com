@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://ramonclaudio.com",
   author: "Ray",
   profile: "https://ramonclaudio.com",
-  desc: "Software engineer building open source tools in TypeScript",
+  desc: "Product engineer shipping React Native apps on Expo with Convex and Better Auth. Upstream fixes to Expo, Convex, Bun, shadcn/ui.",
   title: "Ray",
   ogImage: "ramonclaudio-og.jpg",
   lightAndDarkMode: true,
