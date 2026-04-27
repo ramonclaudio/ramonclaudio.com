@@ -15,7 +15,7 @@ All of this runs on a [MacBook Pro 14" M4 Pro](https://www.apple.com/shop/buy-ma
 
 ### Apps
 
-[Zed](https://zed.dev/) is my editor. It's fast and I switched from VS Code a while back. [Ghostty](https://ghostty.org/) is my terminal, GPU-accelerated and native on macOS, and the config is just a text file. I run zsh with a [starship](https://starship.rs/) prompt. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) runs inside it, pretty much where I spend the whole day.
+[Zed](https://zed.dev/) is my editor. It's fast and does what I want from an editor these days, mostly reviewing the code changes Claude Code or Codex made. [Ghostty](https://ghostty.org/) is my terminal, GPU-accelerated and native on macOS, with the config in a text file. I run zsh with a [starship](https://starship.rs/) prompt, plus [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting). Most of my time now is in [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://github.com/openai/codex), and GitHub.
 
 [Helium](https://helium.computer/) for browsing.
 
@@ -23,25 +23,23 @@ All of this runs on a [MacBook Pro 14" M4 Pro](https://www.apple.com/shop/buy-ma
 
 I built 9 plugins for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and open sourced them all at [ramonclaudio/skills](https://github.com/ramonclaudio/skills). Context kept vanishing between sessions, commits took too many steps, and there was no good way to audit a codebase or coordinate parallel agents, so I built the tools I wanted. `/plugin marketplace add ramonclaudio/skills` installs the whole set.
 
-Honestly [handoff](https://github.com/ramonclaudio/skills/tree/main/plugins/handoff) is the one I'd keep if I could only keep one. Two hooks (`SessionStart` and `PostCompact`) auto-inject resume context. `/handoff:end` archives session state with build, test, and lint checks. I don't lose anything between days or machines anymore.
+The three I reach for every day:
 
-[qmd](https://github.com/ramonclaudio/skills/tree/main/plugins/qmd) is my second brain for docs. It clones GitHub repos, indexes them with BM25 + vector + hybrid search, and exposes an MCP `query` tool so Claude checks the source before guessing. Convex, Expo, AI SDK, Better Auth, RevenueCat, Remotion, Ghostty, and the Claude Code docs all indexed locally. All on-device. The CLI is [`@tobilu/qmd`](https://github.com/tobi/qmd). Node or Bun, SQLite for storage, GGUF models for embeddings. My plugin wraps it as an MCP server with 21 `/qmd:*` commands.
+[commit](https://github.com/ramonclaudio/skills/tree/main/plugins/commit) is the one I'd keep if I could only keep one. `/commit --pr` does the whole thing: atomic conventional commits grouped by architectural layer, GPG-signed, pushed, PR opened. A `PreToolUse` hook blocks force-push, `--no-verify`, and GPG bypass so I don't accidentally ship something dirty. `--push` and `--merge PR#` work standalone.
 
-[commit](https://github.com/ramonclaudio/skills/tree/main/plugins/commit) ships atomic conventional commits grouped by architectural layer, GPG-signed. A `PreToolUse` hook blocks force-push, `--no-verify`, and GPG bypass so I don't accidentally push something I shouldn't. `--push`, `--pr`, and `--merge PR#` all work from one command.
+[teams](https://github.com/ramonclaudio/skills/tree/main/plugins/teams) orchestrates multiple Claude Code sessions in parallel with file ownership so they don't clobber each other. When a task has two or three independent concerns (frontend plus backend, feature plus docs), I use this instead of going sequential.
 
-[polish](https://github.com/ramonclaudio/skills/tree/main/plugins/polish), [audit](https://github.com/ramonclaudio/skills/tree/main/plugins/audit), and [techdebt](https://github.com/ramonclaudio/skills/tree/main/plugins/techdebt) are my three code-quality sweeps. Polish scores every file 0-10 and refines anything 5+ with up to 5 parallel agents. Audit runs 4 agents in parallel for architecture, bugs, security, and convention compliance. Techdebt runs 3 agents for duplicated code, dead exports, unused deps, stale TODOs, and bloated files. I run polish after a feature, audit periodically, and techdebt at the end of a session.
-
-[teams](https://github.com/ramonclaudio/skills/tree/main/plugins/teams) orchestrates multiple Claude Code sessions in parallel with file ownership so they don't clobber each other. When a task has two or three independent concerns (frontend plus backend, feature plus docs), I use this instead of going sequential. [gif](https://github.com/ramonclaudio/skills/tree/main/plugins/gif) and [frames](https://github.com/ramonclaudio/skills/tree/main/plugins/frames) are my ffmpeg wrappers. Gif does a two-pass palette for compressed GIFs from screen recordings. Frames extracts 3 to 15 frames from a video so Claude can analyze bug repros visually.
+[qmd](https://github.com/ramonclaudio/skills/tree/main/plugins/qmd) extends [`@tobilu/qmd`](https://github.com/tobi/qmd) into an MCP server with 21 `/qmd:*` commands wired up for both Claude Code and Codex. Clones GitHub repos, indexes them with BM25 + vector + hybrid search, and exposes a `query` tool so the model checks the source before guessing. Convex, Expo, AI SDK, Better Auth, RevenueCat, Remotion, Ghostty, and the Claude Code docs all indexed locally on-device. SQLite for storage, GGUF models for embeddings. The point is to maximize the research and context my LLMs get on every conversation and sprint.
 
 ### Stack
 
-I'm full-stack TypeScript. [Bun](https://bun.com/) runs everything: runtime, package manager, test runner. I tried going back to Node once and it felt slow. I still use uv when I need Python, which is rare now but still happens.
+I'm full-stack TypeScript. I default to [Bun](https://bun.com/) for runtime, package manager, and test runner. When Bun hits a bug or a library or platform doesn't support it (not abnormal), I fall back to [pnpm](https://pnpm.io/), then [npm](https://www.npmjs.com/), and only [yarn](https://yarnpkg.com/) if I have to. [uv](https://github.com/astral-sh/uv) for Python, which is rare these days.
 
-Backend is Convex. Real-time, no infra to manage, and the DX is the best I've used. Better Auth via `@convex-dev/better-auth` for auth because I got tired of rolling my own. Zod 4 for validation because I don't trust anything that comes over the wire.
+[Expo](https://expo.dev/) is the top of my stack. Every new project starts here, on canary, because the future is Expo across all platforms: iOS, Android, and web from one codebase. `@expo/ui` and `expo-glass-effect` keep me as close to native Swift as I can get without leaving JS. Six apps on the same skeleton: Expo + Convex + Better Auth + RevenueCat + Resend, no NativeWind.
 
-Mobile is Expo, on canary. `@expo/ui` and `expo-glass-effect` for UI because I want to stay as close to native Swift as possible. Six apps running on the same skeleton: Expo + Convex + Better Auth + RevenueCat + Resend, without NativeWind.
+For web-only work, [TanStack Start](https://tanstack.com/start) on Convex, Better Auth, and [shadcn/ui](https://ui.shadcn.com/) handles pretty much everything. Tailwind v4 for styling, TanStack for routing, state, and queries. [Astro](https://astro.build/) for static content sites like this one.
 
-Web is [Astro](https://astro.build/) for content sites (this one) and [TanStack Start](https://tanstack.com/start) for apps. Tailwind v4 and shadcn/ui for styling. TanStack for routing, state, and queries.
+Backend is Convex. Real-time, no infra to manage, and the DX is the best I've used. Better Auth via `@convex-dev/better-auth` because I got tired of rolling my own. Zod 4 for validation because I don't trust anything that comes over the wire.
 
 Desktop is [Tauri](https://tauri.app/) with Rust. Small binaries and a native webview instead of Electron.
 
@@ -51,15 +49,13 @@ Linting is Oxlint and Oxfmt for TypeScript, Ruff for Python. Type checking with 
 
 I've replaced most of the default Unix tools with faster Rust alternatives. I'll usually try the Rust version of a tool when I see one.
 
-[yazi](https://github.com/sxyazi/yazi) for file management, [lazygit](https://github.com/jesseduffield/lazygit) for git, [delta](https://github.com/dandavison/delta) for diffs, [gh](https://cli.github.com/) for GitHub, [fzf](https://github.com/junegunn/fzf) for fuzzy finding. [fnm](https://github.com/Schniz/fnm) for Node versions.
+[delta](https://github.com/dandavison/delta) for diffs, [gh](https://cli.github.com/) for GitHub, [fzf](https://github.com/junegunn/fzf) for fuzzy finding, [tlrc](https://github.com/tldr-pages/tlrc) for tldr pages. [fnm](https://github.com/Schniz/fnm) for Node versions.
 
 [jq](https://jqlang.github.io/jq/) and [yq](https://github.com/mikefarah/yq) for JSON and YAML, [jless](https://github.com/PaulJuliusMartinez/jless) for viewing JSON.
 
 [bat](https://github.com/sharkdp/bat) instead of cat, [fd](https://github.com/sharkdp/fd) instead of find, [ripgrep](https://github.com/BurntSushi/ripgrep) instead of grep, [eza](https://github.com/eza-community/eza) instead of ls, [zoxide](https://github.com/ajeetdsouza/zoxide) instead of cd.
 
-[duf](https://github.com/muesli/duf) and [dust](https://github.com/bootandy/dust) for disk usage, [btm](https://github.com/ClementTsang/bottom) for system monitoring, [procs](https://github.com/dalance/procs) instead of ps, [trash](https://github.com/sindresorhus/trash-cli) instead of rm.
-
-[hyperfine](https://github.com/sharkdp/hyperfine) for benchmarking, [git-filter-repo](https://github.com/newren/git-filter-repo) for history rewrites.
+[duf](https://github.com/muesli/duf) and [dust](https://github.com/bootandy/dust) for disk usage, [btm](https://github.com/ClementTsang/bottom) for system monitoring, [procs](https://github.com/dalance/procs) instead of ps, [trash](https://github.com/sindresorhus/trash-cli) instead of rm. [hyperfine](https://github.com/sharkdp/hyperfine) for benchmarking.
 
 ### Coffee
 
