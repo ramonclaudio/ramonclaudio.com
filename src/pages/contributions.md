@@ -3,7 +3,7 @@ layout: ../layouts/AboutLayout.astro
 title: "Contributions"
 ---
 
-28 PRs merged across 10 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with drop-in fixes shipped before merge in Bun, npm, pnpm, and Yarn formats. The workflow: find the bug, file the upstream PR, drop the patch into the repo so my projects (and anyone else hitting the same thing) can ship without waiting. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
+28 PRs merged across 10 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 112 drop-in fixes shipped before merge for Bun, npm, and pnpm. I find the bug, file the upstream PR, and drop the patch into the repo so my projects (and anyone else hitting the same thing) can ship without waiting. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
 
 ### Merged PRs
 
@@ -50,13 +50,10 @@ Open (PRs still awaiting upstream merge):
 - `@convex-dev/better-auth` `0.11.4`: invalidate `cachedToken` and `pendingTokenRef` on session rotation, not just logout. Convex-side half of the [better-auth/better-auth#9087](https://github.com/better-auth/better-auth/pull/9087) fix (shipped in `better-auth@1.6.5`). [get-convex/better-auth#329](https://github.com/get-convex/better-auth/pull/329)
 - `@expo/ui` `56.0.0-canary-20260212-4f61309`: `scrollPosition` binding (iOS 17), `scrollPositionAnchor`, `onScrollPositionChangeSync` worklet callback, `id(string)` view modifier for scroll targets. [expo/expo#44652](https://github.com/expo/expo/pull/44652)
 - `expo-router` `56.0.0-canary-20260212-4f61309`: infinite render loop in all 5 Stack composition components (`Toolbar`, `Header`, `Screen.Title`, `SearchBar`, `Screen.BackButton`) when props include unstable references. Adds `useStableCompositionOption` helper with structural fingerprinting. [expo/expo#44563](https://github.com/expo/expo/pull/44563)
-- `@shopify/mini-oxygen` `4.0.0`: Vite 7 `ReferenceError: __vite_ssr_exportName__ is not defined`, missing 6th SSR key, `getBuiltins()` support, `fetchModule` importer fix, deprecated `root` removal, `vite` peer dep bumped to `^7.0.0`. Shipped with three sibling patches: `@shopify/hydrogen` `2026.1.0` (peer dep replaced with `^7.0.0`), `@shopify/hydrogen-react` `2026.1.0` (peer dep widened to include `^7.0.0`), `@shopify/cli-hydrogen` `11.1.9` (peer dep replaced with `^7.0.0`). [Shopify/hydrogen#3493](https://github.com/Shopify/hydrogen/pull/3493)
 - `@convex-dev/better-auth` `0.11.4`: migrate to better-auth 1.6.2. Bumps peer to `>=1.6.2 <1.7.0`, handles `Where.mode` with case-insensitive folding, passes `asResponse: false` at all 7 internal endpoint call sites, adds `twoFactor.verified` field, silences `oidcProvider` deprecation, exposes `version` on all 4 plugins. [get-convex/better-auth#323](https://github.com/get-convex/better-auth/pull/323)
 - `bun` `1.3.9`: two PRs. [oven-sh/bun#27085](https://github.com/oven-sh/bun/pull/27085) fixes `includePrerelease` semantics in peer dep semver validation. [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086) fixes invalid YAML in the `update-root-certs` workflow `labels` field
 
-Released (PR merged, patch either still active until the next release or already dropped):
-
-Dropped after release:
+Dropped (PR merged, patch no longer needed):
 
 - `better-auth` `1.6.2` -> `1.6.5`: [#9087](https://github.com/better-auth/better-auth/pull/9087)
 - `@expo/ui` `56.0.0-canary-20260212-4f61309` -> `56.0.0-canary-20260305-5163746`: [#43158](https://github.com/expo/expo/pull/43158), [#43228](https://github.com/expo/expo/pull/43228)
@@ -70,6 +67,7 @@ Dropped after release:
 - `create-fumadocs-app` `15.6.4` -> `15.6.5`: [#2092](https://github.com/fuma-nama/fumadocs/pull/2092), [#2095](https://github.com/fuma-nama/fumadocs/pull/2095)
 - `convex` `1.31.3` -> `1.31.4` (not my PR): `WebSocketManager` `addEventListener` guard, patched while reporting ([baafbf5](https://github.com/get-convex/convex-js/commit/baafbf5bb200d6db81804558fbd01ccce77355fc))
 - `jose` `6.0.3` -> `6.0.4`: `process.getBuiltinModule` removed from webapi dist for Edge Runtime compat ([panva/jose#752](https://github.com/panva/jose/issues/752))
+- `@shopify/mini-oxygen` `4.0.0` (not my PR, fix in next release): [Shopify/hydrogen#3617](https://github.com/Shopify/hydrogen/pull/3617) Environment API (Vite 6/7/8 backward compat) supersedes my rebase [#3493](https://github.com/Shopify/hydrogen/pull/3493), which picked up [@thomasKn](https://github.com/thomasKn)'s stalled [#3417](https://github.com/Shopify/hydrogen/pull/3417). Siblings `@shopify/hydrogen` `2026.1.0`, `@shopify/hydrogen-react` `2026.1.0`, `@shopify/cli-hydrogen` `11.1.9` dropped with it
 
 ### Issues I filed upstream
 
@@ -78,13 +76,13 @@ Dropped after release:
 - [panva/jose#752](https://github.com/panva/jose/issues/752) `process.getBuiltinModule` misuse broke Edge Runtime and Next.js middleware. Traces convinced [@panva](https://github.com/panva) the bug was real, fixed in [`v6.0.4`](https://github.com/panva/jose/releases/tag/v6.0.4)
 - [shadcn-ui/ui#8892](https://github.com/shadcn-ui/ui/issues/8892) registry directory submission for CodeRabbit. [@shadcn](https://github.com/shadcn) asked me to send a PR, I shipped [#9331](https://github.com/shadcn-ui/ui/pull/9331) which auto-closed this issue on merge
 - [get-convex/better-auth#219](https://github.com/get-convex/better-auth/issues/219) potential duplicate token requests during concurrent `fetchAccessToken` calls. Fixed by my own PR [#267](https://github.com/get-convex/better-auth/pull/267)
-- [Shopify/hydrogen#3263](https://github.com/Shopify/hydrogen/issues/3263) Vite 7 support in `@shopify/mini-oxygen`, open and tracked by my PR [#3493](https://github.com/Shopify/hydrogen/pull/3493)
+- [Shopify/hydrogen#3263](https://github.com/Shopify/hydrogen/issues/3263) Vite 7 support in `@shopify/mini-oxygen`. Closed by me after [@frandiox](https://github.com/frandiox) shipped Vite Environment API in [#3617](https://github.com/Shopify/hydrogen/pull/3617), superseding my rebase [#3493](https://github.com/Shopify/hydrogen/pull/3493)
 - [oven-sh/bun#29444](https://github.com/oven-sh/bun/issues/29444) `bun install` warns on valid prereleases in peer deps. `includePrerelease` not applied to peer dep semver checks, so `@tanstack/router-core@1.167.10-rc.0` satisfying `^1.167.0` emits a spurious peer warning. Open and tracked by my PR [oven-sh/bun#27085](https://github.com/oven-sh/bun/pull/27085)
 - [anthropics/claude-code#18075](https://github.com/anthropics/claude-code/issues/18075) feature request for an env var to set a custom Chromium browser path, open
 - [anthropics/claude-code#18181](https://github.com/anthropics/claude-code/issues/18181) manual update doesn't fix the symlink when `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` is set. [@bcherny](https://github.com/bcherny) replied "Fix incoming" and closed it
-- [anthropics/claude-code#20664](https://github.com/anthropics/claude-code/issues/20664) `--fork-session` doesn't inherit `CLAUDE_CODE_TASK_LIST_ID` from the parent session, stale after `github-actions` auto-closed it for inactivity with no human response
+- [anthropics/claude-code#20664](https://github.com/anthropics/claude-code/issues/20664) `--fork-session` doesn't inherit `CLAUDE_CODE_TASK_LIST_ID` from the parent session, auto-closed for inactivity
 - [tobi/qmd#198](https://github.com/tobi/qmd/issues/198) `bun add` blocks `node-llama-cpp` postinstall (harmless warning, qmd still works). Closed by me as not a bug, upstream later added `pnpm.onlyBuiltDependencies` in [cc32c995](https://github.com/tobi/qmd/commit/cc32c995)
 - [Textualize/textual#5980](https://github.com/Textualize/textual/issues/5980) emoji with variation selectors cause button layout misalignment in Ghostty. Closed after the discussion concluded the fix belongs in terminal emulators via DEC mode 2027, not in `textual`
-- [cursor/cursor#3182](https://github.com/cursor/cursor/issues/3182) unable to update spending limit or toggle usage-based pricing on the main dashboard. Fixed upstream (cursor later disabled their issue tracker)
+- [cursor/cursor#3182](https://github.com/cursor/cursor/issues/3182) unable to update spending limit or toggle usage-based pricing on the main dashboard. Fixed upstream
 
 \- Ray

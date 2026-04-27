@@ -59,7 +59,7 @@ export const projects: Project[] = [
     name: "dreamseeker",
     stack: "Expo · Convex · RevenueCat",
     description:
-      "My RevenueCat Shipyard 2026 submission. Goal-achievement app: break goals into daily micro-actions, track with streaks and XP, save inspiration to community pin boards.",
+      "My RevenueCat Shipyard 2026 submission. Goal-achievement app: break goals into daily micro-actions, track with streaks and XP, share progress to a community feed.",
     repo: "ramonclaudio/dreamseeker",
     featured: true,
     status: "live",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
       date: "Feb 2026",
     },
     backstory:
-      "Hackathon submission for RevenueCat Shipyard 2026. Not a product, not for sale, just what I shipped in a weekend.\n\nPick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.\n\nDidn't place. The app keeps running.",
+      "Hackathon submission for RevenueCat Shipyard 2026. Not a product, not for sale, just what I shipped in a weekend.\n\nPick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.",
   },
   {
     slug: "convex-revenuecat",
@@ -125,7 +125,7 @@ export const projects: Project[] = [
   {
     slug: "patches",
     name: "patches",
-    stack: "Diff · Bun · pnpm · yarn",
+    stack: "Diff · Bun · npm · pnpm",
     description:
       "Patch files for packages and dependencies. Drop-in fixes for bugs, missing features, and type errors awaiting upstream merges.",
     repo: "ramonclaudio/patches",
@@ -137,9 +137,9 @@ export const projects: Project[] = [
     name: "tanstack-cn",
     stack: "TanStack Start · Vite 8 · Tailwind v4",
     description:
-      "TanStack Start starter on the latest majors. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt. No Radix, no ESLint, no Prettier.",
+      "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt. No Radix, no ESLint, no Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "657 total downloads (starter + create-tanstack-cn CLI)",
+    detail: "657 total downloads across tanstack-cn and create-tanstack-cn",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -152,8 +152,9 @@ export const projects: Project[] = [
     name: "tanvex",
     stack: "TanStack Start · Convex · Better Auth",
     description:
-      "TanStack Start + Convex + Better Auth starter. SSR auth, email OTP, user profiles, rate limiting, one-command setup.",
+      "tanstack-cn extended with Better Auth and Convex, running on latest majors. My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs. SSR auth, email OTP, rate limiting, one-command setup.",
     repo: "ramonclaudio/tanvex",
+    status: "maintained",
   },
   {
     slug: "tanstack-start-hackathon",
@@ -195,6 +196,8 @@ export const projects: Project[] = [
     description:
       "shadcn/ui for React Native. Copy and paste components built on Uniwind. iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
+    detail:
+      "My own apps are moving off this toward native Swift via @expo/ui.",
   },
   {
     slug: "vercel-blob-client-starter",

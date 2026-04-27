@@ -73,7 +73,7 @@ const isActive = (path: string) => {
               href="/"
               class:list={[
                 "block px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
-                { "active-nav": currentPath === "/" || isActive("/about") || isActive("/resume") || isActive("/setup") },
+                { "active-nav": currentPath === "/" || isActive("/about") || isActive("/now") || isActive("/resume") || isActive("/setup") },
               ]}
             >
               [me]
@@ -91,6 +91,14 @@ const isActive = (path: string) => {
                   class="block px-4 py-2 text-sm hover:text-foreground"
                 >
                   about
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/now"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
+                >
+                  now
                 </a>
               </li>
               <li>

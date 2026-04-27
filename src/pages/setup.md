@@ -37,17 +37,19 @@ Honestly [handoff](https://github.com/ramonclaudio/skills/tree/main/plugins/hand
 
 I'm full-stack TypeScript. [Bun](https://bun.com/) runs everything: runtime, package manager, test runner. I tried going back to Node once and it felt slow. I still use uv when I need Python, which is rare now but still happens.
 
-Backend is Convex. Real-time, no infra to manage, and the DX is the best I've used. Better Auth for auth because I got tired of rolling my own. Zod for validation because I don't trust anything that comes over the wire.
+Backend is Convex. Real-time, no infra to manage, and the DX is the best I've used. Better Auth via `@convex-dev/better-auth` for auth because I got tired of rolling my own. Zod 4 for validation because I don't trust anything that comes over the wire.
 
-Desktop is [Tauri](https://tauri.app/) with Rust. Small binaries, native webview, no Electron. Web is [Astro](https://astro.build/) for content sites (this one) and [TanStack Start](https://tanstack.com/start) for apps.
+Mobile is Expo, on canary. `@expo/ui` and `expo-glass-effect` for UI because I want to stay as close to native Swift as possible. Six apps running on the same skeleton: Expo + Convex + Better Auth + RevenueCat + Resend. No NativeWind.
 
-Frontend is Tailwind v4 and shadcn/ui for styling. React and React Native for UI, Expo for mobile, TanStack for routing, state, and queries.
+Web is [Astro](https://astro.build/) for content sites (this one) and [TanStack Start](https://tanstack.com/start) for apps. Tailwind v4 and shadcn/ui for styling. TanStack for routing, state, and queries.
+
+Desktop is [Tauri](https://tauri.app/) with Rust. Small binaries, native webview, no Electron.
 
 Linting is Oxlint and Oxfmt for TypeScript, Ruff for Python. Type checking with tsgo or tsc for TypeScript, ty for Python.
 
 ### CLI Tools
 
-I replaced most of the default Unix tools with faster Rust alternatives. Keyboard over mouse, terminal over GUI. If it's written in Rust and saves me a keystroke I'll probably try it.
+I replaced most of the default Unix tools with faster Rust alternatives. If it's written in Rust and saves me a keystroke I'll probably try it.
 
 [yazi](https://github.com/sxyazi/yazi) for file management, [lazygit](https://github.com/jesseduffield/lazygit) for git, [delta](https://github.com/dandavison/delta) for diffs, [gh](https://cli.github.com/) for GitHub, [fzf](https://github.com/junegunn/fzf) for fuzzy finding. [fnm](https://github.com/Schniz/fnm) for Node versions.
 
