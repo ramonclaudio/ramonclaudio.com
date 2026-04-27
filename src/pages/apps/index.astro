@@ -9,7 +9,7 @@ const apps = [
     name: "Counter",
     slug: "counter",
     platform: "iOS",
-    hackathon: "ElevenHacks Season 1",
+    note: "ElevenHacks Season 1",
     tagline: "Voice AI for deal research, practice negotiations, and live coaching.",
     description:
       "Say what you're buying and it pulls prices, alternatives, and counterpoints in real time.",
@@ -18,15 +18,24 @@ const apps = [
     name: "DreamSeeker",
     slug: "dreamseeker",
     platform: "iOS",
-    hackathon: "RevenueCat Shipyard 2026",
+    note: "RevenueCat Shipyard 2026",
     tagline: "Goal-achievement app.",
     description:
       "Set goals, break them into daily actions, track streaks and XP.",
   },
+  {
+    name: "Vexpo",
+    slug: "vexpo",
+    platform: "iOS",
+    note: "Open-source template",
+    tagline: "Open-source iOS template. Convex on Expo.",
+    description:
+      "Wires Expo, Convex, and Better Auth together so you don't have to set the same stack up by hand on every new project.",
+  },
 ];
 ---
 
-<Layout title="Apps | Ray" description="Hackathon submissions on iOS.">
+<Layout title="Apps | Ray" description="iOS apps and open-source templates.">
   <Header />
   <Breadcrumb />
   <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
@@ -35,7 +44,7 @@ const apps = [
         [apps]
       </h1>
       <p>
-        Hackathon submissions. {apps.length} on iOS. Neither placed. Both still run.
+        iOS apps. {apps.length} total: two hackathon submissions (neither placed, both still run) and an open-source starter template.
       </p>
       <ul class="mt-6">
         {
@@ -50,7 +59,7 @@ const apps = [
                 </a>
                 <span class="text-xs text-muted-foreground">
                   {" · "}
-                  {app.hackathon}
+                  {app.note}
                   {" · "}
                   {app.platform}
                 </span>
