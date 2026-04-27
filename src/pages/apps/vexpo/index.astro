@@ -24,7 +24,7 @@ const features = [
   "Theme switching (system / light / dark) with persisted preference",
   "Rate limiting on every auth endpoint",
   "OTA updates via EAS Update with fingerprint-based gating",
-  "iOS-only — no NativeWind, no Tailwind, no compromises",
+  "iOS only. No NativeWind or Tailwind here.",
 ];
 
 const setup = [
@@ -39,7 +39,7 @@ const setup = [
 
 <Layout
   title={`Vexpo | ${SITE.title}`}
-  description="Open-source iOS template — Convex + Better Auth + Resend on Expo. Production-ready stack you can fork and ship."
+  description="Open-source iOS template. Convex + Better Auth + Resend on Expo. Production-ready stack you can fork and ship."
 >
   <Header />
   <Breadcrumb />
@@ -50,7 +50,7 @@ const setup = [
       </h1>
       <p class="text-sm italic text-muted-foreground">Open-source iOS template. Convex on Expo.</p>
       <p class="mt-4">
-        Vexpo is a production-ready iOS template that wires <a href="https://expo.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Expo</a>, <a href="https://convex.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Convex</a>, and <a href="https://better-auth.com" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Better Auth</a> into a single opinionated stack. Skip the wiring, start shipping.
+        Vexpo is an iOS template that wires <a href="https://expo.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Expo</a>, <a href="https://convex.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Convex</a>, and <a href="https://better-auth.com" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Better Auth</a> together so you don't have to set the same stack up by hand on every new project.
       </p>
       <p class="mt-4">
         Source: <a href="https://github.com/ramonclaudio/vexpo" class="text-foreground decoration-dashed underline-offset-4 hover:underline">github.com/ramonclaudio/vexpo</a>
@@ -63,7 +63,7 @@ const setup = [
         {
           stack.map(item => (
             <li class="my-3">
-              <strong>{item.name}</strong> — <span class="text-muted-foreground">{item.description}</span>
+              <strong>{item.name}</strong>: <span class="text-muted-foreground">{item.description}</span>
             </li>
           ))
         }
@@ -83,7 +83,7 @@ const setup = [
         {
           setup.map(step => (
             <li class="my-2 text-muted-foreground">
-              <code class="text-foreground">{step.cmd}</code> — {step.description}
+              <code class="text-foreground">{step.cmd}</code>: {step.description}
             </li>
           ))
         }
