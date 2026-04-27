@@ -52,7 +52,7 @@ export const projects: Project[] = [
       date: "Mar 2026",
     },
     backstory:
-      "Hackathon submission for ElevenHacks Season 1, the ElevenLabs × Firecrawl collab. Not a product, not for sale, just what I shipped in a weekend.\n\nThree voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during an actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place. Kept building anyway.",
+      "Hackathon submission for ElevenHacks Season 1, the ElevenLabs × Firecrawl collab. A weekend project, not a product.\n\nThree voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during an actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place but I kept building it after the hackathon.",
   },
   {
     slug: "dreamseeker",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
       date: "Feb 2026",
     },
     backstory:
-      "Hackathon submission for RevenueCat Shipyard 2026. Not a product, not for sale, just what I shipped in a weekend.\n\nPick a goal. Break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. 10 levels from Dreamer to Legend. 4 achievement badges. 16-week streak heatmap. Auth state syncs to RevenueCat on login. Every UI read is a live Convex subscription. Row-level security on every table, rate limiting on every endpoint, input validation on every mutation.",
+      "Hackathon submission for RevenueCat Shipyard 2026. A weekend project, not a product.\n\nYou pick a goal and break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. Ten levels from Dreamer to Legend, four achievement badges, a 16-week streak heatmap. Auth state syncs to RevenueCat on login, and every UI read is a live Convex subscription. There's row-level security on every table, rate limiting on every endpoint, and input validation on every mutation.",
   },
   {
     slug: "convex-revenuecat",
@@ -84,7 +84,7 @@ export const projects: Project[] = [
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
     liveLabel: "npm",
     backstory:
-      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and gets the edge cases right: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
+      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and covers the tricky cases: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
   },
   {
     slug: "gitbar",
@@ -137,7 +137,7 @@ export const projects: Project[] = [
     name: "tanstack-cn",
     stack: "TanStack Start · Vite 8 · Tailwind v4",
     description:
-      "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt. No Radix, no ESLint, no Prettier.",
+      "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
     repo: "ramonclaudio/tanstack-cn",
     detail: "657 total downloads across tanstack-cn and create-tanstack-cn",
     featured: true,
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     liveUrl: "https://tanstack-cn.vercel.app",
     liveLabel: "Demo",
     backstory:
-      "Every TanStack Start + shadcn starter on GitHub ships last year's choices: Radix, ESLint, Prettier, Webpack-era Vite. This one doesn't. Latest majors across the board (Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt), SEO and security plumbing wired, nothing to strip out.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), <code>tanstack-cn</code> is the shared package the scaffolded project consumes. CLI detects your package manager (bun / pnpm / yarn / npm), installs dependencies, and initializes git with an initial commit.",
+      "Most TanStack Start + shadcn starters on GitHub still ship the older choices like Radix, ESLint, Prettier, and Webpack-era Vite. I wanted one on the latest majors: Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt. SEO and security plumbing are already wired up so there's nothing to strip out before starting a new project.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), and <code>tanstack-cn</code> is the shared package the scaffolded project consumes. The CLI detects your package manager (bun, pnpm, yarn, or npm), installs dependencies, and initializes git with an initial commit.",
   },
   {
     slug: "tanvex",
