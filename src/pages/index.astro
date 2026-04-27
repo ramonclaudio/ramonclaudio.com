@@ -28,16 +28,18 @@ const personSchema = {
   alternateName: "Ray",
   url: "https://ramonclaudio.com",
   image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
-  jobTitle: "Software Engineer",
+  jobTitle: "Product Engineer",
   description:
-    "Full-stack TypeScript engineer, 13 years in. 40 open source repos, 28 merged PRs to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, and more.",
+    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 28 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, Astro, and TanStack.",
   knowsAbout: [
     "TypeScript",
     "React",
     "React Native",
     "Expo",
     "Convex",
+    "Better Auth",
     "Bun",
+    "Tauri",
     "Open Source Software",
   ],
   sameAs: [
@@ -284,26 +286,30 @@ const contributions = [
       </a>
 
       <p>
-        I'm Ray. 13 years writing code. When a dep breaks, I fix it at the source
-        and patch my apps so I'm never blocked. I also drink way too much
-        coffee. Sey beans, V60,
+        I'm Ray. Writing code since 2013, mostly solo. Most of what's on my
+        GitHub started as friction in my own app: a dep behaves weird, I read
+        the source to figure out why, end up filing a PR and keeping a patch
+        around so my projects don't sit waiting on review. Right now that's
+        mostly React Native apps on Expo with Convex for backend and Better
+        Auth for auth. Canary across the stack, because I like being close to
+        the platform. I'm not the kind of engineer who has framework internals
+        memorized, but give me a real problem and time to read the source and
+        I'll ship the fix. Also drink way too much coffee. Sey beans, V60,
         1Zpresso ZP6, full nerd mode (<a href="/setup#coffee" class="text-foreground underline decoration-dashed underline-offset-4">I go deeper here</a>).
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        40 repos · 28 PRs merged upstream · 7 npm packages · ~6,800 total
-        downloads
-      </p>
-
-      <p class="mt-2 text-sm text-muted-foreground">
-        Every merged PR shipped as a drop-in <a
+        28 PRs merged upstream · 9 to <a
+          href="https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+        >@expo/ui</a> · 112 drop-in <a
           href="https://github.com/ramonclaudio/patches"
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-        >
-          patch
-        </a> first. Bun, npm, pnpm, Yarn.
+        >patches</a> · 7 npm packages
       </p>
 
       <div class="mt-4 flex flex-wrap items-center gap-4">
@@ -342,40 +348,7 @@ const contributions = [
 
     <Hr />
 
-    <section id="shipped" class="pt-12 pb-6">
-      <h2 class="text-2xl font-semibold tracking-wide">[shipped]</h2>
-      <ul class="mt-4">
-        {
-          featuredProjects.map(project => (
-            <li class="my-5">
-              <div>
-                <a
-                  href={`/projects/${project.slug}`}
-                  class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
-                >
-                  {project.name}
-                </a>
-                <span class="text-xs text-muted-foreground"> · {project.stack}</span>
-              </div>
-              <p>{project.description}</p>
-              {project.detail && (
-                <p class="text-xs text-muted-foreground">{project.detail}</p>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-      <div class="mt-4">
-        <LinkButton href="/projects">
-          all projects
-          <IconArrowRight class="inline-block rtl:-rotate-180" />
-        </LinkButton>
-      </div>
-    </section>
-
-    <Hr />
-
-    <section id="open-source" class="pt-12 pb-6">
+    <section id="open-source-top" class="pt-12 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[merged.upstream]</h2>
       <p class="mt-2 text-sm text-muted-foreground">
         {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged to
@@ -416,6 +389,77 @@ const contributions = [
             </li>
           ))
         }
+      </ul>
+    </section>
+
+    <Hr />
+
+    <section id="shipped" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[shipped]</h2>
+      <ul class="mt-4">
+        {
+          featuredProjects.map(project => (
+            <li class="my-5">
+              <div>
+                <a
+                  href={`/projects/${project.slug}`}
+                  class="inline-block text-lg font-medium text-foreground decoration-dashed underline-offset-4 hover:underline"
+                >
+                  {project.name}
+                </a>
+                <span class="text-xs text-muted-foreground"> · {project.stack}</span>
+              </div>
+              <p>{project.description}</p>
+              {project.detail && (
+                <p class="text-xs text-muted-foreground">{project.detail}</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-4">
+        <LinkButton href="/projects">
+          all projects
+          <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </LinkButton>
+      </div>
+    </section>
+
+    <Hr />
+
+    <section id="stack" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[stack]</h2>
+      <ul class="mt-4 space-y-3">
+        <li>
+          <span class="font-medium text-foreground">Mobile.</span>
+          <span class="text-muted-foreground">
+            {" "}React Native apps on Expo, canary. <code class="rounded bg-muted px-1 py-0.5 text-xs">@expo/ui</code> + <code class="rounded bg-muted px-1 py-0.5 text-xs">expo-glass-effect</code>, native-first (no NativeWind). Convex, Better Auth, RevenueCat underneath. Six apps on the same skeleton.
+          </span>
+        </li>
+        <li>
+          <span class="font-medium text-foreground">Web.</span>
+          <span class="text-muted-foreground">
+            {" "}TanStack Start + Vite 8 + Base UI + shadcn + Bun + oxlint/oxfmt for new work. Next 16 for marketing surfaces. Astro for this one.
+          </span>
+        </li>
+        <li>
+          <span class="font-medium text-foreground">Backend.</span>
+          <span class="text-muted-foreground">
+            {" "}Convex for everything. Better Auth via <code class="rounded bg-muted px-1 py-0.5 text-xs">@convex-dev/better-auth</code>. Resend via <code class="rounded bg-muted px-1 py-0.5 text-xs">@convex-dev/resend</code>. RevenueCat via my own <a href="/projects/convex-revenuecat" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">convex-revenuecat</code></a> component.
+          </span>
+        </li>
+        <li>
+          <span class="font-medium text-foreground">Desktop + CLI.</span>
+          <span class="text-muted-foreground">
+            {" "}Tauri + Rust for menubar apps (<a href="/projects/gitbar" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">gitbar</code></a>). Bun everywhere else, compiled to single-file binaries when shipping.
+          </span>
+        </li>
+        <li>
+          <span class="font-medium text-foreground">Claude Code infra.</span>
+          <span class="text-muted-foreground">
+            {" "}Nine plugins in <a href="https://github.com/ramonclaudio/skills" target="_blank" rel="noopener noreferrer" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">skills</code></a>. Session handoff in <code class="rounded bg-muted px-1 py-0.5 text-xs">handoff</code>. SQLite dashboard over <code class="rounded bg-muted px-1 py-0.5 text-xs">~/.claude/</code> in <a href="/projects/ccbase" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">ccbase</code></a>. Zig 0.16 at <code class="rounded bg-muted px-1 py-0.5 text-xs">std_options</code> level in <code class="rounded bg-muted px-1 py-0.5 text-xs">seetree</code>.
+          </span>
+        </li>
       </ul>
     </section>
 
