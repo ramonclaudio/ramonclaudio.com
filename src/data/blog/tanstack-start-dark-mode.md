@@ -336,7 +336,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 export const Route = createRootRoute({
   head: () => ({
-    // your meta, links, etc.
+    // ...
   }),
   component: RootComponent,
 })
