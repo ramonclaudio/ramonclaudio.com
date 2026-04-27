@@ -1,0 +1,104 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+
+const stack = [
+  { name: "Expo SDK 56", description: "React Native 0.85, async routes, native tabs, native SwiftUI via @expo/ui." },
+  { name: "Convex", description: "Real-time backend with reactive queries and component composition." },
+  { name: "Better Auth", description: "Email + password, email OTP, Apple Sign In, sessions, rate limits." },
+  { name: "Resend", description: "Transactional email with auto-provisioned scoped key + webhook." },
+  { name: "EAS", description: "Submit + workflows for production, preview, TestFlight, OTA updates." },
+];
+
+const features = [
+  "Sign-up / sign-in with email + password, OTP verification, Apple Sign In",
+  "Push notifications via APNs with token registration on sign-in",
+  "Universal links + deep-link routing with allowlist",
+  "Profile editing with avatar uploads to Convex storage",
+  "Items demo: create, complete, search with full-text indexing",
+  "Active sessions screen with device-by-device revocation",
+  "Welcome / onboarding on first launch",
+  "Theme switching (system / light / dark) with persisted preference",
+  "Rate limiting on every auth endpoint",
+  "OTA updates via EAS Update with fingerprint-based gating",
+  "iOS-only — no NativeWind, no Tailwind, no compromises",
+];
+
+const setup = [
+  { cmd: "bun install", description: "install deps" },
+  { cmd: "bun run setup", description: "Convex + Better Auth + Resend + Apple + EAS, interactively" },
+  { cmd: "eas credentials -p ios", description: "wire iOS credentials once" },
+  { cmd: "bun run setup:asc", description: "wire ASC API key for `eas submit`" },
+  { cmd: "bun run convex:dev", description: "terminal 1" },
+  { cmd: "bun run ios", description: "terminal 2" },
+];
+---
+
+<Layout
+  title={`Vexpo | ${SITE.title}`}
+  description="Open-source iOS template — Convex + Better Auth + Resend on Expo. Production-ready stack you can fork and ship."
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        Vexpo
+      </h1>
+      <p class="text-sm italic text-muted-foreground">Open-source iOS template. Convex on Expo.</p>
+      <p class="mt-4">
+        Vexpo is a production-ready iOS template that wires <a href="https://expo.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Expo</a>, <a href="https://convex.dev" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Convex</a>, and <a href="https://better-auth.com" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Better Auth</a> into a single opinionated stack. Skip the wiring, start shipping.
+      </p>
+      <p class="mt-4">
+        Source: <a href="https://github.com/ramonclaudio/vexpo" class="text-foreground decoration-dashed underline-offset-4 hover:underline">github.com/ramonclaudio/vexpo</a>
+      </p>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[stack]</h2>
+      <ul class="mt-4">
+        {
+          stack.map(item => (
+            <li class="my-3">
+              <strong>{item.name}</strong> — <span class="text-muted-foreground">{item.description}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[features]</h2>
+      <ul class="mt-4 list-disc pl-6">
+        {features.map(f => <li class="my-2 text-muted-foreground">{f}</li>)}
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[get started]</h2>
+      <ol class="mt-4 list-decimal pl-6">
+        {
+          setup.map(step => (
+            <li class="my-2 text-muted-foreground">
+              <code class="text-foreground">{step.cmd}</code> — {step.description}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="pt-8 pb-6 text-sm text-muted-foreground">
+      <p>
+        <a href="/apps/vexpo/privacy" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Privacy</a>
+        {" · "}
+        <a href="/apps/vexpo/terms" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Terms</a>
+        {" · "}
+        <a href="https://github.com/ramonclaudio/vexpo" class="text-foreground decoration-dashed underline-offset-4 hover:underline">Source</a>
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>
