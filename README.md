@@ -1,10 +1,14 @@
-![ramonclaudio.com](public/assets/ramonclaudio-site.gif)
+![ramonclaudio.com](public/assets/ramonclaudio-site.webp)
 
 # ramonclaudio.com
 
-I wanted a personal site that was actually mine, not a template with swapped colors. Somewhere to put my projects, writing, and upstream contributions in one place. Ended up with a static Astro site that generates OG images on build, indexes everything for full-text search, and deploys in seconds.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Astro 6 + Tailwind CSS v4 + TypeScript. Deployed on Vercel.
+I wanted a site that was fast, lightweight, and static. Astro was the obvious choice, and I wanted it as clean as I could get it. So I forked [astro-paper](https://github.com/satnaing/astro-paper) and went at it.
+
+Bumped Astro 5 → 6 and TypeScript 5 → 6. Swapped Prettier and ESLint out for Oxfmt and Oxlint. Pulled in [`@astrojs/compiler-rs`](https://github.com/withastro/compiler-rs), the new Rust-based Astro compiler, which meant opening a few upstream PRs first ([compiler-rs#22](https://github.com/withastro/compiler-rs/pull/22), [compiler-rs#25](https://github.com/withastro/compiler-rs/pull/25), [napi-rs#3189](https://github.com/napi-rs/napi-rs/pull/3189)) to make the build work end-to-end. Dropped `lodash.kebabcase` and `slugify` for a few lines of native code. Added Vercel Speed Insights and Geist Mono.
+
+Astro 6 + Tailwind CSS v4 + TypeScript 6. Deployed on Vercel. Content collections with tags and pagination. Dynamic Open Graph images per post via Satori + resvg. Pagefind for client-side full-text search. View transitions through Astro's `ClientRouter`. Dark mode follows system preference. Shiki for syntax highlighting (min-light + night-owl).
 
 ## Install
 
@@ -33,15 +37,6 @@ src/
   constants.ts    # socials, nav
   content.config.ts
 ```
-
-## What's in it
-
-- Blog with content collections, tags, pagination
-- Dynamic OG images per post via Satori + resvg
-- Client-side full-text search with Pagefind
-- View transitions via Astro `ClientRouter`
-- Dark mode with system preference detection
-- Shiki syntax highlighting (min-light / night-owl)
 
 ## License
 
