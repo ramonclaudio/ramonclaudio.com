@@ -23,6 +23,21 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "seetree",
+    name: "seetree",
+    stack: "Zig · CLI · TUI",
+    description:
+      "Live tree viewer for Claude Code, written in Zig. Lights up files as Claude reads, writes, edits, or deletes them. ~200K binary, on Homebrew and npm.",
+    repo: "ramonclaudio/seetree",
+    detail: "~200K binary",
+    featured: true,
+    status: "maintained",
+    liveUrl: "https://www.npmjs.com/package/seetree",
+    liveLabel: "npm",
+    backstory:
+      "I usually have at least four or five Claude Code sessions going at once. I tell Claude what I want, it goes off and reads files, edits them, writes to them, but I can never tell exactly which files got touched without reading through all the thinking and bash calls. My IDE shows the same modified dot for every tracked or untracked file, so the file edited a second ago looks identical to the file edited two weeks ago. So I built a live tree viewer that lights up as Claude works.\n\nWanted an excuse to build something in Zig given all the hype, and a CLI that lives in a side pane all day felt like a good start. Hand-rolled the JSONL scanner from scratch and swapped <code>std.process.spawn</code> and <code>std.Io.Dir</code> for direct POSIX so the binary fits at or around 200K. Default polls <code>~/.claude/projects/*.jsonl</code> every 2 seconds, with an optional <code>FileChanged</code> hook that drops the poll to 30 seconds and refreshes on every event instead.",
+  },
+  {
     slug: "ccbase",
     name: "ccbase",
     stack: "TypeScript · Bun · SQLite",
@@ -36,6 +51,44 @@ export const projects: Project[] = [
     liveLabel: "npm",
     backstory:
       "I use Claude Code every day. Got curious how much value I'm actually getting out of the Max plan, so I started digging into <code>~/.claude/</code>. Turns out I'm saving a ton. That got me looking at the rest of the data: commits per day, cache hit rates, what sessions I'm working on, all of it.\n\nBuilt a dashboard that parses everything into SQLite and stays local. Full-text chat search across every project (the CLI only shows sessions for the project you're in). Also shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history: Claude Code stores absolute paths and doesn't handle moves. Now it does.",
+  },
+  {
+    slug: "gitbar",
+    name: "gitbar",
+    stack: "Tauri · Rust · TypeScript · React",
+    description:
+      "Menubar GitHub dashboard built with Tauri. PRs, issues, repos, and activity in one window.",
+    repo: "ramonclaudio/gitbar",
+    detail: "~5MB binary",
+    featured: true,
+    status: "maintained",
+    backstory:
+      'Got tired of context-switching between GitHub tabs. PRs here, issues there, notifications somewhere else. Every time I wanted to check "what needs my attention?" I\'d open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.',
+  },
+  {
+    slug: "convex-revenuecat",
+    name: "convex-revenuecat",
+    stack: "TypeScript · Convex",
+    description:
+      "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
+    repo: "ramonclaudio/convex-revenuecat",
+    detail: "4,041 total downloads · Convex Components Directory",
+    featured: true,
+    status: "maintained",
+    liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
+    liveLabel: "npm",
+    backstory:
+      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and covers the tricky cases: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
+  },
+  {
+    slug: "tanvex",
+    name: "tanvex",
+    stack: "TanStack Start · Convex · Better Auth",
+    description:
+      "tanstack-cn extended with Better Auth and Convex, running on latest majors. My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs. SSR auth, email OTP, rate limiting, one-command setup.",
+    repo: "ramonclaudio/tanvex",
+    featured: true,
+    status: "maintained",
   },
   {
     slug: "counter",
@@ -72,34 +125,6 @@ export const projects: Project[] = [
       "Hackathon submission for RevenueCat Shipyard 2026. A weekend project, not a product.\n\nYou pick a goal and break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. Ten levels from Dreamer to Legend, four achievement badges, a 16-week streak heatmap. Auth state syncs to RevenueCat on login, and every UI read is a live Convex subscription. There's row-level security on every table, rate limiting on every endpoint, and input validation on every mutation.",
   },
   {
-    slug: "convex-revenuecat",
-    name: "convex-revenuecat",
-    stack: "TypeScript · Convex",
-    description:
-      "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
-    repo: "ramonclaudio/convex-revenuecat",
-    detail: "4,041 total downloads · Convex Components Directory",
-    featured: true,
-    status: "maintained",
-    liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
-    liveLabel: "npm",
-    backstory:
-      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and covers the tricky cases: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
-  },
-  {
-    slug: "gitbar",
-    name: "gitbar",
-    stack: "Tauri · Rust · TypeScript · React",
-    description:
-      "Menubar GitHub dashboard built with Tauri. PRs, issues, repos, and activity in one window.",
-    repo: "ramonclaudio/gitbar",
-    detail: "~5MB binary",
-    featured: true,
-    status: "maintained",
-    backstory:
-      "Got tired of context-switching between GitHub tabs. PRs here, issues there, notifications somewhere else. Every time I wanted to check \"what needs my attention?\" I'd open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.",
-  },
-  {
     slug: "coderabbit-shadcn-registry",
     name: "coderabbit-shadcn-registry",
     stack: "TypeScript · React",
@@ -107,12 +132,11 @@ export const projects: Project[] = [
       "shadcn registry for CodeRabbit API integration, with framework-agnostic client, storage adapters, and React components.",
     repo: "ramonclaudio/coderabbit-shadcn-registry",
     detail: "listed in shadcn/ui registry",
-    featured: true,
     status: "live",
     liveUrl: "https://coderabbit-shadcn-registry.vercel.app",
     liveLabel: "Demo",
     backstory:
-      "CodeRabbit was a sponsor of the TanStack Start hackathon. I built a reports integration into my submission, then pulled it out, made it swappable across storage backends (LocalStorage, Convex, Supabase, Postgres, MySQL), and packaged it as a standalone shadcn registry.\n\nFiled <a href=\"https://github.com/shadcn-ui/ui/issues/8892\">shadcn-ui/ui#8892</a> asking to list it. <a href=\"https://github.com/shadcn\">@shadcn</a> asked me to send a PR, I shipped <a href=\"https://github.com/shadcn-ui/ui/pull/9331\">#9331</a>, it merged. Now the registry is discoverable through the shadcn CLI.",
+      'CodeRabbit was a sponsor of the TanStack Start hackathon. I built a reports integration into my submission, then pulled it out, made it swappable across storage backends (LocalStorage, Convex, Supabase, Postgres, MySQL), and packaged it as a standalone shadcn registry.\n\nFiled <a href="https://github.com/shadcn-ui/ui/issues/8892">shadcn-ui/ui#8892</a> asking to list it. <a href="https://github.com/shadcn">@shadcn</a> asked me to send a PR, I shipped <a href="https://github.com/shadcn-ui/ui/pull/9331">#9331</a>, it merged. Now the registry is discoverable through the shadcn CLI.',
   },
   {
     slug: "skills",
@@ -148,15 +172,6 @@ export const projects: Project[] = [
       "Most TanStack Start + shadcn starters on GitHub still ship the older choices like Radix, ESLint, Prettier, and Webpack-era Vite. I wanted one on the latest majors: Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt. SEO and security plumbing are already wired up so there's nothing to strip out before starting a new project.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), and <code>tanstack-cn</code> is the shared package the scaffolded project consumes. The CLI detects your package manager (bun, pnpm, yarn, or npm), installs dependencies, and initializes git with an initial commit.",
   },
   {
-    slug: "tanvex",
-    name: "tanvex",
-    stack: "TanStack Start · Convex · Better Auth",
-    description:
-      "tanstack-cn extended with Better Auth and Convex, running on latest majors. My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs. SSR auth, email OTP, rate limiting, one-command setup.",
-    repo: "ramonclaudio/tanvex",
-    status: "maintained",
-  },
-  {
     slug: "tanstack-start-hackathon",
     name: "tanstack-start-hackathon",
     stack: "TanStack Start · Convex · Autumn",
@@ -169,7 +184,7 @@ export const projects: Project[] = [
       date: "Oct–Nov 2025",
     },
     backstory:
-      "Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn't place. This repo is the original snapshot. Active version lives at <a href=\"https://github.com/ramonclaudio/tanvex\">tanvex</a>.",
+      'Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn\'t place. This repo is the original snapshot. Active version lives at <a href="https://github.com/ramonclaudio/tanvex">tanvex</a>.',
   },
   {
     slug: "polar-commerce",
@@ -196,8 +211,7 @@ export const projects: Project[] = [
     description:
       "shadcn/ui for React Native. Copy and paste components built on Uniwind. iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
-    detail:
-      "My own apps are moving off this toward native Swift via @expo/ui.",
+    detail: "My own apps are moving off this toward native Swift via @expo/ui.",
   },
   {
     slug: "vercel-blob-client-starter",
@@ -354,8 +368,7 @@ export const projects: Project[] = [
     slug: "grok-ai-toolkit",
     name: "grok-ai-toolkit",
     stack: "Python · xAI",
-    description:
-      "Python wrapper and CLI for xAI's Grok models, with vision.",
+    description: "Python wrapper and CLI for xAI's Grok models, with vision.",
     repo: "ramonclaudio/grok-ai-toolkit",
     status: "archived",
   },
@@ -363,8 +376,7 @@ export const projects: Project[] = [
     slug: "groq-ai-toolkit",
     name: "groq-ai-toolkit",
     stack: "Python · Groq",
-    description:
-      "Python wrapper and CLI for Groq's LPU inference API.",
+    description: "Python wrapper and CLI for Groq's LPU inference API.",
     repo: "ramonclaudio/groq-ai-toolkit",
     status: "archived",
   },
@@ -372,8 +384,7 @@ export const projects: Project[] = [
     slug: "mistral-ai-toolkit",
     name: "mistral-ai-toolkit",
     stack: "Python · Mistral",
-    description:
-      "Python wrapper and CLI for Mistral's open and closed models.",
+    description: "Python wrapper and CLI for Mistral's open and closed models.",
     repo: "ramonclaudio/mistral-ai-toolkit",
     status: "archived",
   },
