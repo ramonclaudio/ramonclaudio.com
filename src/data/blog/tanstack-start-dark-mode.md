@@ -17,7 +17,7 @@ description: shadcn documents dark mode for Next.js, Vite, Remix, and Astro. Tan
 
 I build all my web apps on TanStack Start with shadcn. Every new project starts the same way: `shadcn init`, add components, build. It's been this way for a while now.
 
-Dark mode has been a persistent annoyance the entire time.
+Dark mode's been a pain the whole time.
 
 shadcn has [dark mode docs](https://ui.shadcn.com/docs/dark-mode) for Next.js, Vite, Remix, and Astro. TanStack Start isn't listed. The Vite guide is the closest match since Start runs on Vite, but it's a client-only pattern that breaks the moment SSR is involved. I've tried copying it, adapting it, wrapping it in guards. Every approach had the same problem: either a flash of white on load, a hydration mismatch, or both.
 
@@ -55,8 +55,8 @@ shadcn's [Vite ThemeProvider](https://ui.shadcn.com/docs/dark-mode/vite) initial
 
 ```tsx
 const [theme, setTheme] = useState<Theme>(
-  () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-)
+  () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+);
 ```
 
 No server render means no problem. TanStack Start does SSR. `localStorage` doesn't exist on the server. This either throws or produces a hydration mismatch where the server renders "system" and the client immediately reads "dark" from storage.
@@ -71,8 +71,8 @@ The inline script reads `localStorage`, resolves the preference, and adds the cl
 
 ```tsx
 function getThemeScript(storageKey: string, defaultTheme: Theme) {
-  const key = JSON.stringify(storageKey)
-  const fallback = JSON.stringify(defaultTheme)
+  const key = JSON.stringify(storageKey);
+  const fallback = JSON.stringify(defaultTheme);
 
   return `(function(){
     try {
@@ -84,7 +84,7 @@ function getThemeScript(storageKey: string, defaultTheme: Theme) {
       e.classList.add(r);
       e.style.colorScheme = r;
     } catch(e) {}
-  })();`
+  })();`;
 }
 ```
 
@@ -93,18 +93,18 @@ The `colorScheme` line is easy to miss. Without it, native browser controls (scr
 On the React side, `useState` initializes to `defaultTheme` (not from storage) so server and client produce the same initial render. A `mounted` flag gates the apply-side effects so the inline script's work isn't clobbered before `localStorage` is read:
 
 ```tsx
-const [theme, setThemeState] = useState<Theme>(defaultTheme)
-const [mounted, setMounted] = useState(false)
+const [theme, setThemeState] = useState<Theme>(defaultTheme);
+const [mounted, setMounted] = useState(false);
 
 useEffect(() => {
-  const stored = localStorage.getItem(storageKey)
+  const stored = localStorage.getItem(storageKey);
   setThemeState(
     stored === "light" || stored === "dark" || stored === "system"
       ? stored
-      : defaultTheme
-  )
-  setMounted(true)
-}, [defaultTheme, storageKey])
+      : defaultTheme,
+  );
+  setMounted(true);
+}, [defaultTheme, storageKey]);
 ```
 
 Server renders "system". Client hydrates "system". No mismatch. The effect fires, state updates, and React re-renders with the stored value. The user never sees a flash because `ScriptOnce` already applied the right class before any of this ran.
@@ -119,7 +119,7 @@ return (
     <ScriptOnce>{getThemeScript(storageKey, defaultTheme)}</ScriptOnce>
     {children}
   </ThemeProviderContext>
-)
+);
 ```
 
 ### Root layout
@@ -140,7 +140,7 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -184,47 +184,47 @@ If you're on Tailwind v4, make sure your CSS has the class-based dark variant:
 **`components/theme-provider.tsx`**
 
 ```tsx
-import { createContext, useContext, useEffect, useState } from "react"
-import { ScriptOnce } from "@tanstack/react-router"
+import { createContext, useContext, useEffect, useState } from "react";
+import { ScriptOnce } from "@tanstack/react-router";
 
-type Theme = "dark" | "light" | "system"
+type Theme = "dark" | "light" | "system";
 
 type ThemeProviderProps = {
-  children: React.ReactNode
-  defaultTheme?: Theme
-  storageKey?: string
-}
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+};
 
 type ThemeProviderState = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-}
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+};
 
 function getThemeScript(storageKey: string, defaultTheme: Theme) {
-  const key = JSON.stringify(storageKey)
-  const fallback = JSON.stringify(defaultTheme)
+  const key = JSON.stringify(storageKey);
+  const fallback = JSON.stringify(defaultTheme);
 
-  return `(function(){try{var t=localStorage.getItem(${key});if(t!=='light'&&t!=='dark'&&t!=='system'){t=${fallback}}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`
+  return `(function(){try{var t=localStorage.getItem(${key});if(t!=='light'&&t!=='dark'&&t!=='system'){t=${fallback}}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`;
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
   setTheme: () => {},
-})
+});
 
 function applyTheme(theme: Theme) {
-  const root = document.documentElement
-  root.classList.remove("light", "dark")
+  const root = document.documentElement;
+  root.classList.remove("light", "dark");
 
   const resolved =
     theme === "system"
       ? window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light"
-      : theme
+      : theme;
 
-  root.classList.add(resolved)
-  root.style.colorScheme = resolved
+  root.classList.add(resolved);
+  root.style.colorScheme = resolved;
 }
 
 export function ThemeProvider({
@@ -232,70 +232,70 @@ export function ThemeProvider({
   defaultTheme = "system",
   storageKey = "theme",
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme)
-  const [mounted, setMounted] = useState(false)
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey)
+    const stored = localStorage.getItem(storageKey);
     setThemeState(
       stored === "light" || stored === "dark" || stored === "system"
         ? stored
-        : defaultTheme
-    )
-    setMounted(true)
-  }, [defaultTheme, storageKey])
+        : defaultTheme,
+    );
+    setMounted(true);
+  }, [defaultTheme, storageKey]);
 
   useEffect(() => {
-    if (!mounted) return
-    applyTheme(theme)
-  }, [theme, mounted])
+    if (!mounted) return;
+    applyTheme(theme);
+  }, [theme, mounted]);
 
   useEffect(() => {
-    if (!mounted || theme !== "system") return
+    if (!mounted || theme !== "system") return;
 
-    const media = window.matchMedia("(prefers-color-scheme: dark)")
-    const onChange = () => applyTheme("system")
-    media.addEventListener("change", onChange)
-    return () => media.removeEventListener("change", onChange)
-  }, [theme, mounted])
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => applyTheme("system");
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, [theme, mounted]);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(storageKey, next)
-    setThemeState(next)
-  }
+    localStorage.setItem(storageKey, next);
+    setThemeState(next);
+  };
 
   return (
     <ThemeProviderContext value={{ theme, setTheme }}>
       <ScriptOnce>{getThemeScript(storageKey, defaultTheme)}</ScriptOnce>
       {children}
     </ThemeProviderContext>
-  )
+  );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeProviderContext)
+  const context = useContext(ThemeProviderContext);
   if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider")
-  return context
+    throw new Error("useTheme must be used within a ThemeProvider");
+  return context;
 }
 ```
 
 **`components/mode-toggle.tsx`**
 
 ```tsx
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useTheme } from "@/components/theme-provider"
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/components/theme-provider";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -318,7 +318,7 @@ export function ModeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 ```
 
@@ -330,16 +330,16 @@ import {
   HeadContent,
   Outlet,
   Scripts,
-} from "@tanstack/react-router"
+} from "@tanstack/react-router";
 
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const Route = createRootRoute({
   head: () => ({
     // ...
   }),
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -354,7 +354,7 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 
