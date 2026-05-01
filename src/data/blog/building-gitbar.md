@@ -26,7 +26,7 @@ Rust backend, web frontend, ~5MB binary. Compare that to Electron's 100MB+ and i
 
 ### Auth via `gh`
 
-This is the call that made the whole thing feel frictionless. Instead of an OAuth flow with a callback server and a persistent session, Gitbar shells out to the `gh` CLI once on launch:
+This is the call that saved me from the entire OAuth dance. Instead of a callback server and a persistent session, Gitbar shells out to the `gh` CLI once on launch:
 
 ```typescript
 import { Command } from "@tauri-apps/plugin-shell";
@@ -125,7 +125,7 @@ This came from a real situation. I was on a call sharing my screen and realized 
 
 ### The numbers
 
-3,868 lines of TypeScript across 39 files. 118 lines of Rust. No state library, no data-fetching library, just `fetch`, `localStorage`, and `useState`. Built and shipped on January 29, 2026.
+Tauri shell with a TypeScript + React frontend, ~118 lines of Rust for the native bits. No state library, no data-fetching library, just `fetch`, `localStorage`, and `useState`. Built and shipped on January 29, 2026.
 
 I use Gitbar every day. It's not flashy, it just does the thing I needed it to do. If you live on GitHub and you're tired of tab-hopping, [give it a try](https://github.com/ramonclaudio/gitbar).
 

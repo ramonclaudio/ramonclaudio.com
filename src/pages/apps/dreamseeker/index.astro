@@ -26,19 +26,26 @@ const features = [
       <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
         DreamSeeker
       </h1>
-      <p class="text-sm italic text-muted-foreground">My RevenueCat Shipyard 2026 submission. iOS.</p>
-      <p class="mt-4">
-        Hackathon submission for <a href="https://www.revenuecat.com/shipyard" class="text-foreground decoration-dashed underline-offset-4 hover:underline">RevenueCat Shipyard 2026</a>. It's a hackathon project, not something I'm selling.
+      <p class="text-sm italic text-muted-foreground">
+        My RevenueCat Shipyard 2026 submission. iOS.
       </p>
       <p class="mt-4">
-        You set a goal, break it into daily actions, and the app tracks streaks and XP as you go.
+        Hackathon submission for <a
+          href="https://www.revenuecat.com/shipyard"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >RevenueCat Shipyard 2026</a
+        >. It's a hackathon project, not something I'm selling.
+      </p>
+      <p class="mt-4">
+        You set a goal, break it into daily actions, and the app tracks streaks
+        and XP as you go.
       </p>
     </section>
 
     <section class="pt-8 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[features]</h2>
       <ul class="mt-4 ml-4 list-disc text-muted-foreground">
-        {features.map(f => <li class="my-1">{f}</li>)}
+        {features.map((f) => <li class="my-1">{f}</li>)}
       </ul>
     </section>
 
@@ -77,8 +84,14 @@ const features = [
     </section>
 
     <p class="mt-12 text-sm text-muted-foreground">
-      Built by <a href="/" class="decoration-dashed underline-offset-4 hover:underline">Ray</a>.
-      Questions? <a href="mailto:team@ramonclaudio.com" class="decoration-dashed underline-offset-4 hover:underline">team@ramonclaudio.com</a>
+      Built by <a
+        href="/"
+        class="decoration-dashed underline-offset-4 hover:underline">Ray</a
+      >. Questions? <a
+        href="mailto:team@ramonclaudio.com"
+        class="decoration-dashed underline-offset-4 hover:underline"
+        >team@ramonclaudio.com</a
+      >
     </p>
   </main>
   <Footer />

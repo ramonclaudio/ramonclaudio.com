@@ -79,9 +79,7 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
   // Re-attach click handler on each navigation
   document.addEventListener("astro:page-load", () => {
     lastVisible = null;
-    const backToTopBtn = document.querySelector(
-      "[data-button='back-to-top']",
-    );
+    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
     backToTopBtn?.addEventListener("click", () => {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;

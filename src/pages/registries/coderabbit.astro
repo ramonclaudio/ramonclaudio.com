@@ -32,7 +32,9 @@ const installCmd =
       </h1>
       <p class="text-sm text-muted-foreground">shadcn · React · TypeScript</p>
       <p class="mt-4">
-        This packages the CodeRabbit API as a shadcn registry. There's a framework-agnostic client, five storage adapters, and React components for developer activity reports. Listed in the <a
+        This packages the CodeRabbit API as a shadcn registry. There's a
+        framework-agnostic client, five storage adapters, and React components
+        for developer activity reports. Listed in the <a
           href="https://ui.shadcn.com/docs/directory"
           target="_blank"
           rel="noopener noreferrer"
@@ -53,7 +55,9 @@ const installCmd =
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 text-foreground decoration-dashed underline-offset-4 hover:underline"
         >
-          <IconGitHub class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom" />
+          <IconGitHub
+            class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom"
+          />
           ramonclaudio/coderabbit-shadcn-registry
           <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
         </a>
@@ -62,14 +66,15 @@ const installCmd =
 
     <section id="install" class="scroll-mt-20 pt-8 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[install]</h2>
-      <pre class="mt-4 overflow-x-auto rounded-md border border-border bg-card p-3 text-sm"><code>{installCmd}</code></pre>
+      <pre
+        class="mt-4 overflow-x-auto rounded-md border border-border bg-card p-3 text-sm"><code>{installCmd}</code></pre>
     </section>
 
     <section class="pt-8 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[adapters]</h2>
       <ul class="mt-4">
         {
-          adapters.map(a => (
+          adapters.map((a) => (
             <li class="my-2">
               <span class="font-mono text-foreground">{a.name}</span>
               <span class="text-muted-foreground"> · {a.description}</span>

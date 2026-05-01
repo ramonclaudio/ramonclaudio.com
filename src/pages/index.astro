@@ -14,7 +14,7 @@ import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import { SOCIALS } from "@/constants";
 import { projects as allProjects } from "@/data/projects";
 
-const featuredProjects = allProjects.filter(p => p.featured);
+const featuredProjects = allProjects.filter((p) => p.featured);
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -293,14 +293,30 @@ const contributions = [
       </a>
 
       <p>
-        Hi, I'm Ray. Product engineer in NYC, solo since 2013. I <a href="/apps" class="text-foreground underline decoration-dashed underline-offset-4">ship apps</a>
-        on Expo with Convex and Better Auth, all on canary because I like
-        living on the edge. Most of my <a href="/projects" class="text-foreground underline decoration-dashed underline-offset-4">open source</a> started as a bug
-        somewhere upstream. I cut the stack to a minimal repro, find the cause
-        in the source, <a href="/contributions" class="text-foreground underline decoration-dashed underline-offset-4">file the PR</a>, and keep a patch around so
-        my projects don't wait on review. More on <a href="/now" class="text-foreground underline decoration-dashed underline-offset-4">what I'm shipping now</a>
-        and <a href="/setup" class="text-foreground underline decoration-dashed underline-offset-4">how I'm set up</a>. Also drink way too much coffee. Sey beans,
-        V60, 1Zpresso ZP6, full nerd mode (<a href="/setup#coffee" class="text-foreground underline decoration-dashed underline-offset-4">I go deeper here</a>).
+        Hi, I'm Ray. Product engineer in NYC, solo since 2013. Most of my <a
+          href="/projects"
+          class="text-foreground underline decoration-dashed underline-offset-4"
+          >projects</a
+        > started as a bug somewhere upstream or a task I found myself doing way to
+        often. When I hit a bug I try to find the cause at the source, <a
+          href="/contributions"
+          class="text-foreground underline decoration-dashed underline-offset-4"
+          >file the PR</a
+        >, and keep a patch around so my projects don't wait on review. More on <a
+          href="/now"
+          class="text-foreground underline decoration-dashed underline-offset-4"
+          >what I'm shipping now</a
+        >
+        and <a
+          href="/setup"
+          class="text-foreground underline decoration-dashed underline-offset-4"
+          >how I'm set up</a
+        >. Also drink way too much coffee. Sey beans, V60, 1Zpresso ZP6, full
+        nerd mode (<a
+          href="/setup#coffee"
+          class="text-foreground underline decoration-dashed underline-offset-4"
+          >I go deeper here</a
+        >).
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
@@ -309,12 +325,14 @@ const contributions = [
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-        >@expo/ui</a> · 112 drop-in <a
+          >@expo/ui</a
+        > · 112 drop-in <a
           href="https://github.com/ramonclaudio/patches"
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-        >patches</a> · 7 npm packages
+          >patches</a
+        > · 7 npm packages
       </p>
 
       <div class="mt-4 flex flex-wrap items-center gap-4">
@@ -335,10 +353,9 @@ const contributions = [
       </div>
 
       <div id="thinking" class="my-4 font-mono text-sm text-muted-foreground">
-        Thinking<span id="dots" class="inline-block w-[3ch] text-left"
-          >...</span
-        > (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc
-        to interrupt)
+        Thinking<span id="dots" class="inline-block w-[3ch] text-left">...</span
+        > (<span id="timer">0</span>s · <span id="tokens">0</span> tokens · esc to
+        interrupt)
       </div>
 
       {
@@ -356,12 +373,12 @@ const contributions = [
     <section id="open-source-top" class="pt-12 pb-6">
       <h2 class="text-2xl font-semibold tracking-wide">[merged.upstream]</h2>
       <p class="mt-2 text-sm text-muted-foreground">
-        {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged
-        into projects I don't maintain.
+        {contributions.reduce((sum, c) => sum + c.items.length, 0)} PRs merged into
+        projects I don't maintain.
       </p>
       <ul class="mt-4">
         {
-          contributions.map(contrib => (
+          contributions.map((contrib) => (
             <li class="my-3">
               <a
                 href={contrib.href}
@@ -377,7 +394,7 @@ const contributions = [
                 {contrib.items.length === 1 ? "PR" : "PRs"}
               </span>
               <ul class="mt-1 ml-4 list-disc text-sm text-muted-foreground">
-                {contrib.items.map(item => (
+                {contrib.items.map((item) => (
                   <li class="my-1">
                     {item.text}{" "}
                     <a
@@ -403,7 +420,7 @@ const contributions = [
       <h2 class="text-2xl font-semibold tracking-wide">[shipped]</h2>
       <ul class="mt-4">
         {
-          featuredProjects.map(project => (
+          featuredProjects.map((project) => (
             <li class="my-5">
               <div>
                 <a
@@ -412,7 +429,10 @@ const contributions = [
                 >
                   {project.name}
                 </a>
-                <span class="text-xs text-muted-foreground"> · {project.stack}</span>
+                <span class="text-xs text-muted-foreground">
+                  {" "}
+                  · {project.stack}
+                </span>
               </div>
               <p>{project.description}</p>
               {project.detail && (
@@ -438,31 +458,74 @@ const contributions = [
         <li>
           <span class="font-medium text-foreground">Mobile.</span>
           <span class="text-muted-foreground">
-            {" "}React Native apps on Expo, canary. <code class="rounded bg-muted px-1 py-0.5 text-xs">@expo/ui</code> + <code class="rounded bg-muted px-1 py-0.5 text-xs">expo-glass-effect</code>, native-first (no NativeWind). Convex, Better Auth, RevenueCat underneath. Six apps on the same skeleton.
+            {" "}React Native apps on Expo, canary. <code
+              class="rounded bg-muted px-1 py-0.5 text-xs">@expo/ui</code
+            > + <code class="rounded bg-muted px-1 py-0.5 text-xs"
+              >expo-glass-effect</code
+            >, native-first (no NativeWind). Convex, Better Auth, RevenueCat
+            underneath. Six apps on the same skeleton.
           </span>
         </li>
         <li>
           <span class="font-medium text-foreground">Web.</span>
           <span class="text-muted-foreground">
-            {" "}TanStack Start + Vite 8 + Base UI + shadcn + Bun + oxlint/oxfmt for new work. Next 16 for marketing surfaces. Astro for this one.
+            {" "}TanStack Start + Vite 8 + Base UI + shadcn + Bun + oxlint/oxfmt
+            for new work. Next 16 for marketing surfaces. Astro for this one.
           </span>
         </li>
         <li>
           <span class="font-medium text-foreground">Backend.</span>
           <span class="text-muted-foreground">
-            {" "}Convex for everything. Better Auth via <code class="rounded bg-muted px-1 py-0.5 text-xs">@convex-dev/better-auth</code>. Resend via <code class="rounded bg-muted px-1 py-0.5 text-xs">@convex-dev/resend</code>. RevenueCat via my own <a href="/projects/convex-revenuecat" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">convex-revenuecat</code></a> component.
+            {" "}Convex for everything. Better Auth via <code
+              class="rounded bg-muted px-1 py-0.5 text-xs"
+              >@convex-dev/better-auth</code
+            >. Resend via <code class="rounded bg-muted px-1 py-0.5 text-xs"
+              >@convex-dev/resend</code
+            >. RevenueCat via my own <a
+              href="/projects/convex-revenuecat"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs"
+                >convex-revenuecat</code
+              ></a
+            > component.
           </span>
         </li>
         <li>
           <span class="font-medium text-foreground">Desktop + CLI.</span>
           <span class="text-muted-foreground">
-            {" "}Tauri + Rust for menubar apps (<a href="/projects/gitbar" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">gitbar</code></a>). Bun everywhere else, compiled to single-file binaries when shipping.
+            {" "}Tauri + Rust for menubar apps (<a
+              href="/projects/gitbar"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">gitbar</code
+              ></a
+            >). Bun everywhere else, compiled to single-file binaries when
+            shipping.
           </span>
         </li>
         <li>
           <span class="font-medium text-foreground">Claude Code infra.</span>
           <span class="text-muted-foreground">
-            {" "}Nine plugins in <a href="https://github.com/ramonclaudio/skills" target="_blank" rel="noopener noreferrer" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">skills</code></a>. Session handoff in <code class="rounded bg-muted px-1 py-0.5 text-xs">handoff</code>. SQLite dashboard over <code class="rounded bg-muted px-1 py-0.5 text-xs">~/.claude/</code> in <a href="/projects/ccbase" class="text-foreground decoration-dashed underline-offset-4 hover:underline"><code class="rounded bg-muted px-1 py-0.5 text-xs">ccbase</code></a>. Zig 0.16 at <code class="rounded bg-muted px-1 py-0.5 text-xs">std_options</code> level in <code class="rounded bg-muted px-1 py-0.5 text-xs">seetree</code>.
+            {" "}Nine plugins in <a
+              href="https://github.com/ramonclaudio/skills"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">skills</code
+              ></a
+            >. Session handoff in <code
+              class="rounded bg-muted px-1 py-0.5 text-xs">handoff</code
+            >. SQLite dashboard over <code
+              class="rounded bg-muted px-1 py-0.5 text-xs">~/.claude/</code
+            > in <a
+              href="/projects/ccbase"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">ccbase</code
+              ></a
+            >. Zig 0.16 at <code class="rounded bg-muted px-1 py-0.5 text-xs"
+              >std_options</code
+            > level in <code class="rounded bg-muted px-1 py-0.5 text-xs"
+              >seetree</code
+            >.
           </span>
         </li>
       </ul>
@@ -473,11 +536,9 @@ const contributions = [
     {
       featuredPosts.length > 0 && (
         <section id="featured" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            [recent.writing]
-          </h2>
+          <h2 class="text-2xl font-semibold tracking-wide">[recent.writing]</h2>
           <ul>
-            {featuredPosts.map(data => (
+            {featuredPosts.map((data) => (
               <Card variant="h3" {...data} />
             ))}
           </ul>
@@ -496,7 +557,7 @@ const contributions = [
           )}
           <ul>
             {recentPosts.map(
-              (data, index) => index < 4 && <Card variant="h3" {...data} />
+              (data, index) => index < 4 && <Card variant="h3" {...data} />,
             )}
           </ul>
         </section>
@@ -524,7 +585,7 @@ const contributions = [
     }
 
     const thinkingDiv = document.querySelector(
-      "#thinking"
+      "#thinking",
     ) as HTMLElement | null;
 
     if (thinkingDiv) {

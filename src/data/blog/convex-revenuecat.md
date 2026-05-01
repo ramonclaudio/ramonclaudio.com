@@ -57,13 +57,11 @@ No polling, no client-side state to invalidate, no REST call to RevenueCat on th
 
 ### The edge cases
 
-The happy path was the easy part. The RC docs bury the subtleties:
+The happy path was the easy part. The RC docs bury the subtleties.
 
-- **Cancellation doesn't revoke access.** The user keeps the entitlement until `expirationAtMs`. I shipped a broken version of the app before I figured this out.
-- **Pause doesn't revoke either.** The entitlement stays active through a billing pause.
-- **Grace periods stay active.** A failed charge starts a grace window and access continues until it expires.
-- **Refunds revoke immediately.** RC sends a `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"`. The component detects that and expires the entitlement right away instead of waiting for the billing window to close.
-- **Transfers shift entitlement between users atomically.** A single webhook deactivates on one `appUserId` and activates on another in the same mutation.
+The one that got me was cancellation. I assumed it revoked access. It doesn't. The user keeps the entitlement until `expirationAtMs`, and I shipped a broken version of the app before I figured that out. Pause is the same: doesn't revoke, entitlement stays active through the billing pause. Grace periods too. A failed charge starts a grace window and access continues until it expires.
+
+Refunds, on the other hand, revoke immediately. RC sends a `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"`, the component picks that up and expires the entitlement right away instead of waiting for the billing window to close. Transfers are the trickiest of the bunch: a single webhook deactivates on one `appUserId` and activates on another in the same mutation.
 
 ### Transition hooks
 
@@ -89,6 +87,6 @@ Same transition hooks fire on sync-driven transitions with `sourceEventType: "SY
 
 ### Where it is now
 
-First release was January 2026. 14 versions later, 4,041 total downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
+First release was January 2026. 14 versions later, around 4,500 downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
 
 \- Ray

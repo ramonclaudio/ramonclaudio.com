@@ -9,7 +9,7 @@ import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { projects, type ProjectStatus } from "@/data/projects";
 
 export const getStaticPaths = (() => {
-  return projects.map(project => ({
+  return projects.map((project) => ({
     params: { slug: project.slug },
     props: { project },
   }));
@@ -19,10 +19,10 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { project } = Astro.props as Props;
 const repoUrl = `https://github.com/${project.repo}`;
 
-const idx = projects.findIndex(p => p.slug === project.slug);
+const idx = projects.findIndex((p) => p.slug === project.slug);
 const related = [1, 2, 3]
-  .map(i => projects[(idx + i) % projects.length])
-  .filter(p => p && p.slug !== project.slug);
+  .map((i) => projects[(idx + i) % projects.length])
+  .filter((p) => p && p.slug !== project.slug);
 
 const statusLabel: Record<ProjectStatus, string> = {
   live: "live",
@@ -32,8 +32,14 @@ const statusLabel: Record<ProjectStatus, string> = {
 };
 
 const isExternalLive = project.liveUrl?.startsWith("http");
-const liveLabel = project.liveLabel ?? (project.liveUrl?.startsWith("/apps/") ? "App page" : "Live");
-const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean) ?? [];
+const liveLabel =
+  project.liveLabel ??
+  (project.liveUrl?.startsWith("/apps/") ? "App page" : "Live");
+const backstoryParagraphs =
+  project.backstory
+    ?.split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean) ?? [];
 ---
 
 <Layout title={`${project.name} | Ray`} description={project.description}>
@@ -44,13 +50,17 @@ const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim(
       <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
         {project.name}
       </h1>
-      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+      <div
+        class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground"
+      >
         <span>{project.stack}</span>
         {
           project.status && (
             <>
               <span aria-hidden="true">·</span>
-              <span class="font-mono text-xs">{statusLabel[project.status]}</span>
+              <span class="font-mono text-xs">
+                {statusLabel[project.status]}
+              </span>
             </>
           )
         }
@@ -68,7 +78,9 @@ const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim(
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 text-foreground decoration-dashed underline-offset-4 hover:underline"
         >
-          <IconGitHub class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom" />
+          <IconGitHub
+            class="inline-block size-5 fill-transparent stroke-current stroke-2 align-text-bottom"
+          />
           {project.repo}
           <IconArrowRight class="inline-block size-4 rtl:-rotate-180" />
         </a>
@@ -93,7 +105,7 @@ const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim(
         <section class="pt-8 pb-2">
           <h2 class="text-2xl font-semibold tracking-wide">[why]</h2>
           <div class="mt-4 space-y-4">
-            {backstoryParagraphs.map(p => (
+            {backstoryParagraphs.map((p) => (
               <p set:html={p} />
             ))}
           </div>
@@ -106,7 +118,9 @@ const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim(
         <section class="pt-8 pb-2">
           <h2 class="text-2xl font-semibold tracking-wide">[hackathon]</h2>
           <p class="mt-4">
-            <span class="font-medium text-foreground">{project.hackathon.name}</span>
+            <span class="font-medium text-foreground">
+              {project.hackathon.name}
+            </span>
             {project.hackathon.date && (
               <span class="text-sm text-muted-foreground">{` · ${project.hackathon.date}`}</span>
             )}
@@ -123,7 +137,7 @@ const backstoryParagraphs = project.backstory?.split(/\n\s*\n/).map(p => p.trim(
         <section class="pt-12 pb-6">
           <h2 class="text-2xl font-semibold tracking-wide">[related]</h2>
           <ul class="mt-4">
-            {related.map(p => (
+            {related.map((p) => (
               <li class="my-5">
                 <div>
                   <a
