@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
 
-  return sortedPosts.map(post => ({
+  return sortedPosts.map((post) => ({
     params: { id: post.id },
     props: { post, sortedPosts },
   }));

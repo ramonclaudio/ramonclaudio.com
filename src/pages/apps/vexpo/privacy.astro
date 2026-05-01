@@ -6,7 +6,10 @@ import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
 ---
 
-<Layout title={`Privacy Policy · Vexpo | ${SITE.title}`} description="Ramon Claudio, LLC · Vexpo Privacy Policy">
+<Layout
+  title={`Privacy Policy · Vexpo | ${SITE.title}`}
+  description="Ramon Claudio, LLC · Vexpo Privacy Policy"
+>
   <Header />
   <Breadcrumb />
   <main id="main-content">
@@ -23,18 +26,39 @@ import { SITE } from "@/config";
 
       <h3>Information We Collect</h3>
       <ul>
-        <li><strong>Account information:</strong> name, username, email address, and avatar you provide during sign-up or profile editing</li>
-        <li><strong>Authentication data:</strong> hashed password (Argon2), Apple Sign In identifier, active session tokens, and one-time verification codes</li>
-        <li><strong>App data:</strong> items you create, search history, and preferences you set in the app</li>
-        <li><strong>Push notification token:</strong> APNs device token registered on sign-in for delivering notifications</li>
-        <li><strong>Device information:</strong> device type and iOS version, used for diagnostics and OTA update targeting</li>
+        <li>
+          <strong>Account information:</strong> name, username, email address, and
+          avatar you provide during sign-up or profile editing
+        </li>
+        <li>
+          <strong>Authentication data:</strong> hashed password (Argon2), Apple Sign
+          In identifier, active session tokens, and one-time verification codes
+        </li>
+        <li>
+          <strong>App data:</strong> items you create, search history, and preferences
+          you set in the app
+        </li>
+        <li>
+          <strong>Push notification token:</strong> APNs device token registered on
+          sign-in for delivering notifications
+        </li>
+        <li>
+          <strong>Device information:</strong> device type and iOS version, used for
+          diagnostics and OTA update targeting
+        </li>
       </ul>
 
       <h3>How We Use Your Information</h3>
       <ul>
-        <li>To provide and operate the Vexpo app and demonstrate the underlying stack</li>
+        <li>
+          To provide and operate the Vexpo app and demonstrate the underlying
+          stack
+        </li>
         <li>To authenticate your identity and manage your sessions</li>
-        <li>To deliver email verification codes, password resets, and email-change confirmations</li>
+        <li>
+          To deliver email verification codes, password resets, and email-change
+          confirmations
+        </li>
         <li>To deliver push notifications when relevant events occur</li>
         <li>To store the items and profile data you create in the app</li>
       </ul>
@@ -45,10 +69,16 @@ import { SITE } from "@/config";
         <li>Convex (backend, real-time data, file storage)</li>
         <li>Better Auth (authentication and session management)</li>
         <li>Resend (transactional email delivery)</li>
-        <li>Apple App Store and Apple Push Notification service (distribution and notifications)</li>
+        <li>
+          Apple App Store and Apple Push Notification service (distribution and
+          notifications)
+        </li>
         <li>Apple Sign In (optional authentication provider)</li>
       </ul>
-      <p>These services have their own privacy policies governing their use of your data.</p>
+      <p>
+        These services have their own privacy policies governing their use of
+        your data.
+      </p>
 
       <h3>Apple Sign In</h3>
       <p>
@@ -82,8 +112,8 @@ import { SITE } from "@/config";
 
       <h3>Children's Privacy</h3>
       <p>
-        Vexpo is not intended for children under 13. We do not knowingly
-        collect personal information from children under 13.
+        Vexpo is not intended for children under 13. We do not knowingly collect
+        personal information from children under 13.
       </p>
 
       <h3>Changes to This Policy</h3>

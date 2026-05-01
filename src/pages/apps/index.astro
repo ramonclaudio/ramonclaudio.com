@@ -10,7 +10,8 @@ const apps = [
     slug: "counter",
     platform: "iOS",
     note: "ElevenHacks Season 1",
-    tagline: "Voice AI for deal research, practice negotiations, and live coaching.",
+    tagline:
+      "Voice AI for deal research, practice negotiations, and live coaching.",
     description:
       "Say what you're buying and it pulls prices, alternatives, and counterpoints in real time.",
   },
@@ -44,11 +45,12 @@ const apps = [
         [apps]
       </h1>
       <p>
-        iOS apps. {apps.length} total: two hackathon submissions (neither placed, both still run) and an open-source starter template.
+        iOS apps. {apps.length} total: two hackathon submissions (neither placed,
+        both still run) and an open-source starter template.
       </p>
       <ul class="mt-6">
         {
-          apps.map(app => (
+          apps.map((app) => (
             <li class="my-5">
               <div>
                 <a

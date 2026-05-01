@@ -6,8 +6,8 @@ import Breadcrumb from "@/components/Breadcrumb.astro";
 import Hr from "@/components/Hr.astro";
 import { projects } from "@/data/projects";
 
-const featured = projects.filter(p => p.featured);
-const all = projects.filter(p => !p.featured);
+const featured = projects.filter((p) => p.featured);
+const all = projects.filter((p) => !p.featured);
 ---
 
 <Layout
@@ -22,7 +22,9 @@ const all = projects.filter(p => !p.featured);
         [projects]
       </h1>
       <p>
-        {projects.length} open source repos. The {featured.length} I'd point at first are listed first, then everything else. Each one has its own page, and the source is on GitHub.
+        {projects.length} open source repos. The {featured.length} I'd point at first
+        are listed first, then everything else. Each one has its own page, and the
+        source is on GitHub.
       </p>
     </section>
 
@@ -32,7 +34,7 @@ const all = projects.filter(p => !p.featured);
       <h2 class="text-2xl font-semibold tracking-wide">[featured]</h2>
       <ul class="mt-4">
         {
-          featured.map(project => (
+          featured.map((project) => (
             <li class="my-5">
               <div>
                 <a
@@ -67,7 +69,7 @@ const all = projects.filter(p => !p.featured);
       </h2>
       <ul class="mt-4">
         {
-          all.map(project => (
+          all.map((project) => (
             <li class="my-5">
               <div>
                 <a

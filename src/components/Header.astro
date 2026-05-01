@@ -15,8 +15,8 @@ const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
+  const currentPathArray = currentPath.split("/").filter((p) => p.trim());
+  const pathArray = path.split("/").filter((p) => p.trim());
 
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
@@ -39,11 +39,7 @@ const isActive = (path: string) => {
       class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"
     >
       <a href="/" id="mobile-logo" class="sm:hidden" aria-label="Home">
-        <img
-          src="/favicon.svg"
-          alt=""
-          class="size-8 grayscale opacity-50"
-        />
+        <img src="/favicon.svg" alt="" class="size-8 grayscale opacity-50" />
       </a>
       <nav
         id="nav-menu"
@@ -73,7 +69,14 @@ const isActive = (path: string) => {
               href="/"
               class:list={[
                 "block px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
-                { "active-nav": currentPath === "/" || isActive("/about") || isActive("/now") || isActive("/resume") || isActive("/setup") },
+                {
+                  "active-nav":
+                    currentPath === "/" ||
+                    isActive("/about") ||
+                    isActive("/now") ||
+                    isActive("/resume") ||
+                    isActive("/setup"),
+                },
               ]}
             >
               [me]
@@ -123,7 +126,13 @@ const isActive = (path: string) => {
             <span
               class:list={[
                 "block cursor-default px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
-                { "active-nav": isActive("/projects") || isActive("/contributions") || isActive("/registries") || isActive("/apps") },
+                {
+                  "active-nav":
+                    isActive("/projects") ||
+                    isActive("/contributions") ||
+                    isActive("/registries") ||
+                    isActive("/apps"),
+                },
               ]}
             >
               [work]
@@ -155,7 +164,10 @@ const isActive = (path: string) => {
                 <span
                   class:list={[
                     "block cursor-default px-4 py-2 text-sm hover:text-foreground",
-                    { "active-nav": isActive("/apps") || isActive("/registries") },
+                    {
+                      "active-nav":
+                        isActive("/apps") || isActive("/registries"),
+                    },
                   ]}
                 >
                   shipped
@@ -222,7 +234,10 @@ const isActive = (path: string) => {
             )
           }
         </div>
-        <div class="mt-4 flex hidden items-center justify-center gap-x-4 sm:!hidden" id="mobile-utilities">
+        <div
+          class="mt-4 flex hidden items-center justify-center gap-x-4 sm:!hidden"
+          id="mobile-utilities"
+        >
           <LinkButton
             href="/search"
             class:list={[

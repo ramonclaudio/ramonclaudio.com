@@ -27,7 +27,9 @@ function reflectPreference() {
   document.firstElementChild.setAttribute("data-theme", themeValue);
 
   document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-  document.querySelector("#theme-btn-mobile")?.setAttribute("aria-label", themeValue);
+  document
+    .querySelector("#theme-btn-mobile")
+    ?.setAttribute("aria-label", themeValue);
 
   // Get a reference to the body element
   const body = document.body;
@@ -69,7 +71,7 @@ document.addEventListener("astro:page-load", setThemeFeature);
 
 // Set theme-color value before page transition
 // to avoid navigation bar color flickering in Android dark mode
-document.addEventListener("astro:before-swap", event => {
+document.addEventListener("astro:before-swap", (event) => {
   event.newDocument.firstElementChild.setAttribute("data-theme", themeValue);
 
   const bgColor = document

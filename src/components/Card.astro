@@ -21,9 +21,13 @@ const headingClass = "text-lg font-medium decoration-dashed hover:underline";
   >
     {
       variant === "h2" ? (
-        <h2 transition:name={slugifyStr(title)} class={headingClass}>{title}</h2>
+        <h2 transition:name={slugifyStr(title)} class={headingClass}>
+          {title}
+        </h2>
       ) : (
-        <h3 transition:name={slugifyStr(title)} class={headingClass}>{title}</h3>
+        <h3 transition:name={slugifyStr(title)} class={headingClass}>
+          {title}
+        </h3>
       )
     }
   </a>
