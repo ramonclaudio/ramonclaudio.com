@@ -1,0 +1,147 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Layout from "./Layout.astro";
+import { SITE } from "@/config";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+
+const buttonClass =
+  "inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-foreground transition hover:bg-secondary";
+---
+
+<Layout title={`${frontmatter.title} | ${SITE.title}`}>
+  <Header />
+  <Breadcrumb>
+    <div slot="actions" class="flex flex-wrap items-center gap-1.5">
+      <a
+        href="/resume.pdf"
+        download="ramon-claudio-resume.pdf"
+        class={buttonClass}
+      >
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Download PDF
+      </a>
+      <a
+        href="/resume.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        class={buttonClass}
+      >
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        View as Markdown
+      </a>
+      <button
+        type="button"
+        id="copy-resume-md"
+        class={buttonClass}
+        data-default-label="Copy as Markdown"
+      >
+        <svg
+          id="copy-resume-md-icon-default"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        <svg
+          id="copy-resume-md-icon-done"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="hidden"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span id="copy-resume-md-label">Copy as Markdown</span>
+      </button>
+    </div>
+  </Breadcrumb>
+  <main id="main-content">
+    <section id="about" class="app-prose mb-28 max-w-app prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
+      <slot />
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const btn = document.getElementById("copy-resume-md");
+    if (!btn) return;
+    const label = document.getElementById("copy-resume-md-label");
+    const iconDefault = document.getElementById("copy-resume-md-icon-default");
+    const iconDone = document.getElementById("copy-resume-md-icon-done");
+    btn.addEventListener("click", async () => {
+      try {
+        const res = await fetch("/resume.md", { cache: "no-store" });
+        const text = await res.text();
+        await navigator.clipboard.writeText(text);
+        if (label) label.textContent = "Copied";
+        iconDefault?.classList.add("hidden");
+        iconDone?.classList.remove("hidden");
+        setTimeout(() => {
+          if (label) label.textContent = "Copy as Markdown";
+          iconDefault?.classList.remove("hidden");
+          iconDone?.classList.add("hidden");
+        }, 1500);
+      } catch (err) {
+        console.error("Copy failed", err);
+        if (label) label.textContent = "Copy failed";
+        setTimeout(() => {
+          if (label) label.textContent = "Copy as Markdown";
+        }, 1500);
+      }
+    });
+  });
+</script>

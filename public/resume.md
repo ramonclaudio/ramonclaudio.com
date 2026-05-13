@@ -1,11 +1,10 @@
----
-layout: ../layouts/ResumeLayout.astro
-title: "Resume"
----
+# Ramon Claudio
 
 **Product Engineer** · Brooklyn, NY
 
 [ramonclaudio.com](https://ramonclaudio.com) · [github.com/ramonclaudio](https://github.com/ramonclaudio) · [hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)
+
+---
 
 ## Summary
 
