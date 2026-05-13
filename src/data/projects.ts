@@ -29,7 +29,7 @@ export const projects: Project[] = [
     description:
       "Live tree viewer for Claude Code, written in Zig. Lights up files as Claude reads, writes, edits, or deletes them. ~200K binary, on Homebrew and npm.",
     repo: "ramonclaudio/seetree",
-    detail: "~200K binary",
+    detail: "~200K binary · 236 total downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/seetree",
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     description:
       "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code.",
     repo: "ramonclaudio/ccbase",
-    detail: "206 total downloads",
+    detail: "217 total downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     description:
       "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "4,041 total downloads · Convex Components Directory",
+    detail: "5,713 total downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
@@ -89,6 +89,18 @@ export const projects: Project[] = [
     repo: "ramonclaudio/tanvex",
     featured: true,
     status: "maintained",
+  },
+  {
+    slug: "vexpo",
+    name: "vexpo",
+    stack: "Expo SDK 56 · Convex · Better Auth · Resend",
+    description:
+      "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend end-to-end. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. From npm create to TestFlight in one afternoon.",
+    repo: "ramonclaudio/vexpo",
+    featured: true,
+    status: "maintained",
+    liveUrl: "/apps/vexpo",
+    liveLabel: "App page",
   },
   {
     slug: "counter",
@@ -163,7 +175,7 @@ export const projects: Project[] = [
     description:
       "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "673 total downloads across tanstack-cn and create-tanstack-cn",
+    detail: "992 total downloads across tanstack-cn and create-tanstack-cn",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -244,7 +256,7 @@ export const projects: Project[] = [
     description:
       "Customizable status line for Claude Code with project, git, runtime, and model info.",
     repo: "ramonclaudio/claude-code-statusline",
-    detail: "395 total downloads",
+    detail: "410 total downloads",
   },
   {
     slug: "create-claude",
@@ -253,7 +265,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap Claude Code into any project with hooks, agents, slash commands, and safety in one command.",
     repo: "ramonclaudio/create-claude",
-    detail: "1,514 total downloads",
+    detail: "1,586 total downloads",
   },
   {
     slug: "create-codex",
@@ -262,7 +274,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap AGENTS.md into any project with auto-detection of your stack.",
     repo: "ramonclaudio/create-codex",
-    detail: "274 total downloads",
+    detail: "285 total downloads",
   },
   {
     slug: "raycast-mcp-server-manager",
@@ -289,6 +301,14 @@ export const projects: Project[] = [
       "Browser console script for managing Cursor's spending limit and usage-based pricing. Cursor eventually fixed the bug.",
     repo: "ramonclaudio/cursor-ai-usage-spending-limit-manager",
     status: "archived",
+  },
+  {
+    slug: "homebrew-tap",
+    name: "homebrew-tap",
+    stack: "Ruby · Homebrew",
+    description:
+      "Homebrew formulae for things I ship. Drives `brew install ramonclaudio/tap/seetree` and anything else I push to brew.",
+    repo: "ramonclaudio/homebrew-tap",
   },
   {
     slug: "tempo-panel-manager",

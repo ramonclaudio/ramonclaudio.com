@@ -87,6 +87,6 @@ Same transition hooks fire on sync-driven transitions with `sourceEventType: "SY
 
 ### Where it is now
 
-First release was January 2026. 14 versions later, around 4,500 downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
+First release was January 2026. 14 versions later, around 5,700 downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
 
 \- Ray

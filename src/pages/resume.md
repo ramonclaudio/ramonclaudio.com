@@ -9,9 +9,10 @@ Give me a real problem and time to read the source and I'll ship the fix. That's
 
 ### Selected projects
 
-- [convex-revenuecat](/projects/convex-revenuecat) — Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. Around 4,500 downloads on npm, listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat).
-- [tanstack-cn](/projects/tanstack-cn) + [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) — CLI scaffolder and shared runtime package, same shape as shadcn's (`bun create tanstack-cn my-app`). Around 700 downloads combined.
-- [ccbase](/projects/ccbase) — Local analytics dashboard, session history, and cost tracking for Claude Code. Around 200 downloads on [npm](https://www.npmjs.com/package/@ramonclaudio/ccbase).
+- [convex-revenuecat](/projects/convex-revenuecat) — Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. Around 5,700 downloads on npm, listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat).
+- [tanstack-cn](/projects/tanstack-cn) + [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) — CLI scaffolder and shared runtime package, same shape as shadcn's (`bun create tanstack-cn my-app`). Around 990 downloads combined.
+- [vexpo](https://github.com/ramonclaudio/vexpo) — Mobile sibling of tanvex. Expo SDK 56 + Convex + Better Auth + Resend, wired end-to-end for iOS. From `npm create` to TestFlight in one afternoon.
+- [ccbase](/projects/ccbase) — Local analytics dashboard, session history, and cost tracking for Claude Code. Around 220 downloads on [npm](https://www.npmjs.com/package/@ramonclaudio/ccbase).
 - [gitbar](/projects/gitbar) — Menubar GitHub dashboard. Rust + TypeScript.
 - [polar-commerce](/projects/polar-commerce) — Experimental e-commerce on Polar with custom cart bundling. Next.js, Convex, Better Auth. [Live demo](https://polar-commerce.vercel.app).
 
