@@ -1,37 +1,52 @@
 ---
-layout: ../layouts/AboutLayout.astro
+layout: ../layouts/ResumeLayout.astro
 title: "Resume"
 ---
 
-Product engineer in New York. Most of what's on my GitHub started as friction in my own app. I follow the thread until I understand what's wrong, file the PR upstream, and keep a patch around so my projects aren't waiting on review.
+**Product Engineer** · Brooklyn, NY
 
-Give me a real problem and time to read the source and I'll ship the fix. That's how I got 30 PRs merged upstream to [expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), [Convex](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), [shadcn/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), [bun](https://github.com/oven-sh/bun/pull/21855), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), [Astro compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged), and [TanStack](https://github.com/TanStack/db/pull/17).
+[ramonclaudio.com](https://ramonclaudio.com) · [github.com/ramonclaudio](https://github.com/ramonclaudio) · [hello@ramonclaudio.com](mailto:hello@ramonclaudio.com)
 
-### Selected projects
+## Summary
 
-- [convex-revenuecat](/projects/convex-revenuecat) — Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. Around 5,700 downloads on npm, listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat).
-- [tanstack-cn](/projects/tanstack-cn) + [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) — CLI scaffolder and shared runtime package, same shape as shadcn's (`bun create tanstack-cn my-app`). Around 990 downloads combined.
-- [vexpo](https://github.com/ramonclaudio/vexpo) — Mobile sibling of tanvex. Expo SDK 56 + Convex + Better Auth + Resend, wired end-to-end for iOS. From `npm create` to TestFlight in one afternoon.
-- [ccbase](/projects/ccbase) — Local analytics dashboard, session history, and cost tracking for Claude Code. Around 220 downloads on [npm](https://www.npmjs.com/package/@ramonclaudio/ccbase).
-- [gitbar](/projects/gitbar) — Menubar GitHub dashboard. Rust + TypeScript.
-- [polar-commerce](/projects/polar-commerce) — Experimental e-commerce on Polar with custom cart bundling. Next.js, Convex, Better Auth. [Live demo](https://polar-commerce.vercel.app).
+Product engineer in New York. Freelancing solo since 2013. Give me a real bug with the time to dig and I'll ship the fix. 31 PRs merged upstream to Expo, Convex, Bun, shadcn/ui, and others, every one came from hitting a wall in my own apps and chasing it down.
 
-[Full project list →](/projects)
+## Experience
 
-### Open source
+### Product Engineer · Independent
 
-30 PRs merged across 10 upstream repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (9), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth/better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fuma-nama/fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), and 4 more across [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), [bun](https://github.com/oven-sh/bun/pull/21855), [App-Store-Connect-CLI](https://github.com/rorkai/App-Store-Connect-CLI/pull/784), and [TanStack/db](https://github.com/TanStack/db/pull/17). 7 open across 6 repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo (88 patch files for Bun, npm, and pnpm) so my projects and anyone else hitting the same bug can ship while the upstream PR is in review.
+**2013 to Present · Brooklyn, NY**
 
-[Full contributions list →](/contributions)
+- 31 PRs merged upstream across 10 repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (10), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), plus [bun](https://github.com/oven-sh/bun/pull/21855), [TanStack/db](https://github.com/TanStack/db/pull/17), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), and App-Store-Connect-CLI. 6 more open including 2 in oven-sh/bun (CI YAML fix, peer-dep semver). 13 upstream issues filed including panva/jose#752 (improper `process.getBuiltinModule` on Edge Runtime middleware).
+- Build and maintain [convex-revenuecat](https://www.convex.dev/components/ramonclaudio-convex-revenuecat) (5,900+ npm downloads, listed on the Convex Components Directory), [tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) (CLI scaffolder, ~1,000 downloads), [create-claude](https://www.npmjs.com/package/create-claude) (1,600+ downloads), and ~10 other shipped npm packages.
+- Maintain [ramonclaudio/patches](https://github.com/ramonclaudio/patches) (88 patch files for Bun, npm, and pnpm) so my apps and other users ship the fix while upstream PRs are in review.
+- 10,000+ GitHub contributions since Dec 2023 across 47 public repos (377 stars earned).
+- 2018 to 2021 at This Is Not Art: built and maintained a custom Shopify storefront (Liquid) with anti-bot protections (velocity detection, duplicate-order blocking, URL gating) years before Shopify shipped native mitigation. Built internal tools: AR sculpture preview app, Instagram head-tracking game, inventory management, custom event registration with timeslot booking.
+- 2013 to 2017 at Software Automation Services: designed and operated automation and monitoring infrastructure for the e-commerce sector, with hands-on application security research and API reverse-engineering. Shipped Python and JavaScript tooling, Chrome extensions, and related web services.
 
-### Background
+#### Selected merged PRs
 
-Started freelancing in 2013. Reverse engineering APIs, scraping large datasets, pentesting, learning by doing. A few of those scraper bots and automation tools cleared six figures a year before I moved on.
+- [expo/expo#45403](https://github.com/expo/expo/pull/45403): `@expo/ui` packaging fix. Expo's internal tools resolved packages by folder name; added a name-based fallback for scoped packages.
+- [expo/expo#45700](https://github.com/expo/expo/pull/45700): `@expo/ui` SwiftUI Alert component with role-aware buttons and presentation modifier binding.
+- [expo/expo#44652](https://github.com/expo/expo/pull/44652): `scrollPosition` and `id` modifiers binding a ScrollView's leading target to JS via `useNativeState` and the worklet `.value` write path.
+- [expo/expo `@expo/ui` SwiftUI modifiers](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged): 7 more merged PRs covering `clipShape`/`mask`, per-axis `scaleEffect`, `defaultScrollAnchor`, `scrollTargetBehavior`, `textContentType`, and `textInputAutocapitalization`.
+- [better-auth/better-auth#9281](https://github.com/better-auth/better-auth/pull/9281): ported `./instrumentation` to conditional exports after Convex's V8 isolate threw synchronously from `import()`. Verified by reading `convex-backend`'s Rust isolate.
+- [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged): 5 merged PRs including [#323](https://github.com/get-convex/better-auth/pull/323) (breaking-change migration to better-auth 1.6), [#267](https://github.com/get-convex/better-auth/pull/267) (`fetchAccessToken` deduplication), and [#218](https://github.com/get-convex/better-auth/pull/218) (stale credentials after session expiry).
+- [napi-rs/napi-rs#3189](https://github.com/napi-rs/napi-rs/pull/3189): Rust cross-compile bug in `@napi-rs/cli` causing glibc incompatibility that broke production Astro deploys to Vercel and Amazon Linux 2023. Fix shipped in `@astrojs/compiler-rs@0.1.8`.
+- [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged): 5 merged PRs including [#10396](https://github.com/shadcn-ui/ui/pull/10396) (TanStack Start dark mode guide, replacing 4 prior attempts), [#9484](https://github.com/shadcn-ui/ui/pull/9484) (ComponentsList Copy-Page fix), and [#10337](https://github.com/shadcn-ui/ui/pull/10337) (llms.txt audit of 97 URLs).
 
-### What I'm looking for
+## Projects
 
-I ship a lot. Been solo my whole career, so every project is end-to-end. Most of my team engineering experience comes from contributing upstream and getting feedback from core maintainers on my PRs. What I haven't done is sit inside an engineering org with code review, on-call, and sprint cycles. I want that next. Specifically, I want to work next to people who are better than me so I get better faster. Every time a maintainer has pushed back on one of my PRs or refactored something I wrote, I've come away a better engineer for it. I want those conversations happening every day instead of once a month. Developer tools, devex, mobile, or AI tooling are where my habits would add up fastest.
+- **[convex-revenuecat](https://github.com/ramonclaudio/convex-revenuecat)**: Convex component mirroring RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. ~5,900 npm downloads, listed on the Convex Components Directory.
+- **[vexpo](https://github.com/ramonclaudio/vexpo)**: Expo SDK 56 + Convex + Better Auth + Resend starter paired with a CLI that runs the full 0-to-1. `create-vexpo` scaffolds the template, then `vexpo full` provisions Convex, Apple Developer / ASC, EAS, and Resend end-to-end: account auth, secrets, env mirroring, Sign In With Apple JWT signing with 90-day auto-rotation, EAS workflows, and more.
+- **[tanvex](https://github.com/ramonclaudio/tanvex)**: TanStack Start + Convex + Better Auth + Resend SaaS starter. SSR auth, email + OTP, rate-limited HTTP API, avatar uploads. Live demo at [tanvex-demo.vercel.app](https://tanvex-demo.vercel.app).
+- **dreamseeker**: goal-achievement app, RevenueCat Shipyard Hackathon 2026 submission. Expo SDK 56 canary + Convex + Better Auth + RevenueCat. Row-level security, rate-limited endpoints, input validation on every mutation.
+- **[uniwind-ui](https://github.com/ramonclaudio/uniwind-ui)**: shadcn/ui for React Native. Copy-and-paste components built on Uniwind, iOS + Android + Web from one codebase. Live demo at [uniwind-ui.vercel.app](https://uniwind-ui.vercel.app).
 
-### Education
+## Skills
 
-B.S. Computer Science, Long Island University, 2016
+TypeScript, Node, Bun, React, React Native, Postgres, Redis, Python.
+
+## Education
+
+**B.S. Computer Science** · Long Island University · 2016
