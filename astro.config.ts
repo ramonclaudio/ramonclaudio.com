@@ -61,7 +61,6 @@ export default defineConfig({
     },
   },
   experimental: {
-    svgo: true,
     contentIntellisense: true,
     clientPrerender: true,
     rustCompiler: true,
