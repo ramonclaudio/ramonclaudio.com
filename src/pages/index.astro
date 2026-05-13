@@ -30,7 +30,7 @@ const personSchema = {
   image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
   jobTitle: "Product Engineer",
   description:
-    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 28 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, Astro, and TanStack.",
+    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 30 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, Astro, and TanStack.",
   knowsAbout: [
     "TypeScript",
     "Swift",
@@ -66,6 +66,11 @@ const contributions = [
     repo: "expo/expo",
     href: "https://github.com/expo/expo/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
+      {
+        pr: 45403,
+        href: "https://github.com/expo/expo/pull/45403",
+        text: "getPackageByName resolved workspace:* peer deps by directory name, so scoped packages whose dir name differs from the package name (@expo/ui lives at packages/expo-ui/, @expo/app-integrity at packages/expo-app-integrity/) fell through to the npm resolver. The published canary tarballs shipped peerDependencies.expo: workspace:* unrewritten, and bun add @expo/ui@canary errored with Workspace dependency \"expo\" not found while npm install errored with EUNSUPPORTEDPROTOCOL. Fix keeps the path-based fast path and falls back to scanning cachedPackages by name field on miss. Same root cause as #44412, different call site",
+      },
       {
         pr: 44548,
         href: "https://github.com/expo/expo/pull/44548",
@@ -131,6 +136,11 @@ const contributions = [
         pr: 278,
         href: "https://github.com/get-convex/better-auth/pull/278",
         text: "dead react-dom peer dep removal that was generating warnings in bun and pnpm projects (zero react-dom imports across all 32 files in src/)",
+      },
+      {
+        pr: 323,
+        href: "https://github.com/get-convex/better-auth/pull/323",
+        text: "migrated @convex-dev/better-auth to better-auth 1.6.7+, fixing five runtime breaks across the 1.6.x line in one rebase. Where.mode folding so adapter validators accept the new field and case-fold eq/ne/in/not_in/contains/starts_with/ends_with in filterByWhere. asResponse: false at 7 internal call sites after to-auth-endpoints.ts defaulted to Response, which crashed setSessionCookie with the literal string \"undefined\". twoFactor.verified schema column. Deleted the 34-line local parseSetCookieHeader that shattered cookies with comma-containing Expires values and re-exported from better-auth/cookies. Peer floor 1.6.7 to pick up the ./instrumentation noop landed by #9281. Shipped in @convex-dev/better-auth@0.12.0",
       },
     ],
   },
@@ -320,13 +330,13 @@ const contributions = [
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        29 PRs merged across 10 repos · 8 to <a
+        30 PRs merged across 10 repos · 9 to <a
           href="https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged"
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
           >@expo/ui</a
-        > · 112 drop-in <a
+        > · 88 drop-in <a
           href="https://github.com/ramonclaudio/patches"
           target="_blank"
           rel="noopener noreferrer"
