@@ -21,269 +21,110 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Ramon Claudio",
-  alternateName: "Ray",
-  url: "https://ramonclaudio.com",
-  image: "https://ramonclaudio.com/ramonclaudio-og.jpg",
-  jobTitle: "Product Engineer",
-  description:
-    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 31 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, napi-rs, fumadocs, Astro, and TanStack.",
-  knowsAbout: [
-    "TypeScript",
-    "Swift",
-    "Rust",
-    "Zig",
-    "Go",
-    "Python",
-    "React",
-    "React Native",
-    "Expo",
-    "Convex",
-    "Better Auth",
-    "Bun",
-    "Tauri",
-    "Claude Code",
-    "AI SDK",
-    "Open Source Software",
-  ],
-  sameAs: [
-    "https://github.com/ramonclaudio",
-    "https://x.com/ramonclaudio",
-    "https://www.linkedin.com/in/ramonclaudio/",
-    "https://www.npmjs.com/~ramonclaudio",
-  ],
-  alumniOf: {
-    "@type": "CollegeOrUniversity",
-    name: "Long Island University",
-  },
-};
-
 const contributions = [
   {
     repo: "expo/expo",
     href: "https://github.com/expo/expo/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 45403,
-        href: "https://github.com/expo/expo/pull/45403",
-        text: "getPackageByName resolved workspace:* peer deps by directory name, so scoped packages whose dir name differs from the package name (@expo/ui lives at packages/expo-ui/, @expo/app-integrity at packages/expo-app-integrity/) fell through to the npm resolver. The published canary tarballs shipped peerDependencies.expo: workspace:* unrewritten, and bun add @expo/ui@canary errored with Workspace dependency \"expo\" not found while npm install errored with EUNSUPPORTEDPROTOCOL. Fix keeps the path-based fast path and falls back to scanning cachedPackages by name field on miss. Same root cause as #44412, different call site",
-      },
-      {
-        pr: 44548,
-        href: "https://github.com/expo/expo/pull/44548",
-        text: "textContentType modifier wrapping all 45 UITextContentType values to wire @expo/ui text fields into iOS keychain autofill (passwords, addresses, cards, OTP)",
-      },
-      {
-        pr: 44547,
-        href: "https://github.com/expo/expo/pull/44547",
-        text: "textInputAutocapitalization modifier so TextField can finally turn off auto-caps without forcing an ASCII keyboard layout",
-      },
-      {
-        pr: 43955,
-        href: "https://github.com/expo/expo/pull/43955",
-        text: "scrollTargetBehavior and scrollTargetLayout modifiers (iOS 17+) for paging and view-aligned scroll snapping",
-      },
-      {
-        pr: 43923,
-        href: "https://github.com/expo/expo/pull/43923",
-        text: "defaultScrollAnchorForRole modifier (iOS 18+) for per-role anchor overrides on initialOffset, sizeChanges, and alignment",
-      },
-      {
-        pr: 43914,
-        href: "https://github.com/expo/expo/pull/43914",
-        text: "defaultScrollAnchor modifier (iOS 17+) so chat UIs no longer need scaleEffect(y: -1) flips, reversed data, and inverted scroll indicators",
-      },
-      {
-        pr: 43228,
-        href: "https://github.com/expo/expo/pull/43228",
-        text: "per-axis scaleEffect accepting { x, y } for inverted-list message threads",
-      },
-      {
-        pr: 43158,
-        href: "https://github.com/expo/expo/pull/43158",
-        text: "ShapeType enum fix unblocking capsule and ellipse in clipShape and mask (they were silently rendering Rectangle)",
-      },
-      {
-        pr: 43958,
-        href: "https://github.com/expo/expo/pull/43958",
-        text: "PersistentFileLog serial queue race fix that was flaking expo-updates log tests in CI",
-      },
+      { pr: 46050, href: "https://github.com/expo/expo/pull/46050", text: "fork-safety CI sweep finale, gating 15 more workflows on the upstream repo" },
+      { pr: 46007, href: "https://github.com/expo/expo/pull/46007", text: "font textStyle for iOS Dynamic Type, all 11 Font.TextStyle cases" },
+      { pr: 45872, href: "https://github.com/expo/expo/pull/45872", text: "Host modifiers were a silent no-op on iOS, one Swift field restored the whole set" },
+      { pr: 45859, href: "https://github.com/expo/expo/pull/45859", text: "skip 18 secret-gated workflows on forks" },
+      { pr: 45782, href: "https://github.com/expo/expo/pull/45782", text: "make five auto-firing scheduled workflows fork-safe" },
+      { pr: 45700, href: "https://github.com/expo/expo/pull/45700", text: "SwiftUI Alert component for @expo/ui" },
+      { pr: 45403, href: "https://github.com/expo/expo/pull/45403", text: "resolve workspace:* peer deps for scoped packages whose dir name differs" },
+      { pr: 44652, href: "https://github.com/expo/expo/pull/44652", text: "scrollPosition and id modifiers binding a ScrollView's leading target to JS" },
+      { pr: 44548, href: "https://github.com/expo/expo/pull/44548", text: "textContentType modifier wiring text fields into iOS keychain autofill" },
+      { pr: 44547, href: "https://github.com/expo/expo/pull/44547", text: "textInputAutocapitalization without forcing an ASCII keyboard" },
+      { pr: 43955, href: "https://github.com/expo/expo/pull/43955", text: "scrollTargetBehavior and scrollTargetLayout for snap paging" },
+      { pr: 43923, href: "https://github.com/expo/expo/pull/43923", text: "defaultScrollAnchorForRole for per-role scroll anchors" },
+      { pr: 43914, href: "https://github.com/expo/expo/pull/43914", text: "defaultScrollAnchor so chat UIs drop the scaleEffect(y: -1) flip" },
+      { pr: 43228, href: "https://github.com/expo/expo/pull/43228", text: "per-axis scaleEffect accepting { x, y }" },
+      { pr: 43158, href: "https://github.com/expo/expo/pull/43158", text: "ShapeType enum fix unblocking capsule and ellipse in clipShape and mask" },
+      { pr: 43958, href: "https://github.com/expo/expo/pull/43958", text: "PersistentFileLog read-race fix that flaked expo-updates CI" },
     ],
   },
   {
     repo: "get-convex/better-auth",
     href: "https://github.com/get-convex/better-auth/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 218,
-        href: "https://github.com/get-convex/better-auth/pull/218",
-        text: "four bugs causing stale auth state: cookie expiry comparison NaN-coerced because JSON.parse turned the Date into a string, stale cookies persisting after session expiry, getSessionData returning truthy {} after sign-out, and isAuthenticated true for {} and undefined sessions",
-      },
-      {
-        pr: 245,
-        href: "https://github.com/get-convex/better-auth/pull/245",
-        text: "widened better-auth peer dep from exact 1.4.9 to >=1.4.9 <1.5.0 to cover 1.4.9 through 1.4.18, excluding 1.5.0 which moved createAuthEndpoint and createAuthMiddleware out of better-auth/plugins",
-      },
-      {
-        pr: 267,
-        href: "https://github.com/get-convex/better-auth/pull/267",
-        text: "concurrent fetchAccessToken dedup via useRef so React 18 StrictMode and ConvexProviderWithAuth setAuth re-renders no longer fire N redundant /convex/token round-trips on page load",
-      },
-      {
-        pr: 278,
-        href: "https://github.com/get-convex/better-auth/pull/278",
-        text: "dead react-dom peer dep removal that was generating warnings in bun and pnpm projects (zero react-dom imports across all 32 files in src/)",
-      },
-      {
-        pr: 323,
-        href: "https://github.com/get-convex/better-auth/pull/323",
-        text: "migrated @convex-dev/better-auth to better-auth 1.6.7+, fixing five runtime breaks across the 1.6.x line in one rebase. Where.mode folding so adapter validators accept the new field and case-fold eq/ne/in/not_in/contains/starts_with/ends_with in filterByWhere. asResponse: false at 7 internal call sites after to-auth-endpoints.ts defaulted to Response, which crashed setSessionCookie with the literal string \"undefined\". twoFactor.verified schema column. Deleted the 34-line local parseSetCookieHeader that shattered cookies with comma-containing Expires values and re-exported from better-auth/cookies. Peer floor 1.6.7 to pick up the ./instrumentation noop landed by #9281. Shipped in @convex-dev/better-auth@0.12.0",
-      },
-    ],
-  },
-  {
-    repo: "napi-rs/napi-rs",
-    href: "https://github.com/napi-rs/napi-rs/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    items: [
-      {
-        pr: 3189,
-        href: "https://github.com/napi-rs/napi-rs/pull/3189",
-        text: "cross-compile regression in the v3 CLI rewrite where passing --cross-compile silently fell through to cargo build when host matched target on linux or darwin, linking against the host glibc instead of zig's pinned version. Broke deploys to Amazon Linux 2023 and Vercel build containers (glibc 2.34) when binaries were built on ubuntu-latest (glibc 2.39). The v2 fix from #1432 wasn't carried over during the v3 rewrite",
-      },
+      { pr: 323, href: "https://github.com/get-convex/better-auth/pull/323", text: "migrate to better-auth 1.6, five runtime breaks fixed in one rebase" },
+      { pr: 278, href: "https://github.com/get-convex/better-auth/pull/278", text: "drop the dead react-dom peer dep" },
+      { pr: 267, href: "https://github.com/get-convex/better-auth/pull/267", text: "dedup concurrent fetchAccessToken calls with a ref" },
+      { pr: 245, href: "https://github.com/get-convex/better-auth/pull/245", text: "widen the better-auth peer dep to cover the whole 1.4.x line" },
+      { pr: 218, href: "https://github.com/get-convex/better-auth/pull/218", text: "four bugs leaving stale auth state after a session expires" },
     ],
   },
   {
     repo: "shadcn-ui/ui",
     href: "https://github.com/shadcn-ui/ui/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 10396,
-        href: "https://github.com/shadcn-ui/ui/pull/10396",
-        text: "added the TanStack Start dark mode guide to the official shadcn docs, the fifth framework-specific guide after Next.js, Vite, Astro, and Remix. Built on ScriptOnce for the pre-hydration inline script, a React context for post-hydration state, suppressHydrationWarning on <html>, documentElement.style.colorScheme so native UI respects the theme, and a prefers-color-scheme listener for system mode. Superseded three prior PRs from other contributors (#7173, #7490, #9096) that each traded off a different piece. In review shadcn refactored the inline script string into a getThemeScript(storageKey, defaultTheme) function so custom provider props reach the pre-hydration pass",
-      },
-      {
-        pr: 10369,
-        href: "https://github.com/shadcn-ui/ui/pull/10369",
-        text: "notFoundComponent on the Start root route in the start-app and start-monorepo templates, silencing the TanStack Router warning that fires on first load from phantom requests to /favicon.ico and Chrome DevTools' /.well-known/appspecific/com.chrome.devtools.json when neither notFoundComponent nor defaultNotFoundComponent is configured. JSX shape matches the existing 404 ErrorBoundary pattern from the react-router-app and react-router-monorepo templates (same container mx-auto p-4 pt-16 wrapper, same 404 heading and copy) so the ten-template suite stays consistent",
-      },
-      {
-        pr: 10337,
-        href: "https://github.com/shadcn-ui/ui/pull/10337",
-        text: "fixed llms.txt 404s and backfilled missing routes so LLM crawlers can index the full docs site",
-      },
-      {
-        pr: 9484,
-        href: "https://github.com/shadcn-ui/ui/pull/9484",
-        text: "raw <ComponentsList /> tag leaking into copy-to-markdown output on component pages",
-      },
-      {
-        pr: 9331,
-        href: "https://github.com/shadcn-ui/ui/pull/9331",
-        text: "registered the @ramonclaudio-coderabbit shadcn registry in the official open source directory per #8892. The registry ships a framework-agnostic CodeRabbit API client, pluggable storage adapters (LocalStorage, Convex, Supabase, PostgreSQL, MySQL), and React components for developer activity reports",
-      },
-    ],
-  },
-  {
-    repo: "oven-sh/bun",
-    href: "https://github.com/oven-sh/bun/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    items: [
-      {
-        pr: 21855,
-        href: "https://github.com/oven-sh/bun/pull/21855",
-        text: "added the decompress property to the BunFetchRequestInit interface with JSDoc, removing the need for @ts-ignore when disabling response decompression in Bun fetch (the option already worked at runtime)",
-      },
-    ],
-  },
-  {
-    repo: "fuma-nama/fumadocs",
-    href: "https://github.com/fuma-nama/fumadocs/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    items: [
-      {
-        pr: 2092,
-        href: "https://github.com/fuma-nama/fumadocs/pull/2092",
-        text: "fixed the TanStack Start template in create-fumadocs-app by wiring the vite-react plugin with the required customViteReactPlugin: true flag, configuring a custom NotFound component for TanStack Router, and bumping deps. Resolved four issues at once: vite-react plugin warning, missing custom 404 warning, module resolution errors during navigation, and React hydration errors from useMemo null references",
-      },
-      {
-        pr: 2095,
-        href: "https://github.com/fuma-nama/fumadocs/pull/2095",
-        text: "prettier formatting fix that unblocked the changesets release PR #2093 for create-fumadocs-app@15.7.0",
-      },
-    ],
-  },
-  {
-    repo: "rorkai/App-Store-Connect-CLI",
-    href: "https://github.com/rorkai/App-Store-Connect-CLI/pulls?q=is:pr+author:ramonclaudio+is:merged",
-    items: [
-      {
-        pr: 784,
-        href: "https://github.com/rorkai/App-Store-Connect-CLI/pull/784",
-        text: "added Mac App Store screenshot support to the asc CLI. New --provider macos grabs the frontmost window of a running app by bundle ID via screencapture -l <windowID>, with the window ID coming from a Swift one-liner piped through swift - (no cgo, no extra binaries). New --device mac renders to the 2880x1800 APP_DESKTOP canvas without a device bezel, with optional title, subtitle, and background color overlays. Also fixed ASC_TIMEOUT being silently ignored for screenshots capture and frame, both now use ContextWithTimeout",
-      },
+      { pr: 10396, href: "https://github.com/shadcn-ui/ui/pull/10396", text: "official TanStack Start dark mode guide, replacing three stale PRs" },
+      { pr: 10369, href: "https://github.com/shadcn-ui/ui/pull/10369", text: "notFoundComponent on the Start templates to silence the Router warning" },
+      { pr: 10337, href: "https://github.com/shadcn-ui/ui/pull/10337", text: "fix llms.txt 404s and backfill missing routes" },
+      { pr: 9484, href: "https://github.com/shadcn-ui/ui/pull/9484", text: "strip the raw <ComponentsList> tag from copy-to-markdown output" },
+      { pr: 9331, href: "https://github.com/shadcn-ui/ui/pull/9331", text: "register the @ramonclaudio-coderabbit registry in the official directory" },
     ],
   },
   {
     repo: "better-auth/better-auth",
     href: "https://github.com/better-auth/better-auth/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 9281,
-        href: "https://github.com/better-auth/better-auth/pull/9281",
-        text: "noop ./instrumentation via conditional exports for browser and edge runtimes, matching the shape ./async_hooks already uses. The dynamic import('@opentelemetry/api') in packages/core/src/instrumentation/api.ts threw synchronously on Convex's V8 isolate (bare specifiers rejected at resolve time via deno_core::resolve_import), so the .catch() in getOpenTelemetryAPI never ran and every withSpan call through to-auth-endpoints.ts and with-hooks.ts surfaced an uncaught error. The breaking pattern landed in #9111 and shipped in v1.6.6. @opentelemetry/api itself ships a noop proxy when no SDK is registered, so this is about dynamic-import-probe portability, not OTel runtime support. Unblocks the 1.6 migration for @convex-dev/better-auth consumers",
-      },
-      {
-        pr: 9087,
-        href: "https://github.com/better-auth/better-auth/pull/9087",
-        text: "added /change-password and /revoke-other-sessions to the atomListeners matcher so $sessionSignal fires after session-rotating endpoints. Without this, useSession() kept returning stale data after password changes because the client never re-fetched. Companion to get-convex/better-auth#329 which invalidates the Convex adapter's cached JWT on the same events",
-      },
-      {
-        pr: 9072,
-        href: "https://github.com/better-auth/better-auth/pull/9072",
-        text: "incorrect operationId in the password reset callback endpoint, plus forget-to-forgot cleanup across demo apps and tests",
-      },
+      { pr: 9281, href: "https://github.com/better-auth/better-auth/pull/9281", text: "noop ./instrumentation export so Convex's V8 isolate stops crashing" },
+      { pr: 9087, href: "https://github.com/better-auth/better-auth/pull/9087", text: "fire $sessionSignal after session-rotating endpoints" },
+      { pr: 9072, href: "https://github.com/better-auth/better-auth/pull/9072", text: "fix operationId on the password reset callback endpoint" },
     ],
   },
   {
     repo: "withastro/compiler-rs",
     href: "https://github.com/withastro/compiler-rs/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 25,
-        href: "https://github.com/withastro/compiler-rs/pull/25",
-        text: "switched linux-gnu builds from -x (zigbuild) to --use-napi-cross after #22 turned out to be insufficient. Zigbuild without an explicit glibc suffix falls back to zig's per-arch baseline (GLIBC_2.35 on x86_64, GLIBC_2.30 on aarch64 for zig 0.15), so the 0.1.7 binary still couldn't load on Vercel, Amazon Linux 2023, AWS Lambda, RHEL/CentOS 7, or Debian 10. --use-napi-cross downloads @napi-rs/cross-toolchain with a sysroot pinned to glibc 2.17, matching the pattern used by oxc, swc, canvas, lightningcss, and the official napi-rs/package-template. Verified on a fork CI run plus a live Vercel preview deploy with experimental.rustCompiler: true. Shipped in @astrojs/compiler-rs@0.1.8",
-      },
-      {
-        pr: 22,
-        href: "https://github.com/withastro/compiler-rs/pull/22",
-        text: "first-attempt glibc compat fix, added -x to x86_64-unknown-linux-gnu. Turned out to be insufficient, superseded by #25",
-      },
+      { pr: 25, href: "https://github.com/withastro/compiler-rs/pull/25", text: "switch linux-gnu builds to --use-napi-cross, dropping the glibc floor to 2.17" },
+      { pr: 22, href: "https://github.com/withastro/compiler-rs/pull/22", text: "first glibc compat attempt, superseded by #25" },
+    ],
+  },
+  {
+    repo: "fuma-nama/fumadocs",
+    href: "https://github.com/fuma-nama/fumadocs/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      { pr: 2092, href: "https://github.com/fuma-nama/fumadocs/pull/2092", text: "fix the TanStack Start template, four config and hydration issues at once" },
+      { pr: 2095, href: "https://github.com/fuma-nama/fumadocs/pull/2095", text: "prettier fix that unblocked the create-fumadocs-app release" },
+    ],
+  },
+  {
+    repo: "napi-rs/napi-rs",
+    href: "https://github.com/napi-rs/napi-rs/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      { pr: 3189, href: "https://github.com/napi-rs/napi-rs/pull/3189", text: "respect --cross-compile when host matches target, fixing glibc breaks on Vercel and Lambda" },
+    ],
+  },
+  {
+    repo: "oven-sh/bun",
+    href: "https://github.com/oven-sh/bun/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      { pr: 21855, href: "https://github.com/oven-sh/bun/pull/21855", text: "typed decompress option for fetch, no more @ts-ignore" },
+    ],
+  },
+  {
+    repo: "rorkai/App-Store-Connect-CLI",
+    href: "https://github.com/rorkai/App-Store-Connect-CLI/pulls?q=is:pr+author:ramonclaudio+is:merged",
+    items: [
+      { pr: 784, href: "https://github.com/rorkai/App-Store-Connect-CLI/pull/784", text: "Mac App Store screenshot support for the asc CLI" },
     ],
   },
   {
     repo: "TanStack/db",
     href: "https://github.com/TanStack/db/pulls?q=is:pr+author:ramonclaudio+is:merged",
     items: [
-      {
-        pr: 17,
-        href: "https://github.com/TanStack/db/pull/17",
-        text: "corrected the README link to the example todo app, which pointed at a stale path. Now resolves to examples/react/todo so first-time visitors landing on the repo can actually open the example. Was PR #17 in the repo (early days)",
-      },
+      { pr: 17, href: "https://github.com/TanStack/db/pull/17", text: "fix the stale example todo app link in the README" },
     ],
   },
 ];
 ---
 
-<Layout>
+<Layout title="Ray · Product Engineer" profilePage>
   <Header />
   <main id="main-content" data-layout="index">
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(personSchema)}
-    />
-
     <section id="hero" class="pt-8 pb-6">
       <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
         [about.ray]
@@ -307,7 +148,7 @@ const contributions = [
           href="/projects"
           class="text-foreground underline decoration-dashed underline-offset-4"
           >projects</a
-        > started as a bug somewhere upstream or a task I found myself doing way to
+        > started as a bug somewhere upstream or a task I found myself doing way too
         often. When I hit a bug I try to find the cause at the source, <a
           href="/contributions"
           class="text-foreground underline decoration-dashed underline-offset-4"
@@ -330,19 +171,19 @@ const contributions = [
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
-        30 PRs merged across 10 repos · 9 to <a
+        37 PRs merged across 10 repos · 16 to <a
           href="https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged"
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-          >@expo/ui</a
-        > · 88 drop-in <a
+          >expo</a
+        > · 49 drop-in <a
           href="https://github.com/ramonclaudio/patches"
           target="_blank"
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
           >patches</a
-        > · 7 npm packages
+        > · 10 npm packages
       </p>
 
       <div class="mt-4 flex flex-wrap items-center gap-4">
