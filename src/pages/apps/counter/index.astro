@@ -4,6 +4,20 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
+import { PERSON_ID } from "@/utils/schema";
+
+const appCanonical = new URL(Astro.url.pathname, Astro.url).toString();
+const appSchema = {
+  "@type": "SoftwareApplication",
+  "@id": `${appCanonical}#app`,
+  name: "Counter",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "iOS",
+  description:
+    "Voice AI with three modes: research products, live negotiation coaching, and practice against an AI salesman. ElevenHacks Season 1 submission.",
+  url: appCanonical,
+  author: { "@id": PERSON_ID },
+};
 
 const modes = [
   {
@@ -32,6 +46,7 @@ const features = [
 ---
 
 <Layout
+  schema={[appSchema]}
   title={`Counter | ${SITE.title}`}
   description="My ElevenHacks Season 1 hackathon submission. Voice AI for deal research, practice negotiations, and live coaching."
 >

@@ -7,12 +7,29 @@ import Hr from "@/components/Hr.astro";
 import { projects } from "@/data/projects";
 
 const featured = projects.filter((p) => p.featured);
-const all = projects.filter((p) => !p.featured);
+const rest = projects.filter((p) => !p.featured);
+const active = rest.filter((p) => p.status !== "archived");
+const archived = rest.filter((p) => p.status === "archived");
+
+const canonical = new URL(Astro.url.pathname, Astro.url).toString();
+const projectsList = {
+  "@type": "ItemList",
+  "@id": `${canonical}#projects`,
+  name: "Projects",
+  numberOfItems: projects.length,
+  itemListElement: projects.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: new URL(`/projects/${p.slug}/`, Astro.url).toString(),
+    name: p.name,
+  })),
+};
 ---
 
 <Layout
   title="Projects | Ray"
   description="Open source projects and experiments by Ray"
+  schema={[projectsList]}
 >
   <Header />
   <Breadcrumb />
@@ -64,12 +81,12 @@ const all = projects.filter((p) => !p.featured);
       <h2 class="text-2xl font-semibold tracking-wide">
         [the.rest]
         <span class="ml-2 text-sm font-normal text-muted-foreground">
-          ({all.length})
+          ({active.length})
         </span>
       </h2>
       <ul class="mt-4">
         {
-          all.map((project) => (
+          active.map((project) => (
             <li class="my-5">
               <div>
                 <a
@@ -87,6 +104,39 @@ const all = projects.filter((p) => !p.featured);
               {project.detail && (
                 <p class="text-xs text-muted-foreground">{project.detail}</p>
               )}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Hr />
+
+    <section id="archived" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide text-muted-foreground">
+        [archived]
+        <span class="ml-2 text-sm font-normal text-muted-foreground">
+          ({archived.length})
+        </span>
+      </h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Older experiments and tools I've stopped maintaining. Still public, still
+        on GitHub.
+      </p>
+      <ul class="mt-4">
+        {
+          archived.map((project) => (
+            <li class="my-2 text-muted-foreground">
+              <a
+                href={`/projects/${project.slug}`}
+                class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              >
+                {project.name}
+              </a>
+              <span class="text-xs">
+                {" · "}
+                {project.stack}
+              </span>
             </li>
           ))
         }

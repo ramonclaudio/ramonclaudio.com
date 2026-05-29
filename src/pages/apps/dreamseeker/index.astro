@@ -4,6 +4,20 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
+import { PERSON_ID } from "@/utils/schema";
+
+const appCanonical = new URL(Astro.url.pathname, Astro.url).toString();
+const appSchema = {
+  "@type": "SoftwareApplication",
+  "@id": `${appCanonical}#app`,
+  name: "DreamSeeker",
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "iOS",
+  description:
+    "Goal-achievement app: break goals into daily micro-actions, track with streaks and XP, share progress to a community feed. RevenueCat Shipyard 2026 submission.",
+  url: appCanonical,
+  author: { "@id": PERSON_ID },
+};
 
 const features = [
   "Long-term goals with progress visualization",
@@ -16,6 +30,7 @@ const features = [
 ---
 
 <Layout
+  schema={[appSchema]}
   title={`DreamSeeker | ${SITE.title}`}
   description="My RevenueCat Shipyard 2026 hackathon submission. Goal-achievement app."
 >

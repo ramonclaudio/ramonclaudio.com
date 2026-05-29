@@ -4,6 +4,20 @@ import Footer from "@/components/Footer.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
+import { PERSON_ID } from "@/utils/schema";
+
+const appCanonical = new URL(Astro.url.pathname, Astro.url).toString();
+const appSchema = {
+  "@type": "SoftwareApplication",
+  "@id": `${appCanonical}#app`,
+  name: "Vexpo",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "iOS",
+  description:
+    "Open-source Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from npm create to TestFlight.",
+  url: appCanonical,
+  author: { "@id": PERSON_ID },
+};
 
 const stack = [
   {
@@ -64,6 +78,7 @@ const setup = [
 ---
 
 <Layout
+  schema={[appSchema]}
   title={`Vexpo | ${SITE.title}`}
   description="Open-source iOS template. Convex + Better Auth + Resend on Expo. Production-ready stack you can fork and ship."
 >
