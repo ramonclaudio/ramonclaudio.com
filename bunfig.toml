@@ -1,5 +1,4 @@
+telemetry = false
+
 [install]
 peer = false
-
-[telemetry]
-enabled = false
