@@ -123,20 +123,20 @@ const isActive = (path: string) => {
             </ul>
           </li>
           <li class="group relative col-span-2">
-            <span
+            <a
+              href="/projects"
               class:list={[
-                "block cursor-default px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
+                "block px-4 py-3 text-center font-medium hover:text-foreground sm:px-2 sm:py-1",
                 {
                   "active-nav":
                     isActive("/projects") ||
                     isActive("/contributions") ||
-                    isActive("/registries") ||
                     isActive("/apps"),
                 },
               ]}
             >
               [work]
-            </span>
+            </a>
             <ul
               class:list={[
                 "flex justify-center gap-4 sm:hidden sm:flex-col sm:gap-0",
@@ -160,42 +160,13 @@ const isActive = (path: string) => {
                   contributions
                 </a>
               </li>
-              <li class="group/inner relative">
-                <span
-                  class:list={[
-                    "block cursor-default px-4 py-2 text-sm hover:text-foreground",
-                    {
-                      "active-nav":
-                        isActive("/apps") || isActive("/registries"),
-                    },
-                  ]}
+              <li>
+                <a
+                  href="/apps"
+                  class="block px-4 py-2 text-sm hover:text-foreground"
                 >
-                  shipped
-                </span>
-                <ul
-                  class:list={[
-                    "flex justify-center gap-4 sm:hidden sm:flex-col sm:gap-0",
-                    "sm:pointer-events-none sm:absolute sm:top-0 sm:left-full sm:z-50 sm:min-w-32 sm:rounded-md sm:border sm:border-border sm:bg-background sm:opacity-0 sm:shadow-lg sm:transition-opacity",
-                    "sm:group-hover/inner:pointer-events-auto sm:group-hover/inner:block sm:group-hover/inner:opacity-100",
-                  ]}
-                >
-                  <li>
-                    <a
-                      href="/apps"
-                      class="block px-4 py-2 text-sm hover:text-foreground"
-                    >
-                      apps
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/registries"
-                      class="block px-4 py-2 text-sm hover:text-foreground"
-                    >
-                      registries
-                    </a>
-                  </li>
-                </ul>
+                  apps
+                </a>
               </li>
             </ul>
           </li>
