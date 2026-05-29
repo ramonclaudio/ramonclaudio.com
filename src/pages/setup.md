@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Setup"
+description: "Ray's daily-driver setup: editor, terminal, CLI tools, keyboard, and coffee gear. Updated as things change."
 ---
 
 Everything I use to build, write, and ship. Updated as things change.

@@ -16,9 +16,26 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.url).toString();
+const postsList = {
+  "@type": "ItemList",
+  "@id": `${canonical}#posts`,
+  name: "Posts",
+  itemListElement: page.data.map((post, i) => ({
+    "@type": "ListItem",
+    position: (page.currentPage - 1) * SITE.postPerPage + i + 1,
+    url: new URL(`/posts/${post.id}/`, Astro.url).toString(),
+    name: post.data.title,
+  })),
+};
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout
+  title={`Posts | ${SITE.title}`}
+  noindex={page.currentPage > 1}
+  schema={[postsList]}
+>
   <Header />
   <Main
     pageTitle="[posts]"
