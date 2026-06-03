@@ -4,13 +4,12 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-05-29.
+Last updated: 2026-06-03.
 
 ### Shipping
 
-Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and Dynamic Type `font` work, plus a fork-safety CI sweep), better-auth, Convex, and Astro's compiler. Open PRs right now:
+Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp and a Text-concatenation fix, plus a fork-safety CI sweep), better-auth, Convex, and Astro's compiler. Open PRs right now:
 
-- [expo/expo#46356](https://github.com/expo/expo/pull/46356): `@expo/fingerprint` hashes each react-native core autolinking dep by its `package.json` instead of its whole dir, so EAS build artifacts written into `node_modules` stop drifting the fingerprint and failing `eas build` under the `fingerprint` policy.
 - [facebook/react-native#56816](https://github.com/facebook/react-native/pull/56816): three Babel plugins for `@react-native/babel-preset` that rewrite the source patterns Hermes V1 mishandles, ported from `babel-preset-expo` so bare RN consumers escape the bugs.
 - [facebook/react-native#56912](https://github.com/facebook/react-native/pull/56912): set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning.
 - [oven-sh/bun#30855](https://github.com/oven-sh/bun/pull/30855): drop the order-dependent peer-dep early match so `bun.lock` stops varying run to run, and fix `bun add X@version` being ignored when `X` is a same-name peer dep.
