@@ -1,14 +1,16 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Contributions"
-description: "37 PRs merged across 10 upstream repos, plus a public patches repo with 49 drop-in fixes for Bun, npm, pnpm, and Yarn."
+description: "39 PRs merged across 10 upstream repos, plus a public patches repo with 50 drop-in fixes for Bun, npm, pnpm, and Yarn."
 ---
 
-37 PRs merged across 10 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 49 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI and docs. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
+39 PRs merged across 10 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 50 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI and docs. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
 
 ### Merged PRs
 
-- expo/expo (16 PRs):
+- expo/expo (18 PRs):
+  - [#46540](https://github.com/expo/expo/pull/46540) iOS `dynamicTypeSize` modifier to set or clamp Dynamic Type within a view. A single size pins it, `{ min, max }` bounds the range with either end optional. Caps how far text grows at the largest accessibility sizes for layout safety while still honoring Dynamic Type, and cascades from `<Host>` to every descendant. Bounds the `textStyle` scaling from #46007. Merged, ships in the next `@expo/ui` release
+  - [#46509](https://github.com/expo/expo/pull/46509) the `font` modifier dropped Dynamic Type scaling (`relativeTo`) and `weight` on concatenated `<Text>` runs, so `font({ textStyle, weight })` scaled standalone but lost both once nested in another `<Text>`. Made `FontModifier.resolveFont()` non-private and routed the concatenation path through it so both resolve the identical `Font`. Completes #46007. Merged, ships in the next `@expo/ui` release
   - [#46050](https://github.com/expo/expo/pull/46050) closed the fork-safety sweep. Gated 15 more workflows on `github.repository == 'expo/expo'` so fork CI stops red-checking nightly RN and test-suite jobs, hourly issue-maintenance crons, the GCP publish path in `ios-prebuild-external-xcframeworks`, and Slack-notify steps that reference org-only webhooks. Covers `test-react-native-nightly`, `test-suite-nightly`, `lock`, `issue-stale`, `cli`, `create-expo-app`, `create-expo-module`, `fingerprint`, `sdk`, `ios-static-frameworks`, `bare-diffs`, `native-component-list`, `test-suite`, `test-suite-macos`, and drops a redundant step-level repo check in `development-client-latest-e2e`. Finishes what #45782 and #45859 started
   - [#46007](https://github.com/expo/expo/pull/46007) iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases, with `extraLargeTitle` and `extraLargeTitle2` on iOS 17+. Shipped in `56.0.10`
   - [#45872](https://github.com/expo/expo/pull/45872) `<Host modifiers={...}>` was a silent no-op on iOS. `HostProps` extended `CommonViewModifierProps` and `Host/index.tsx` already forwarded `modifiers` to the native view, but the Swift `HostViewProps` never declared the field, so every typechecked modifier on `Host` did nothing. Adding the field plus one `.applyModifiers(...)` chain in `HostView.body` restored the entire registered modifier surface to `Host` in one shot. Shipped in `56.0.10`
@@ -60,7 +62,6 @@ Drop-in for Bun, npm, pnpm, and Yarn. Source-only patches for CI and docs apply 
 
 PRs still awaiting upstream merge.
 
-- `@expo/fingerprint` `0.19.3`: Hash each autolinked dependency by its `package.json` (`type: 'file'`) instead of its whole `node_modules/<dep>` directory, matching how `react-native` is already hashed via `packageJsonOnly`. On EAS workers `pod install` and codegen write build artifacts into those dirs, drifting the fingerprint from a pristine local one and failing `fingerprint`-policy builds at `CONFIGURE_EXPO_UPDATES` with a runtime version mismatch. [expo/expo#46356](https://github.com/expo/expo/pull/46356)
 - `react-native` `0.85.3`: Set `:always_out_of_date` on `hermes-engine.podspec`'s `Replace Hermes` script phase so Xcode stops warning that it runs every build without declaring outputs. Matches the guard already on the sibling `Replace X` phases, while the phase still swaps the prebuilt Hermes binary per `$CONFIGURATION`. [facebook/react-native#56912](https://github.com/facebook/react-native/pull/56912)
 - `@react-native/babel-preset` `0.85.3`: Add three compile-time Babel plugins, ported from [@kitten](https://github.com/kitten)'s `babel-preset-expo` work, that rewrite source patterns the bundled Hermes V1 miscompiles: async arrows with non-simple params, `class` inside `finally`, and `super` in object accessors. They run before Hermes sees the code, so bare RN consumers never hit the codegen bugs tracked in [facebook/hermes#1761](https://github.com/facebook/hermes/issues/1761). [facebook/react-native#56816](https://github.com/facebook/react-native/pull/56816)
 - `bun` `1.3.14`: Fix `bun add X@version` being silently ignored when `X` is a same-name `peerDependency`, leaving `bun.lock` and `node_modules` pinned to the peer's first-resolved version. The order-dependent peer early-match in `get_or_put_resolved_package` is dropped so peers flow through `find_best_version`, with dedup moved to `Tree::hoist_dependency` where placement is deterministic. [oven-sh/bun#30855](https://github.com/oven-sh/bun/pull/30855)
@@ -70,6 +71,13 @@ PRs still awaiting upstream merge.
 - `@hugeicons/react` `1.1.6`: Add an ambient declaration for `@hugeicons/core-free-icons/*` subpath imports typed as `IconSvgElement`, auto-loaded via a triple-slash reference in `src/index.ts`. The package advertises `"./*"` exports but ships only the barrel `index.d.ts`, so subpaths resolve at runtime yet fail typechecking under `node16`, `nodenext`, and `bundler`, forcing the 6.2 MB barrel instead of the 33 KB you use. [hugeicons/react#5](https://github.com/hugeicons/react/pull/5)
 - `shadcn` `4.7.0`: Strip C0 control characters (`0x00`-`0x1F`) and DEL (`0x7F`) from `prompts` text input via a wrapper every command routes through. On macOS, `Cmd+Delete` to clear the default name sends `Ctrl+U` (`\x15`), which `prompts` inserts as a literal byte and turns into names like `\x15my-app`. [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364)
 - `bun` `1.3.13`: Switch the `labels` input in `update-root-certs.yml` from a YAML sequence to the pipe-delimited string `peter-evans/create-pull-request` expects. The sequence form made GitHub Actions reject the workflow with `A sequence was not expected` on every push. [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086)
+
+#### Merged, awaiting release
+
+PR merged upstream, patch still live until the fix ships in a published release.
+
+- `@expo/ui` `56.0.15`: Add the SwiftUI `dynamicTypeSize` modifier to set or clamp Dynamic Type within a view, a single size or a `{ min, max }` range, cascading from `<Host>` to bound how far text scales at the largest accessibility sizes. [expo/expo#46540](https://github.com/expo/expo/pull/46540)
+- `@expo/ui` `56.0.15`: Resolve the `font` modifier on the Text-concatenation path so concatenated `<Text>` runs keep `relativeTo` (Dynamic Type) and `weight`. `FontModifier.resolveFont()` is now shared by the view and concatenation paths instead of a fixed-size `Font.custom` that dropped both. [expo/expo#46509](https://github.com/expo/expo/pull/46509)
 
 #### Dropped
 
