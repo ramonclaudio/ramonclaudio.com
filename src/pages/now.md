@@ -8,9 +8,12 @@ Last updated: 2026-06-03.
 
 ### Shipping
 
-Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp and a Text-concatenation fix, plus a fork-safety CI sweep), better-auth, Convex, and Astro's compiler. Open PRs right now:
+Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp, a Text-concatenation fix, and the `accessibilityIdentifier` modifier, plus a fork-safety CI sweep), better-auth, Convex, and Astro's compiler. Open PRs right now:
 
-- [facebook/react-native#56816](https://github.com/facebook/react-native/pull/56816): three Babel plugins for `@react-native/babel-preset` that rewrite the source patterns Hermes V1 mishandles, ported from `babel-preset-expo` so bare RN consumers escape the bugs.
+- [expo/expo#46579](https://github.com/expo/expo/pull/46579): iOS `accessibilityHidden` modifier to hide decorative views (hero icons, already-described imagery) from VoiceOver traversal.
+- [facebook/hermes#2045](https://github.com/facebook/hermes/pull/2045): cherry-pick the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships, so `super.x` in a getter or setter stops SIGSEGV'ing `hermesc`. The direct source fix that replaced the `babel-preset` workaround.
+- [facebook/hermes#2046](https://github.com/facebook/hermes/pull/2046): cherry-pick the class-in-`finally` variable-caching fix so a `class` declared in a `finally` block stops miscompiling. Same Hermes V1 root cause.
+- [facebook/hermes#2047](https://github.com/facebook/hermes/pull/2047): use the repo name instead of a hardcoded `hermes` dir in the `test-linux-armv7` CI job so it passes on forks.
 - [facebook/react-native#56912](https://github.com/facebook/react-native/pull/56912): set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning.
 - [oven-sh/bun#30855](https://github.com/oven-sh/bun/pull/30855): drop the order-dependent peer-dep early match so `bun.lock` stops varying run to run, and fix `bun add X@version` being ignored when `X` is a same-name peer dep.
 - [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086): invalid YAML in the `update-root-certs` workflow `labels` field.
