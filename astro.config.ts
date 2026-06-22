@@ -37,6 +37,7 @@ const postDates = (() => {
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  compressHTML: true,
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   integrations: [
     sitemap({
@@ -111,9 +112,5 @@ export default defineConfig({
   experimental: {
     contentIntellisense: true,
     clientPrerender: true,
-    rustCompiler: true,
-    queuedRendering: {
-      enabled: true,
-    },
   },
 });
