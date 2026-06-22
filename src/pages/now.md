@@ -4,7 +4,7 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-06-12.
+Last updated: 2026-06-22.
 
 ### Shipping
 
@@ -15,10 +15,7 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [react/react-native#56912](https://github.com/react/react-native/pull/56912): set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning.
 - [oven-sh/bun#30855](https://github.com/oven-sh/bun/pull/30855): drop the order-dependent peer-dep early match so `bun.lock` stops varying run to run, and fix `bun add X@version` being ignored when `X` is a same-name peer dep.
 - [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086): invalid YAML in the `update-root-certs` workflow `labels` field.
-- [get-convex/better-auth#368](https://github.com/get-convex/better-auth/pull/368): wrap `fetchAccessToken` in `new Promise(executor)` so `useConvexAuth().isAuthenticated` flips after sign-in on Hermes V1. Expo SDK 56 canary dropped a Babel transform that was hiding a bridge race.
-- [get-convex/better-auth#329](https://github.com/get-convex/better-auth/pull/329): drop the cached JWT when the session id changes so `useConvexAuth` stops holding a token for a session that was just rotated out.
 - [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
-- [hugeicons/react#5](https://github.com/hugeicons/react/pull/5): `core-free-icons` subpath type shim.
 - [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
 
 Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
