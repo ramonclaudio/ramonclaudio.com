@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ site }) => {
     [
       "Contributions",
       "contributions",
-      "47 PRs merged across 11 upstream repos (Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, App-Store-Connect-CLI), plus a public patches repo with 54 drop-in fixes for Bun, npm, pnpm, and Yarn.",
+      "48 PRs merged across 11 upstream repos (Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, App-Store-Connect-CLI), plus a public patches repo with 55 drop-in fixes for Bun, npm, pnpm, and Yarn.",
     ],
     ["Projects", "projects", "Open-source projects, CLIs, and experiments."],
     [
@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const body = `# Ramon Claudio (Ray)
 
-> Ray is a freelance product engineer in NYC, building since 2013. He ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: 47 merged PRs across 11 open-source repos and a public patches repo with 54 drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
+> Ray is a freelance product engineer in NYC, building since 2013. He ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: 48 merged PRs across 11 open-source repos and a public patches repo with 55 drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
 
 ## Pages
 ${pages.map(([name, path, note]) => `- [${name}](${base}${path}): ${note}`).join("\n")}
