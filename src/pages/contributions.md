@@ -8,6 +8,8 @@ description: "49 PRs merged across 11 upstream repos, plus a public patches repo
 
 ### Merged PRs
 
+<!-- contributions:start -->
+
 - better-auth/better-auth (3 PRs):
   - [#9281](https://github.com/better-auth/better-auth/pull/9281) serve a noop `./instrumentation` via conditional exports for `browser` and edge runtimes, matching the shape `./async_hooks` already uses. The dynamic `import("@opentelemetry/api")` in `packages/core/src/instrumentation/api.ts` threw synchronously on runtimes like Convex's V8 isolate (bare specifiers rejected at resolve time via `deno_core::resolve_import`), so the `.catch()` in `getOpenTelemetryAPI` never ran and every `withSpan` call through `to-auth-endpoints.ts` and `with-hooks.ts` surfaced an uncaught error. The breaking pattern landed in `#9111` and shipped in v1.6.6. `@opentelemetry/api` itself ships a noop proxy when no SDK is registered, so this is about dynamic-import-probe portability, not OTel runtime support. Unblocks the 1.6 migration for `@convex-dev/better-auth` consumers
   - [#9087](https://github.com/better-auth/better-auth/pull/9087) add `/change-password` and `/revoke-other-sessions` to the `atomListeners` matcher so `$sessionSignal` fires after session-rotating endpoints. Without this, callers like `useSession()` kept returning stale session data after password changes because the client never re-fetched
@@ -63,6 +65,7 @@ description: "49 PRs merged across 11 upstream repos, plus a public patches repo
 - oven-sh/bun (1 PR): [#21855](https://github.com/oven-sh/bun/pull/21855) added the `decompress` property to the `BunFetchRequestInit` interface with JSDoc documentation. The option already worked at runtime in Bun's `fetch()`, but TypeScript users had to `@ts-ignore` it on every call to disable response decompression. Now it's a first-class typed option, no escape hatch required
 - facebook/hermes (1 PR): [#2047](https://github.com/facebook/hermes/pull/2047) swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import
 - TanStack/db (1 PR): [#17](https://github.com/TanStack/db/pull/17) corrected the stale README link to the example todo app, repointing it at `examples/react/todo`. Tiny fix, but it was the first thing I clicked when I landed on the repo and it 404'd. Was PR #17 in the repo, early days
+<!-- contributions:end -->
 
 ### Patches
 

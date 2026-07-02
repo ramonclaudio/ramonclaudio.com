@@ -10,6 +10,8 @@ Last updated: 2026-07-02.
 
 Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp, a Text-concatenation fix, the `accessibilityIdentifier`, `accessibilityHidden`, `accessibilityInputLabels`, and `accessibilityElement` modifiers, an `Image` fix that lets SF Symbols scale with Dynamic Type, `imageScale`, the SwiftUI redaction modifiers for skeleton loading and privacy-sensitive views, the `accessibilityAddTraits` and `accessibilityRemoveTraits` VoiceOver modifiers, and a `strokeBorder` modifier for dashed and shape-following borders, plus a fork-safety CI sweep), Hermes (the armv7 fork CI fix), better-auth, Convex, and Astro's compiler. Open PRs right now:
 
+<!-- open-prs:start -->
+
 - [facebook/hermes#2045](https://github.com/facebook/hermes/pull/2045): cherry-pick the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships, so `super.x` in a getter or setter stops SIGSEGV'ing `hermesc`. The direct source fix that replaced the `babel-preset` workaround.
 - [facebook/hermes#2046](https://github.com/facebook/hermes/pull/2046): cherry-pick the class-in-`finally` variable-caching fix so a `class` declared in a `finally` block stops miscompiling. Same Hermes V1 root cause.
 - [react/react-native#56912](https://github.com/react/react-native/pull/56912): set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning.
@@ -17,6 +19,7 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086): invalid YAML in the `update-root-certs` workflow `labels` field.
 - [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
 - [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
+<!-- open-prs:end -->
 
 Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
 
