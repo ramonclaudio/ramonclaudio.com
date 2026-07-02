@@ -1,4 +1,5 @@
 import { SITE } from "@/config";
+import { stats } from "@/data/contributions";
 
 const ORIGIN = SITE.website;
 
@@ -20,8 +21,7 @@ export const personEntity: SchemaNode = {
   url: ORIGIN,
   image: `${ORIGIN}/ramonclaudio-og.jpg`,
   jobTitle: "Product Engineer",
-  description:
-    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 49 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, and App Store Connect CLI.",
+  description: `Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. ${stats.merged} merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, and App Store Connect CLI.`,
   knowsAbout: [
     "TypeScript",
     "Swift",
