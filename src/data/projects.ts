@@ -167,7 +167,7 @@ export const projects: Project[] = [
       "Patch files for packages and dependencies. Drop-in fixes for bugs, missing features, and type errors awaiting upstream merges.",
     repo: "ramonclaudio/patches",
     detail:
-      "@expo, @react-native, @convex-dev, better-auth, shadcn, bun, hugeicons, and more",
+      "@expo/ui, react-native, @convex-dev/better-auth, better-auth, shadcn, bun, hermes, and more",
   },
   {
     slug: "tanstack-cn",

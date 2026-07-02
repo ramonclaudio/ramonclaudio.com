@@ -4,11 +4,11 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-06-26.
+Last updated: 2026-07-02.
 
 ### Shipping
 
-Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp, a Text-concatenation fix, the `accessibilityIdentifier`, `accessibilityHidden`, `accessibilityInputLabels`, and `accessibilityElement` modifiers, an `Image` fix that lets SF Symbols scale with Dynamic Type, `imageScale`, and the SwiftUI redaction modifiers for skeleton loading and privacy-sensitive views, plus a fork-safety CI sweep), Hermes (the armv7 fork CI fix), better-auth, Convex, and Astro's compiler. Open PRs right now:
+Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling of tanvex. Expo SDK 56 starter wiring Convex, Better Auth, and Resend end-to-end for iOS, from `npm create` to TestFlight in one afternoon. Recent merges landed in expo (the `@expo/ui` `Alert`, `Host` modifiers, and the Dynamic Type `font` work, now extended with the `dynamicTypeSize` clamp, a Text-concatenation fix, the `accessibilityIdentifier`, `accessibilityHidden`, `accessibilityInputLabels`, and `accessibilityElement` modifiers, an `Image` fix that lets SF Symbols scale with Dynamic Type, `imageScale`, the SwiftUI redaction modifiers for skeleton loading and privacy-sensitive views, the `accessibilityAddTraits` and `accessibilityRemoveTraits` VoiceOver modifiers, and a `strokeBorder` modifier for dashed and shape-following borders, plus a fork-safety CI sweep), Hermes (the armv7 fork CI fix), better-auth, Convex, and Astro's compiler. Open PRs right now:
 
 - [facebook/hermes#2045](https://github.com/facebook/hermes/pull/2045): cherry-pick the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships, so `super.x` in a getter or setter stops SIGSEGV'ing `hermesc`. The direct source fix that replaced the `babel-preset` workaround.
 - [facebook/hermes#2046](https://github.com/facebook/hermes/pull/2046): cherry-pick the class-in-`finally` variable-caching fix so a `class` declared in a `finally` block stops miscompiling. Same Hermes V1 root cause.
