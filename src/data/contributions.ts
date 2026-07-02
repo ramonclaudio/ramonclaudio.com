@@ -1,16 +1,19 @@
-// Single source of truth for upstream contributions. Add a merged PR here
-// and the homepage, the contributions page, llms.txt, and the JSON-LD all pick
-// it up; run `bun stats:fix` to sync the prose counts and rebuild the resume.
-// `bun stats` verifies this file against live GitHub in both directions.
+// Single source of truth for upstream contributions. The homepage, the
+// contributions page, now.md's open-PR list, llms.txt, and the JSON-LD schema
+// derive from this file. `bun stats` audits it against live GitHub;
+// `bun stats:fix` reconciles it: new PRs get scaffolded entries, open PRs
+// move to merged when they land, closed ones drop out, and patchesCount
+// refreshes from the patches README. Titles and details are editorial — polish
+// the scaffolds, the structure is machine-managed.
 
 export type Contribution = {
   repo: string;
   number: number;
-  title: string; // terse one-liner (homepage, open list)
+  title: string; // terse one-liner (homepage, now.md open list)
   detail?: string; // fuller description (contributions page); falls back to title
 };
 
-// One number that lives in the ramonclaudio/patches README; verified by `bun stats`.
+// Row count of the ramonclaudio/patches README tables (Open + Released).
 export const patchesCount = 58;
 
 export const merged: Contribution[] = [
@@ -424,6 +427,12 @@ export const open: Contribution[] = [
     number: 10364,
     title:
       "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
+  },
+  {
+    repo: "expo/expo",
+    number: 47472,
+    title:
+      "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch",
   },
 ];
 
