@@ -21,7 +21,7 @@ export const personEntity: SchemaNode = {
   image: `${ORIGIN}/ramonclaudio-og.jpg`,
   jobTitle: "Product Engineer",
   description:
-    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 48 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, and App Store Connect CLI.",
+    "Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. 49 merged PRs upstream to Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, and App Store Connect CLI.",
   knowsAbout: [
     "TypeScript",
     "Swift",
