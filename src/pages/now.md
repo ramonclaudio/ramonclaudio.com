@@ -4,7 +4,7 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-07-02.
+Last updated: 2026-07-03.
 
 ### Shipping
 
@@ -19,7 +19,6 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086): invalid YAML in the `update-root-certs` workflow `labels` field.
 - [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
 - [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
-- [expo/expo#47472](https://github.com/expo/expo/pull/47472): add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch.
 <!-- open-prs:end -->
 
 Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.

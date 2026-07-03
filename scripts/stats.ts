@@ -203,13 +203,14 @@ for (const p of liveOpen
   manual.push(`polish the title for ${key(p)} in src/data/contributions.ts`);
 }
 
-// patchesCount mirrors the row count of the patches README's two tables.
+// patchesCount mirrors the row count of the patches README's ledger tables.
+// The second table has been named both "Merged" and "Released" over time.
+const LEDGER_HEADERS = ["## Open", "## Merged", "## Released"];
 function countPatchRows(readme: string): number {
   let counting = false;
   let rows = 0;
   for (const line of readme.split("\n")) {
-    if (line.startsWith("## Open") || line.startsWith("## Released"))
-      counting = true;
+    if (LEDGER_HEADERS.some(h => line.startsWith(h))) counting = true;
     else if (line.startsWith("## ")) counting = false;
     else if (counting && line.startsWith("| [")) rows++;
   }
@@ -404,9 +405,12 @@ if (replaceBlock("src/pages/now.md", "open-prs", openBlock, "open-PR list")) {
   );
 }
 
-// contributions.md's "Open" patches section mirrors the patches README's Open
-// table but its wording is editorial, so it can't be generated. Check the PR
-// sets match instead. The row's own PR link is the last /pull/ link in it.
+// contributions.md's patches sections mirror the patches README's ledger but
+// their wording is editorial, so they can't be generated. Check the PR sets
+// match instead: README Open rows against the site's "#### Open" bullets, and
+// README Merged rows still marked `unreleased` against "#### Merged". Rows
+// with a real Fixed-in version are Dropped history, left editorial. A row's
+// own PR link is the last /pull/ link in it.
 if (patchesReadme) {
   const lastPullLink = (line: string): string | null => {
     const all = [
@@ -416,35 +420,45 @@ if (patchesReadme) {
       ? `${all[all.length - 1][1]}#${all[all.length - 1][2]}`
       : null;
   };
-  const section = (text: string, from: string, to: string) => {
+  const section = (text: string, from: string, next: string) => {
     const i = text.indexOf(from);
-    const j = text.indexOf(to, i);
-    return i === -1 ? "" : text.slice(i, j === -1 ? undefined : j);
+    if (i === -1) return "";
+    // End at the next section header of the same depth, whatever its name.
+    const j = text.indexOf(`\n${next}`, i + from.length);
+    return text.slice(i, j === -1 ? undefined : j);
   };
-  const collect = (text: string, prefix: string) =>
-    new Set(
-      text
-        .split("\n")
-        .filter(l => l.startsWith(prefix))
-        .map(lastPullLink)
-        .filter((k): k is string => k !== null),
-    );
-  const readmeSet = collect(
-    section(patchesReadme, "## Open", "## Released"),
-    "| [",
-  );
+  const collect = (lines: string[]) =>
+    new Set(lines.map(lastPullLink).filter((k): k is string => k !== null));
+  const rows = (text: string, prefix: string) =>
+    text.split("\n").filter(l => l.startsWith(prefix));
   const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
-  const cmSet = collect(section(cmText, "#### Open", "#### Dropped"), "- ");
-  for (const k of readmeSet)
-    if (!cmSet.has(k))
-      (fixMode ? manual : drift).push(
-        `contributions.md: patches Open section is missing ${k} (in the patches README) — manual edit`,
-      );
-  for (const k of cmSet)
-    if (!readmeSet.has(k))
-      (fixMode ? manual : drift).push(
-        `contributions.md: patches Open section lists ${k}, not in the patches README — manual edit`,
-      );
+  const mergedTable =
+    section(patchesReadme, "## Merged", "## ") ||
+    section(patchesReadme, "## Released", "## ");
+  const parity: [string, Set<string>, Set<string>][] = [
+    [
+      "Open",
+      collect(rows(section(patchesReadme, "## Open", "## "), "| [")),
+      collect(rows(section(cmText, "#### Open", "#### "), "- ")),
+    ],
+    [
+      "Merged",
+      collect(rows(mergedTable, "| [").filter(l => /\| unreleased /.test(l))),
+      collect(rows(section(cmText, "#### Merged", "#### "), "- ")),
+    ],
+  ];
+  for (const [name, readmeSet, cmSet] of parity) {
+    for (const k of readmeSet)
+      if (!cmSet.has(k))
+        (fixMode ? manual : drift).push(
+          `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
+        );
+    for (const k of cmSet)
+      if (!readmeSet.has(k))
+        (fixMode ? manual : drift).push(
+          `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
+        );
+  }
 }
 
 // ---------- prose count literals that can't import the data ----------
