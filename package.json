@@ -8,12 +8,13 @@
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
-    "format": "oxfmt --write src",
-    "format:check": "oxfmt --check src",
-    "lint": "oxlint src --deny-warnings",
-    "stats": "bun scripts/stats.ts",
-    "stats:fix": "bun scripts/stats.ts --fix",
-    "resume:pdf": "typst compile resume/resume.typ public/resume.pdf"
+    "format": "oxfmt --write src scripts",
+    "format:check": "oxfmt --check src scripts",
+    "lint": "oxlint src scripts --deny-warnings",
+    "resume:pdf": "typst compile resume/resume.typ public/resume.pdf",
+    "reconcile": "bun scripts/reconcile.ts",
+    "reconcile:fix": "bun scripts/reconcile.ts --fix",
+    "test": "bun test"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.0",

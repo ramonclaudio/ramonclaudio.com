@@ -3,16 +3,19 @@
 // state; src/data/contributions.ts is the source of truth for content, and
 // every surface derives from it.
 //
-//   bun stats        audit: discover every external PR the account authored,
-//                    verify the data file and all derived surfaces against
-//                    live GitHub, report release status. Exits 1 on drift.
-//   bun stats:fix    reconcile: scaffold new merged and open PRs, move landed
-//                    open PRs to merged, drop closed ones, refresh
-//                    patchesCount, regenerate contributions.md and now.md,
-//                    sync prose count literals, recompile the resume PDF when
-//                    its source changes.
+//   bun reconcile      audit: discover every external PR the account authored,
+//                      verify the data file and all derived surfaces against
+//                      live GitHub, report release status. Exits 1 on drift.
+//   bun reconcile:fix  reconcile: scaffold new merged and open PRs, move landed
+//                      open PRs to merged, drop closed ones, refresh
+//                      patchesCount, regenerate contributions.md and now.md,
+//                      sync prose count literals, recompile the resume PDF when
+//                      its source changes.
 //
 // Flags: --release-days=N|all   release-status window (default 30, 0 = off)
+//        --no-ai                skip Claude-drafted copy for new scaffolds
+//                               (fix mode drafts via `claude -p` when on PATH;
+//                               any failure falls back to the mechanical scaffold)
 
 import { $ } from "bun";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -23,6 +26,22 @@ import {
   patchesCount as dataPatches,
   type Contribution,
 } from "../src/data/contributions.ts";
+// One import-merge detector and one ledger parser, shared with prw and the
+// patches reconciler; the repos are sibling checkouts.
+import { detectImportMerge } from "../../patches/scripts/merge.ts";
+import {
+  parseMergedRows,
+  parseOpenRows,
+} from "../../patches/scripts/readme.ts";
+import {
+  cleanTitle,
+  key,
+  lastPullLink,
+  mergedListBlock,
+  openListBlock,
+  pageSection,
+  serializeData,
+} from "./content.ts";
 
 const ROOT = join(import.meta.dir, "..");
 const DATA_PATH = join(ROOT, "src/data/contributions.ts");
@@ -34,10 +53,6 @@ const daysFlag = process.argv
   .find(a => a.startsWith("--release-days="))
   ?.split("=")[1];
 const releaseDays = daysFlag === "all" ? Infinity : Number(daysFlag ?? 30);
-
-const key = (c: { repo: string; number: number }) => `${c.repo}#${c.number}`;
-const prUrl = (c: { repo: string; number: number }) =>
-  `https://github.com/${c.repo}/pull/${c.number}`;
 
 const drift: string[] = []; // check-mode failures
 const applied: string[] = []; // fix-mode actions taken
@@ -108,9 +123,6 @@ const live: LivePR[] = (
 // the bot applies a "Merged" label and comments the landed sha. Read every
 // closed PR's comments so a landed import is never counted as closed, and an
 // abandoned import is never counted as merged.
-const IMPORT_BOTS = new Set(["meta-codesync", "facebook-github-bot"]);
-const LANDED_RE =
-  /merged this pull request in (?:[\w.-]+\/[\w.-]+@)?([0-9a-f]{7,40})/;
 await Promise.all(
   live
     .filter(p => p.state === "CLOSED")
@@ -120,12 +132,10 @@ await Promise.all(
       const { comments } = JSON.parse(out.stdout.toString()) as {
         comments: { author: { login: string }; body: string }[];
       };
-      const landed = comments.find(
-        c => IMPORT_BOTS.has(c.author.login) && LANDED_RE.test(c.body),
-      );
-      if (landed || p.labels.includes("Merged")) {
+      const imported = detectImportMerge(comments, p.labels);
+      if (imported) {
         p.state = "IMPORT_MERGED";
-        p.mergeSha = landed?.body.match(LANDED_RE)?.[1] ?? p.mergeSha;
+        p.mergeSha = imported.sha ?? p.mergeSha;
       }
     }),
 );
@@ -140,15 +150,77 @@ const liveOpenKeys = new Set(liveOpen.map(key));
 
 // ---------- reconcile the data file against GitHub ----------
 
-// Scaffold titles from the upstream PR title: drop [tags] and conventional
-// prefixes, drop backticks, lowercase a plain leading word.
-const cleanTitle = (t: string) =>
-  t
-    .replace(/^(\s*\[[^\]]+\])+\s*/, "")
-    .replace(/^\w+(\([^)]*\))?!?:\s*/, "")
-    .replace(/`/g, "")
-    .trim()
-    .replace(/^[A-Z](?=[a-z])/, m => m.toLowerCase());
+// Claude drafts editorial copy for new scaffolds (headless, structured output).
+// Optional by design: no claude on PATH, --no-ai, or any failure falls back to
+// the mechanical cleanTitle scaffold plus the usual "needs a human" note.
+const useAI =
+  fixMode && !process.argv.includes("--no-ai") && !!Bun.which("claude");
+const DRAFT_SCHEMA = JSON.stringify({
+  type: "object",
+  properties: { title: { type: "string" }, detail: { type: "string" } },
+  required: ["title", "detail"],
+});
+
+async function draftCopy(
+  p: LivePR,
+): Promise<{ title: string; detail: string } | null> {
+  if (!useAI) return null;
+  try {
+    const body = (
+      await $`gh pr view ${p.number} -R ${p.repo} --json body --jq .body`
+        .quiet()
+        .text()
+    ).slice(0, 4000);
+    const prompt = [
+      "Write ledger copy for one upstream PR on a personal contributions site.",
+      `PR: ${p.repo}#${p.number} — ${p.title}`,
+      `PR body:\n${body}`,
+      "",
+      "title: one terse line, imperative verb first (add/fix/drop/wire), lowercase",
+      "first word unless a proper noun, under 90 chars, no trailing period.",
+      "detail: one or two sentences, what changed and why it matters, plain words.",
+      "Never use em dashes, semicolons, or the words: comprehensive, robust,",
+      "seamless, leverage, utilize, facilitate, enhance, streamline.",
+    ].join("\n");
+    // spawn with a hard timeout: a stalled claude must not hang the whole run
+    const proc = Bun.spawn(
+      [
+        "claude",
+        "-p",
+        "--bare",
+        "--output-format",
+        "json",
+        "--json-schema",
+        DRAFT_SCHEMA,
+        prompt,
+      ],
+      { stdout: "pipe", stderr: "ignore" },
+    );
+    const timer = setTimeout(() => proc.kill(), 120_000);
+    const raw = await new Response(proc.stdout).text();
+    clearTimeout(timer);
+    const out = (
+      JSON.parse(raw) as {
+        structured_output?: { title?: string; detail?: string };
+      }
+    ).structured_output;
+    if (!out?.title?.trim() || !out?.detail?.trim()) return null;
+    const copy = out.title + " " + out.detail;
+    if (/[—–;]/.test(copy)) return null;
+    if (
+      /\b(comprehensive|robust|seamless|leverage|utilize|facilitate|enhance|streamline)\b/i.test(
+        copy,
+      )
+    )
+      return null;
+    return {
+      title: out.title.trim().replace(/\.$/, ""),
+      detail: out.detail.trim(),
+    };
+  } catch {
+    return null;
+  }
+}
 
 for (const c of dataMerged)
   if (!liveMergedKeys.has(key(c))) {
@@ -168,16 +240,29 @@ for (const p of liveMerged
   const entry: Contribution = carried
     ? { ...carried }
     : { repo: p.repo, number: p.number, title: cleanTitle(p.title) };
+  let drafted = false;
+  if (!carried) {
+    const draft = await draftCopy(p);
+    if (draft) {
+      entry.title = draft.title;
+      if (draft.detail !== draft.title) entry.detail = draft.detail;
+      drafted = true;
+    }
+  }
   const at = desiredMerged.findIndex(c => c.repo === p.repo);
   if (at === -1) desiredMerged.push(entry);
   else desiredMerged.splice(at, 0, entry);
   act(
     carried
       ? `contributions.ts: open ${key(p)} merged upstream — ${fixMode ? "moved to merged" : "--fix moves it to merged"}`
-      : `contributions.ts: merged ${key(p)} is missing — ${fixMode ? "scaffolded from the upstream title" : "--fix scaffolds it"}`,
+      : `contributions.ts: merged ${key(p)} is missing — ${fixMode ? (drafted ? "drafted title and detail" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
   );
   manual.push(
-    `polish the ${carried ? "detail" : "title and detail"} for ${key(p)} in src/data/contributions.ts`,
+    carried
+      ? `polish the detail for ${key(p)} in src/data/contributions.ts`
+      : drafted
+        ? `review the drafted title and detail for ${key(p)} in src/data/contributions.ts`
+        : `polish the title and detail for ${key(p)} in src/data/contributions.ts`,
   );
 }
 
@@ -192,36 +277,31 @@ const desiredOpen = dataOpen.filter(c => {
 for (const p of liveOpen
   .filter(p => !dataOpen.some(c => key(c) === key(p)))
   .sort((a, b) => a.number - b.number)) {
+  const draft = await draftCopy(p);
   desiredOpen.push({
     repo: p.repo,
     number: p.number,
-    title: cleanTitle(p.title),
+    title: draft?.title ?? cleanTitle(p.title),
   });
   act(
-    `contributions.ts: open ${key(p)} is missing — ${fixMode ? "scaffolded from the upstream title" : "--fix scaffolds it"}`,
+    `contributions.ts: open ${key(p)} is missing — ${fixMode ? (draft ? "drafted title" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
   );
-  manual.push(`polish the title for ${key(p)} in src/data/contributions.ts`);
+  manual.push(
+    draft
+      ? `review the drafted title for ${key(p)} in src/data/contributions.ts`
+      : `polish the title for ${key(p)} in src/data/contributions.ts`,
+  );
 }
 
-// patchesCount mirrors the row count of the patches README's ledger tables.
-// The second table has been named both "Merged" and "Released" over time.
-const LEDGER_HEADERS = ["## Open", "## Merged", "## Released"];
-function countPatchRows(readme: string): number {
-  let counting = false;
-  let rows = 0;
-  for (const line of readme.split("\n")) {
-    if (LEDGER_HEADERS.some(h => line.startsWith(h))) counting = true;
-    else if (line.startsWith("## ")) counting = false;
-    else if (counting && line.startsWith("| [")) rows++;
-  }
-  return rows;
-}
+// patchesCount mirrors the ledger row count (Open + Merged tables), parsed
+// with the patches repo's own parsers so both tools agree on what a row is.
 let patches = dataPatches;
 const patchesReadme = existsSync(PATCHES_README)
   ? readFileSync(PATCHES_README, "utf8")
   : null;
 if (patchesReadme) {
-  const rows = countPatchRows(patchesReadme);
+  const rows =
+    parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
   if (rows !== dataPatches)
     act(
       `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${rows}${fixMode ? " — updated" : ""}`,
@@ -249,72 +329,6 @@ const canon = {
 
 // ---------- regenerate the data file when its data changed ----------
 
-function serializeData(): string {
-  const item = (c: Contribution) =>
-    `  { repo: ${JSON.stringify(c.repo)}, number: ${c.number}, title: ${JSON.stringify(c.title)}${
-      c.detail && c.detail !== c.title
-        ? `, detail: ${JSON.stringify(c.detail)}`
-        : ""
-    } },`;
-  return `// Single source of truth for upstream contributions. The homepage, the
-// contributions page, now.md's open-PR list, llms.txt, and the JSON-LD schema
-// derive from this file. \`bun stats\` audits it against live GitHub;
-// \`bun stats:fix\` reconciles it: new PRs get scaffolded entries, open PRs
-// move to merged when they land, closed ones drop out, and patchesCount
-// refreshes from the patches README. Titles and details are editorial — polish
-// the scaffolds, the structure is machine-managed.
-
-export type Contribution = {
-  repo: string;
-  number: number;
-  title: string; // terse one-liner (homepage, now.md open list)
-  detail?: string; // fuller description (contributions page); falls back to title
-};
-
-// Row count of the ramonclaudio/patches README tables (Open + Released).
-export const patchesCount = ${patches};
-
-export const merged: Contribution[] = [
-${desiredMerged.map(item).join("\n")}
-];
-
-export const open: Contribution[] = [
-${desiredOpen.map(item).join("\n")}
-];
-
-export const prUrl = (c: Contribution) =>
-  \`https://github.com/\${c.repo}/pull/\${c.number}\`;
-
-export const repoUrl = (repo: string) =>
-  \`https://github.com/\${repo}/pulls?q=is:pr+author:ramonclaudio\`;
-
-export function groupByRepo(list: Contribution[]) {
-  const order: string[] = [];
-  const groups = new Map<string, Contribution[]>();
-  for (const c of list) {
-    if (!groups.has(c.repo)) {
-      groups.set(c.repo, []);
-      order.push(c.repo);
-    }
-    groups.get(c.repo)!.push(c);
-  }
-  return order.map(repo => ({ repo, items: groups.get(repo)! }));
-}
-
-const distinctRepos = (list: Contribution[]) =>
-  new Set(list.map(c => c.repo)).size;
-
-export const stats = {
-  merged: merged.length,
-  mergedRepos: distinctRepos(merged),
-  expo: merged.filter(c => c.repo === "expo/expo").length,
-  open: open.length,
-  openRepos: distinctRepos(open),
-  patches: patchesCount,
-};
-`;
-}
-
 const snap = (l: Contribution[]) =>
   JSON.stringify(l.map(c => [c.repo, c.number, c.title, c.detail ?? null]));
 const dataChanged =
@@ -322,7 +336,7 @@ const dataChanged =
   snap(desiredOpen) !== snap(dataOpen) ||
   patches !== dataPatches;
 if (dataChanged && fixMode) {
-  writeFileSync(DATA_PATH, serializeData());
+  writeFileSync(DATA_PATH, serializeData(desiredMerged, desiredOpen, patches));
   await $`bunx oxfmt --write ${DATA_PATH}`.nothrow().quiet();
   applied.push("regenerated src/data/contributions.ts");
 }
@@ -350,50 +364,33 @@ function replaceBlock(
   const next = `${start}\n\n${body}\n${end}`;
   if (text.includes(next)) return false;
   if (fixMode) {
-    writeFileSync(abs, text.replace(re, next));
+    // replacement function so a `$` in PR detail text isn't a replace pattern
+    writeFileSync(
+      abs,
+      text.replace(re, () => next),
+    );
     applied.push(`regenerated the ${label} in ${path}`);
     return true;
   }
-  drift.push(`${path}: ${label} is stale — run bun stats:fix`);
+  drift.push(`${path}: ${label} is stale — run bun reconcile:fix`);
   return false;
 }
 
-function groups(list: Contribution[]) {
-  const order: string[] = [];
-  const map = new Map<string, Contribution[]>();
-  for (const c of list) {
-    if (!map.has(c.repo)) {
-      map.set(c.repo, []);
-      order.push(c.repo);
-    }
-    map.get(c.repo)!.push(c);
-  }
-  return order.map(repo => ({ repo, items: map.get(repo)! }));
-}
-
-const detailLine = (c: Contribution) =>
-  `[#${c.number}](${prUrl(c)}) ${c.detail ?? c.title}`;
-const mergedBlock = groups(desiredMerged)
-  .map(g =>
-    g.items.length === 1
-      ? `- ${g.repo} (1 PR): ${detailLine(g.items[0])}`
-      : [
-          `- ${g.repo} (${g.items.length} PRs):`,
-          ...g.items.map(c => `  - ${detailLine(c)}`),
-        ].join("\n"),
-  )
-  .join("\n");
 replaceBlock(
   "src/pages/contributions.md",
   "contributions",
-  mergedBlock,
+  mergedListBlock(desiredMerged),
   "merged-PR list",
 );
 
-const openBlock = desiredOpen
-  .map(c => `- [${key(c)}](${prUrl(c)}): ${c.title}.`)
-  .join("\n");
-if (replaceBlock("src/pages/now.md", "open-prs", openBlock, "open-PR list")) {
+if (
+  replaceBlock(
+    "src/pages/now.md",
+    "open-prs",
+    openListBlock(desiredOpen),
+    "open-PR list",
+  )
+) {
   const abs = join(ROOT, "src/pages/now.md");
   const today = new Date().toISOString().slice(0, 10);
   writeFileSync(
@@ -412,39 +409,32 @@ if (replaceBlock("src/pages/now.md", "open-prs", openBlock, "open-PR list")) {
 // with a real Fixed-in version are Dropped history, left editorial. A row's
 // own PR link is the last /pull/ link in it.
 if (patchesReadme) {
-  const lastPullLink = (line: string): string | null => {
-    const all = [
-      ...line.matchAll(/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)/g),
-    ];
-    return all.length
-      ? `${all[all.length - 1][1]}#${all[all.length - 1][2]}`
-      : null;
-  };
-  const section = (text: string, from: string, next: string) => {
-    const i = text.indexOf(from);
-    if (i === -1) return "";
-    // End at the next section header of the same depth, whatever its name.
-    const j = text.indexOf(`\n${next}`, i + from.length);
-    return text.slice(i, j === -1 ? undefined : j);
-  };
-  const collect = (lines: string[]) =>
-    new Set(lines.map(lastPullLink).filter((k): k is string => k !== null));
-  const rows = (text: string, prefix: string) =>
-    text.split("\n").filter(l => l.startsWith(prefix));
+  const prKey = (pr: { owner: string; repo: string; number: number }) =>
+    `${pr.owner}/${pr.repo}#${pr.number}`;
+  const ledgerSet = (
+    rows: { pr: { owner: string; repo: string; number: number } | null }[],
+  ) => new Set(rows.flatMap(r => (r.pr ? [prKey(r.pr)] : [])));
+  const bulletSet = (text: string, header: string) =>
+    new Set(
+      pageSection(text, header, "#### ")
+        .split("\n")
+        .filter(l => l.startsWith("- "))
+        .map(lastPullLink)
+        .filter((k): k is string => k !== null),
+    );
   const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
-  const mergedTable =
-    section(patchesReadme, "## Merged", "## ") ||
-    section(patchesReadme, "## Released", "## ");
   const parity: [string, Set<string>, Set<string>][] = [
     [
       "Open",
-      collect(rows(section(patchesReadme, "## Open", "## "), "| [")),
-      collect(rows(section(cmText, "#### Open", "#### "), "- ")),
+      ledgerSet(parseOpenRows(patchesReadme)),
+      bulletSet(cmText, "#### Open"),
     ],
     [
       "Merged",
-      collect(rows(mergedTable, "| [").filter(l => /\| unreleased /.test(l))),
-      collect(rows(section(cmText, "#### Merged", "#### "), "- ")),
+      ledgerSet(
+        parseMergedRows(patchesReadme).filter(r => r.marker === "unreleased"),
+      ),
+      bulletSet(cmText, "#### Merged"),
     ],
   ];
   for (const [name, readmeSet, cmSet] of parity) {
