@@ -14,7 +14,7 @@ export type Contribution = {
 };
 
 // Row count of the ramonclaudio/patches README tables (Open + Released).
-export const patchesCount = 58;
+export const patchesCount = 59;
 
 export const merged: Contribution[] = [
   {
@@ -74,6 +74,14 @@ export const merged: Contribution[] = [
     title: "drop the dead react-dom peer dep",
     detail:
       "removed the dead `react-dom` peer dep declaration. Zero imports of `react-dom`, `ReactDOM`, `createRoot`, `hydrateRoot`, `flushSync`, or `createPortal` across all 32 files in `src/`. None of the exports (`/react`, `/nextjs`, `/react-start`) touch it. The declaration was generating peer dep warnings in `bun` and `pnpm` projects that don't use `react-dom`",
+  },
+  {
+    repo: "expo/expo",
+    number: 47472,
+    title:
+      "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch",
+    detail:
+      "add `testID` and `accessibilityLabel` props to `NativeTabs.Trigger`. `testID` maps to the tab bar item's `accessibilityIdentifier` on iOS, so XCUITest and Maestro can target tabs, and to the item's view tag on Android. `accessibilityLabel` sets the tab's screen-reader label (`contentDescription` on Android, iOS 26+ on iOS). The native `NativeTabsView` already accepted `tabBarItemTestID` and `tabBarItemAccessibilityLabel`, so this wires the two JS props through `convertTabPropsToOptions`",
   },
   {
     repo: "expo/expo",
@@ -427,12 +435,6 @@ export const open: Contribution[] = [
     number: 10364,
     title:
       "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
-  },
-  {
-    repo: "expo/expo",
-    number: 47472,
-    title:
-      "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch",
   },
 ];
 
