@@ -13,8 +13,8 @@ export type Contribution = {
   detail?: string; // fuller description (contributions page); falls back to title
 };
 
-// Row count of the ramonclaudio/patches README tables (Open + Released).
-export const patchesCount = 59;
+// Row count of the ramonclaudio/patches README tables (Open + Merged).
+export const patchesCount = 60;
 
 export const merged: Contribution[] = [
   {
@@ -435,6 +435,12 @@ export const open: Contribution[] = [
     number: 10364,
     title:
       "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
+  },
+  {
+    repo: "expo/expo",
+    number: 47622,
+    title:
+      "set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning",
   },
 ];
 
