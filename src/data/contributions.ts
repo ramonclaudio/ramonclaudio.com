@@ -431,6 +431,14 @@ export const merged: Contribution[] = [
     detail:
       "corrected the stale README link to the example todo app, repointing it at `examples/react/todo`. Tiny fix, but it was the first thing I clicked when I landed on the repo and it 404'd. Was PR #17 in the repo, early days",
   },
+  {
+    repo: "react/react-native",
+    number: 57518,
+    title:
+      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
+    detail:
+      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
+  },
 ];
 
 export const open: Contribution[] = [
@@ -492,12 +500,6 @@ export const open: Contribution[] = [
     number: 57517,
     title:
       "declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers",
-  },
-  {
-    repo: "react/react-native",
-    number: 57518,
-    title:
-      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
   },
 ];
 

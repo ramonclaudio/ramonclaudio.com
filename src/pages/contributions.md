@@ -1,10 +1,10 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Contributions"
-description: "55 PRs merged across 11 upstream repos, plus a public patches repo with 68 drop-in fixes for Bun, npm, pnpm, and Yarn."
+description: "56 PRs merged across 12 upstream repos, plus a public patches repo with 68 drop-in fixes for Bun, npm, pnpm, and Yarn."
 ---
 
-55 PRs merged across 11 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 68 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI, docs, and native code. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
+56 PRs merged across 12 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 68 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI, docs, and native code. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
 
 ### Merged PRs
 
@@ -71,6 +71,7 @@ description: "55 PRs merged across 11 upstream repos, plus a public patches repo
 - oven-sh/bun (1 PR): [#21855](https://github.com/oven-sh/bun/pull/21855) added the `decompress` property to the `BunFetchRequestInit` interface with JSDoc documentation. The option already worked at runtime in Bun's `fetch()`, but TypeScript users had to `@ts-ignore` it on every call to disable response decompression. Now it's a first-class typed option, no escape hatch required
 - facebook/hermes (1 PR): [#2047](https://github.com/facebook/hermes/pull/2047) swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import
 - TanStack/db (1 PR): [#17](https://github.com/TanStack/db/pull/17) corrected the stale README link to the example todo app, repointing it at `examples/react/todo`. Tiny fix, but it was the first thing I clicked when I landed on the repo and it 404'd. Was PR #17 in the repo, early days
+- react/react-native (1 PR): [#57518](https://github.com/react/react-native/pull/57518) `RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import
 <!-- contributions:end -->
 
 ### Patches
@@ -81,7 +82,6 @@ Drop-in for Bun, npm, pnpm, and Yarn. Source-only patches for CI, docs, and nati
 
 PRs still in review upstream. Every one has a live patch in the repo.
 
-- `react-native`: Add the missing `react/bridging/ArrayBuffer.h` include in the TurboModule ArrayBuffer unit test so `yarn test-ios` compiles on OSS main again. [react/react-native#57518](https://github.com/react/react-native/pull/57518)
 - `react-native`: Declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally instead of behind `#if RCT_DEV_MENU | RCT_PACKAGER_LOADING_FUNCTIONALITY`, so the dev-only API stops vanishing in Release builds and breaking out-of-tree callers like `expo-dev-launcher`. [react/react-native#57517](https://github.com/react/react-native/pull/57517)
 - `expo`: Exit 1 when `et generate-docs-api-data` fails for any package and run the `expotools` test suite in CI, so dead mapping entries like the two fixed in [#47670](https://github.com/expo/expo/pull/47670) stop shipping silently. [expo/expo#47691](https://github.com/expo/expo/pull/47691)
 - `expo-updates` `57.0.6`: Set `:always_out_of_date` on `EXUpdates.podspec`'s `Generate updates resources` script phase so Xcode stops warning that it runs every build without declaring outputs. The phase rebundles the app's JS into `EXUpdates.bundle` by design, so it can't declare stable outputs. Same block `EXConstants`, `ExpoWidgets`, and `ExpoLogBox` already ship, CocoaPods version guard included. [expo/expo#47622](https://github.com/expo/expo/pull/47622)
