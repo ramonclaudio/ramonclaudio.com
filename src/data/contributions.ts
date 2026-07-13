@@ -14,7 +14,7 @@ export type Contribution = {
 };
 
 // Row count of the ramonclaudio/patches README tables (Open + Merged).
-export const patchesCount = 60;
+export const patchesCount = 68;
 
 export const merged: Contribution[] = [
   {
