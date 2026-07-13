@@ -183,7 +183,7 @@ export const merged: Contribution[] = [
     number: 46007,
     title: "font textStyle for iOS Dynamic Type, all 11 Font.TextStyle cases",
     detail:
-      "iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases, with `extraLargeTitle` and `extraLargeTitle2` on iOS 17+. Shipped in `56.0.10`",
+      "iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases. Shipped in `56.0.10`",
   },
   {
     repo: "expo/expo",
@@ -311,7 +311,7 @@ export const merged: Contribution[] = [
     number: 45782,
     title: "make five auto-firing scheduled workflows fork-safe",
     detail:
-      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` and gated `validate-npm-owners`, `check-issues-nightly`, `publish-canaries`, and both `development-client-e2e` matrices on the repo check. Dropped failing checks and 120-minute fork CI burns",
+      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` in `fingerprint` and both `development-client-e2e` matrices, and gated `validate-npm-owners`, `check-issues-nightly`, and `publish-canaries` on the repo check. Dropped failing checks and 120-minute fork CI burns",
   },
   {
     repo: "expo/expo",
@@ -324,9 +324,9 @@ export const merged: Contribution[] = [
   {
     repo: "expo/expo",
     number: 45859,
-    title: "skip 18 secret-gated workflows on forks",
+    title: "skip 13 secret-gated workflows on forks",
     detail:
-      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 18 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
+      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 13 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
   },
   {
     repo: "withastro/compiler-rs",
