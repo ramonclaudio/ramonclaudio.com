@@ -16,7 +16,7 @@ export const GET: APIRoute = async ({ site }) => {
     [
       "Contributions",
       "contributions",
-      `${stats.merged} PRs merged across ${stats.mergedRepos} upstream repos (Expo, Convex, Bun, shadcn/ui, Better Auth, Hermes, napi-rs, fumadocs, Astro, TanStack, App-Store-Connect-CLI), plus a public patches repo with ${stats.patches} drop-in fixes for Bun, npm, pnpm, and Yarn.`,
+      `${stats.merged} PRs merged across ${stats.mergedRepos} upstream repos (Expo, React Native, Hermes, Bun, Convex, Better Auth, shadcn/ui, Astro, napi-rs, TanStack, fumadocs, App-Store-Connect-CLI), plus a public patches repo with ${stats.patches} drop-in fixes for Bun, npm, pnpm, and Yarn.`,
     ],
     ["Projects", "projects", "Open-source projects, CLIs, and experiments."],
     [

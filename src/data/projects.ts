@@ -95,7 +95,7 @@ export const projects: Project[] = [
     name: "vexpo",
     stack: "Expo SDK 56 · Convex · Better Auth · Resend",
     description:
-      "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon.",
+      "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon. My mobile dogfood, where I hit the Expo, React Native, and Hermes edge cases I file upstream.",
     repo: "ramonclaudio/vexpo",
     detail: "5,773 total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
     featured: true,
