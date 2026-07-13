@@ -10,7 +10,7 @@ description: "Ray, product engineer in NYC, freelance since 2013. 56 merged PRs 
 
 ## Summary
 
-Product engineer in New York. Freelancing solo since 2013. Give me a real bug with the time to dig and I'll ship the fix. 56 PRs merged upstream to Expo, Convex, Bun, shadcn/ui, and others, every one came from hitting a wall in my own apps and chasing it down.
+Product engineer in New York. Freelancing solo since 2013. Give me a real bug with the time to dig and I'll ship the fix. 56 PRs merged upstream to Expo, React Native, Convex, Bun, shadcn/ui, and others, every one came from hitting a wall in my own apps and chasing it down.
 
 ## Experience
 
@@ -18,7 +18,7 @@ Product engineer in New York. Freelancing solo since 2013. Give me a real bug wi
 
 **2013 to Present · Brooklyn, NY**
 
-- 56 PRs merged upstream across 12 repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (33), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), plus [bun](https://github.com/oven-sh/bun/pull/21855), [TanStack/db](https://github.com/TanStack/db/pull/17), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), App-Store-Connect-CLI, [hermes](https://github.com/facebook/hermes/pull/2047), and [react-native](https://github.com/react/react-native/pull/57518). 10 more open across 6 repos including 2 source fixes to facebook/hermes (object-accessor home object, class-in-finally var caching), 2 in oven-sh/bun (CI YAML fix, peer-dep lockfile determinism), and the hermes-engine podspec in react/react-native.
+- 56 PRs merged upstream across 12 repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (33), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), plus [react-native](https://github.com/react/react-native/pull/57518), [hermes](https://github.com/facebook/hermes/pull/2047), [bun](https://github.com/oven-sh/bun/pull/21855), [TanStack/db](https://github.com/TanStack/db/pull/17), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), and App-Store-Connect-CLI. 10 more open across 6 repos including 2 source fixes to facebook/hermes (object-accessor home object, class-in-finally var caching), 2 in oven-sh/bun (CI YAML fix, peer-dep lockfile determinism), and the hermes-engine podspec in react/react-native.
 - Build and maintain [convex-revenuecat](https://www.convex.dev/components/ramonclaudio-convex-revenuecat) (12,500+ npm downloads, listed on the Convex Components Directory), [tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) (CLI scaffolder, ~1,250 downloads), [create-claude](https://www.npmjs.com/package/create-claude) (1,800+ downloads), and 7 other shipped npm packages, 22,000+ downloads across all of them.
 - Maintain [ramonclaudio/patches](https://github.com/ramonclaudio/patches) (68 patches for Bun, npm, pnpm, and Yarn) so my apps and other users ship the fix while upstream PRs are in review.
 - 10,800+ GitHub contributions since Dec 2023 across 52 public repos (384 stars earned).
@@ -34,6 +34,7 @@ Product engineer in New York. Freelancing solo since 2013. Give me a real bug wi
 - [expo/expo#45872](https://github.com/expo/expo/pull/45872): `<Host modifiers={...}>` was a silent no-op on iOS: Swift never declared the field the TS side forwarded. One field plus one `.applyModifiers` chain restored the whole modifier surface.
 - [expo/expo `@expo/ui` SwiftUI](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged): the rest of the surface: the SwiftUI `Alert` component, worklet-backed `scrollPosition` bindings, scroll anchors and snap paging, `clipShape`/`mask`, per-axis `scaleEffect`, `textContentType`, `textInputAutocapitalization`, Dynamic Type `font`, and the accessibility modifiers, plus the canary packaging fix and a fork-safety CI sweep.
 - [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged): 5 merged PRs including [#10396](https://github.com/shadcn-ui/ui/pull/10396) (TanStack Start dark mode guide, replacing 4 prior attempts), [#9484](https://github.com/shadcn-ui/ui/pull/9484) (ComponentsList Copy-Page fix), and [#10337](https://github.com/shadcn-ui/ui/pull/10337) (llms.txt audit of 97 URLs).
+- [facebook/hermes#2047](https://github.com/facebook/hermes/pull/2047) + [react/react-native#57518](https://github.com/react/react-native/pull/57518): fixes landed in Meta's Hermes and React Native core through the internal codesync import: the armv7 CI job that failed on any fork not named `hermes`, and the TurboModule ArrayBuffer test that had never compiled on OSS main.
 
 ## Projects
 
@@ -45,7 +46,7 @@ Product engineer in New York. Freelancing solo since 2013. Give me a real bug wi
 
 ## Skills
 
-TypeScript, Node, Bun, React, React Native, Postgres, Redis, Python.
+TypeScript, Node, Bun, React, React Native, Expo, Convex, SwiftUI, Postgres, Redis, Python.
 
 ## Education
 

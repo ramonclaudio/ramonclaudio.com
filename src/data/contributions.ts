@@ -18,64 +18,6 @@ export const patchesCount = 68;
 
 export const merged: Contribution[] = [
   {
-    repo: "better-auth/better-auth",
-    number: 9281,
-    title:
-      "noop ./instrumentation export so Convex's V8 isolate stops crashing",
-    detail:
-      'serve a noop `./instrumentation` via conditional exports for `browser` and edge runtimes, matching the shape `./async_hooks` already uses. The dynamic `import("@opentelemetry/api")` in `packages/core/src/instrumentation/api.ts` threw synchronously on runtimes like Convex\'s V8 isolate (bare specifiers rejected at resolve time via `deno_core::resolve_import`), so the `.catch()` in `getOpenTelemetryAPI` never ran and every `withSpan` call through `to-auth-endpoints.ts` and `with-hooks.ts` surfaced an uncaught error. The breaking pattern landed in `#9111` and shipped in v1.6.6. `@opentelemetry/api` itself ships a noop proxy when no SDK is registered, so this is about dynamic-import-probe portability, not OTel runtime support. Unblocks the 1.6 migration for `@convex-dev/better-auth` consumers',
-  },
-  {
-    repo: "better-auth/better-auth",
-    number: 9087,
-    title: "fire $sessionSignal after session-rotating endpoints",
-    detail:
-      "add `/change-password` and `/revoke-other-sessions` to the `atomListeners` matcher so `$sessionSignal` fires after session-rotating endpoints. Without this, callers like `useSession()` kept returning stale session data after password changes because the client never re-fetched",
-  },
-  {
-    repo: "better-auth/better-auth",
-    number: 9072,
-    title: "fix operationId on the password reset callback endpoint",
-    detail:
-      "incorrect `operationId` in the password reset callback endpoint, plus `forget` to `forgot` cleanup across demo apps and tests",
-  },
-  {
-    repo: "get-convex/better-auth",
-    number: 323,
-    title:
-      "migrate to better-auth 1.6, five runtime breaks fixed in one rebase",
-    detail:
-      'migrated `@convex-dev/better-auth` to `better-auth` 1.6.9+, fixing five runtime breaks across the 1.6.x line in one rebase. `Where.mode` folding (1.6.0): `CleanedWhere = Required<Where>` forced the new field onto every adapter call, so `adapterWhereValidator` and per-table validators threw `ArgumentValidationError` on bump. Fix accepts `mode` in validators, case-folds `eq`/`ne`/`in`/`not_in`/`contains`/`starts_with`/`ends_with` in `filterByWhere`, and excludes insensitive clauses from `findIndex` and `paginate` fast-paths since Convex indexes are byte-compared. `shouldReturnResponse` flip (1.6.0, commit `8304f65`): `to-auth-endpoints.ts` defaults to a `Response` when context carries a `Request`, so internal endpoint calls from cross-domain hooks returned a `Response` instead of a parsed object, JWT cookies got the literal string `"undefined"`, and `setSessionCookie` crashed. Fix passes `asResponse: false` at all 7 internal call sites with regression tests that pre-set the flags to `true` so dropping the override fails the assertion. `twoFactor.verified` (1.6.2, #8711): new schema column the Convex validator rejected. `parseSetCookieHeader`: deleted the 34-line local copy in `cross-domain/client.ts` that split on `", "` and shattered `Expires=Wed, 21 Oct 2015 07:28:00 GMT` into four garbage cookies, re-exported from `better-auth/cookies`. `./instrumentation` (1.6.6, #9111): peer floor raised to 1.6.9, past 1.6.7 where #9281 routes the dynamic `import("@opentelemetry/api")` to a noop on `browser` and `edge` conditions, fixing Convex V8 isolate\'s synchronous bare-specifier rejection. Shipped in `@convex-dev/better-auth@0.12.0`',
-  },
-  {
-    repo: "get-convex/better-auth",
-    number: 218,
-    title: "four bugs leaving stale auth state after a session expires",
-    detail:
-      'four bugs causing stale auth state and incorrect `isAuthenticated` values. (1) `getCookie()` parsed cookies from JSON, which turned `expires` into a string. Comparing `string < new Date()` coerced the Date to a number and the string to `NaN`, and `NaN < anything` is always `false`, so expired cookies were never filtered out. (2) Cookies persisted after `/get-session` returned `null`, so combined with bug 1, stale credentials shipped indefinitely. (3) Sign-out stored `"{}"` in `localCacheName` and `JSON.parse("{}")` returns truthy `{}`, breaking `if (sessionData)` checks. Fix stores `"null"` so `JSON.parse("null")` returns `null`. (4) `isAuthenticated` was `session !== null`, which returned `true` for `{}` (from bug 3) and `undefined` during loading edges. Fix uses `Boolean(session?.session)`',
-  },
-  {
-    repo: "get-convex/better-auth",
-    number: 267,
-    title: "dedup concurrent fetchAccessToken calls with a ref",
-    detail:
-      "concurrent `fetchAccessToken` dedup with `useRef`. On page load, `sessionId` transitions from `undefined` to a value, which creates a new `fetchAccessToken` reference and triggers `ConvexProviderWithAuth` to call `setAuth()` again while the first request is still in-flight. React 18 StrictMode doubles this in dev. Each `/convex/token` call hits the DB for session middleware and runs JWT signing, so N concurrent calls meant N redundant round-trips with only one result used. Fix stores the in-flight promise in a `useRef` so concurrent callers share it, with `forceRefreshToken: true` bypassing the guard and `.finally()` clearing the ref after resolution. Closes #219, likely reduces the action count reported in #186",
-  },
-  {
-    repo: "get-convex/better-auth",
-    number: 245,
-    title: "widen the better-auth peer dep to cover the whole 1.4.x line",
-    detail:
-      "widened the `better-auth` peer dep from exact `1.4.9` to `>=1.4.9 <1.5.0` after verifying every import path is stable across 1.4.9 through 1.4.18. Explicitly excludes 1.5.0, which moved `createAuthEndpoint` and `createAuthMiddleware` from `better-auth/plugins` to `better-auth/api`, removed the `better-auth/adapters/test` export path, and deleted `runAdapterTest` entirely",
-  },
-  {
-    repo: "get-convex/better-auth",
-    number: 278,
-    title: "drop the dead react-dom peer dep",
-    detail:
-      "removed the dead `react-dom` peer dep declaration. Zero imports of `react-dom`, `ReactDOM`, `createRoot`, `hydrateRoot`, `flushSync`, or `createPortal` across all 32 files in `src/`. None of the exports (`/react`, `/nextjs`, `/react-start`) touch it. The declaration was generating peer dep warnings in `bun` and `pnpm` projects that don't use `react-dom`",
-  },
-  {
     repo: "expo/expo",
     number: 47748,
     title:
@@ -329,27 +271,84 @@ export const merged: Contribution[] = [
       "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 13 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
   },
   {
-    repo: "withastro/compiler-rs",
-    number: 25,
+    repo: "react/react-native",
+    number: 57518,
     title:
-      "switch linux-gnu builds to --use-napi-cross, dropping the glibc floor to 2.17",
+      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
     detail:
-      "real fix for the `@astrojs/compiler-rs` `GLIBC_2.35` issue. [#22](https://github.com/withastro/compiler-rs/pull/22) added `-x` to the linux-gnu builds hoping zigbuild would pin glibc, but zigbuild without an explicit suffix falls back to zig's per-arch baseline (`GLIBC_2.35` on x86_64, `GLIBC_2.30` on aarch64 for zig 0.15), so the shipped 0.1.7 binary still couldn't load on Vercel (glibc 2.34), Amazon Linux 2023, AWS Lambda, RHEL/CentOS 7, or Debian 10. Switched both gnu targets to `--use-napi-cross`, which downloads `@napi-rs/cross-toolchain` with a sysroot pinned to glibc 2.17. Matches the pattern used by `oxc`, `@swc/core`, `@napi-rs/canvas`, `lightningcss`, and the official `@napi-rs/package-template`. Verified on a fork CI run plus a Vercel preview deploy with `experimental.rustCompiler: true`, both `objdump -T` showing `GLIBC_2.16` max on x64 and `GLIBC_2.17` on arm64. Shipped in `@astrojs/compiler-rs@0.1.8`",
+      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
   },
   {
-    repo: "withastro/compiler-rs",
-    number: 22,
-    title: "first glibc compat attempt, superseded by #25",
+    repo: "facebook/hermes",
+    number: 2047,
+    title: "fix the armv7 CI job for forks not named hermes",
     detail:
-      "first-attempt glibc compat fix, added `-x` to `x86_64-unknown-linux-gnu`. Turned out to be insufficient, superseded by #25",
+      "swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import",
   },
   {
-    repo: "napi-rs/napi-rs",
-    number: 3189,
-    title:
-      "respect --cross-compile when host matches target, fixing glibc breaks on Vercel and Lambda",
+    repo: "oven-sh/bun",
+    number: 21855,
+    title: "typed decompress option for fetch, no more @ts-ignore",
     detail:
-      "cross-compile regression in the v3 CLI rewrite. When `--cross-compile` / `-x` was passed for a linux or darwin target, `pickBinary()` in `cli/src/api/build.ts` skipped `cargo-zigbuild` if host platform, arch, and abi matched target, logged a warning, then silently fell through to `cargo build`. The whole point of `--cross-compile` on a native build is to pin a lower glibc via zig's linker. Without it, building `x86_64-unknown-linux-gnu` on `ubuntu-latest` (glibc 2.39) produced binaries incompatible with glibc < 2.35 systems like Amazon Linux 2023 (glibc 2.34) and Vercel's build container. v2 had this fix in #1432 (resolving #1430) but it wasn't carried over during the v3 rewrite in #1492. Fix removes the platform-match conditions in the `else` branch of `pickBinary()` so `--cross-compile` always uses `cargo-zigbuild` for non-Windows targets",
+      "added the `decompress` property to the `BunFetchRequestInit` interface with JSDoc documentation. The option already worked at runtime in Bun's `fetch()`, but TypeScript users had to `@ts-ignore` it on every call to disable response decompression. Now it's a first-class typed option, no escape hatch required",
+  },
+  {
+    repo: "better-auth/better-auth",
+    number: 9281,
+    title:
+      "noop ./instrumentation export so Convex's V8 isolate stops crashing",
+    detail:
+      'serve a noop `./instrumentation` via conditional exports for `browser` and edge runtimes, matching the shape `./async_hooks` already uses. The dynamic `import("@opentelemetry/api")` in `packages/core/src/instrumentation/api.ts` threw synchronously on runtimes like Convex\'s V8 isolate (bare specifiers rejected at resolve time via `deno_core::resolve_import`), so the `.catch()` in `getOpenTelemetryAPI` never ran and every `withSpan` call through `to-auth-endpoints.ts` and `with-hooks.ts` surfaced an uncaught error. The breaking pattern landed in `#9111` and shipped in v1.6.6. `@opentelemetry/api` itself ships a noop proxy when no SDK is registered, so this is about dynamic-import-probe portability, not OTel runtime support. Unblocks the 1.6 migration for `@convex-dev/better-auth` consumers',
+  },
+  {
+    repo: "better-auth/better-auth",
+    number: 9087,
+    title: "fire $sessionSignal after session-rotating endpoints",
+    detail:
+      "add `/change-password` and `/revoke-other-sessions` to the `atomListeners` matcher so `$sessionSignal` fires after session-rotating endpoints. Without this, callers like `useSession()` kept returning stale session data after password changes because the client never re-fetched",
+  },
+  {
+    repo: "better-auth/better-auth",
+    number: 9072,
+    title: "fix operationId on the password reset callback endpoint",
+    detail:
+      "incorrect `operationId` in the password reset callback endpoint, plus `forget` to `forgot` cleanup across demo apps and tests",
+  },
+  {
+    repo: "get-convex/better-auth",
+    number: 323,
+    title:
+      "migrate to better-auth 1.6, five runtime breaks fixed in one rebase",
+    detail:
+      'migrated `@convex-dev/better-auth` to `better-auth` 1.6.9+, fixing five runtime breaks across the 1.6.x line in one rebase. `Where.mode` folding (1.6.0): `CleanedWhere = Required<Where>` forced the new field onto every adapter call, so `adapterWhereValidator` and per-table validators threw `ArgumentValidationError` on bump. Fix accepts `mode` in validators, case-folds `eq`/`ne`/`in`/`not_in`/`contains`/`starts_with`/`ends_with` in `filterByWhere`, and excludes insensitive clauses from `findIndex` and `paginate` fast-paths since Convex indexes are byte-compared. `shouldReturnResponse` flip (1.6.0, commit `8304f65`): `to-auth-endpoints.ts` defaults to a `Response` when context carries a `Request`, so internal endpoint calls from cross-domain hooks returned a `Response` instead of a parsed object, JWT cookies got the literal string `"undefined"`, and `setSessionCookie` crashed. Fix passes `asResponse: false` at all 7 internal call sites with regression tests that pre-set the flags to `true` so dropping the override fails the assertion. `twoFactor.verified` (1.6.2, #8711): new schema column the Convex validator rejected. `parseSetCookieHeader`: deleted the 34-line local copy in `cross-domain/client.ts` that split on `", "` and shattered `Expires=Wed, 21 Oct 2015 07:28:00 GMT` into four garbage cookies, re-exported from `better-auth/cookies`. `./instrumentation` (1.6.6, #9111): peer floor raised to 1.6.9, past 1.6.7 where #9281 routes the dynamic `import("@opentelemetry/api")` to a noop on `browser` and `edge` conditions, fixing Convex V8 isolate\'s synchronous bare-specifier rejection. Shipped in `@convex-dev/better-auth@0.12.0`',
+  },
+  {
+    repo: "get-convex/better-auth",
+    number: 218,
+    title: "four bugs leaving stale auth state after a session expires",
+    detail:
+      'four bugs causing stale auth state and incorrect `isAuthenticated` values. (1) `getCookie()` parsed cookies from JSON, which turned `expires` into a string. Comparing `string < new Date()` coerced the Date to a number and the string to `NaN`, and `NaN < anything` is always `false`, so expired cookies were never filtered out. (2) Cookies persisted after `/get-session` returned `null`, so combined with bug 1, stale credentials shipped indefinitely. (3) Sign-out stored `"{}"` in `localCacheName` and `JSON.parse("{}")` returns truthy `{}`, breaking `if (sessionData)` checks. Fix stores `"null"` so `JSON.parse("null")` returns `null`. (4) `isAuthenticated` was `session !== null`, which returned `true` for `{}` (from bug 3) and `undefined` during loading edges. Fix uses `Boolean(session?.session)`',
+  },
+  {
+    repo: "get-convex/better-auth",
+    number: 267,
+    title: "dedup concurrent fetchAccessToken calls with a ref",
+    detail:
+      "concurrent `fetchAccessToken` dedup with `useRef`. On page load, `sessionId` transitions from `undefined` to a value, which creates a new `fetchAccessToken` reference and triggers `ConvexProviderWithAuth` to call `setAuth()` again while the first request is still in-flight. React 18 StrictMode doubles this in dev. Each `/convex/token` call hits the DB for session middleware and runs JWT signing, so N concurrent calls meant N redundant round-trips with only one result used. Fix stores the in-flight promise in a `useRef` so concurrent callers share it, with `forceRefreshToken: true` bypassing the guard and `.finally()` clearing the ref after resolution. Closes #219, likely reduces the action count reported in #186",
+  },
+  {
+    repo: "get-convex/better-auth",
+    number: 245,
+    title: "widen the better-auth peer dep to cover the whole 1.4.x line",
+    detail:
+      "widened the `better-auth` peer dep from exact `1.4.9` to `>=1.4.9 <1.5.0` after verifying every import path is stable across 1.4.9 through 1.4.18. Explicitly excludes 1.5.0, which moved `createAuthEndpoint` and `createAuthMiddleware` from `better-auth/plugins` to `better-auth/api`, removed the `better-auth/adapters/test` export path, and deleted `runAdapterTest` entirely",
+  },
+  {
+    repo: "get-convex/better-auth",
+    number: 278,
+    title: "drop the dead react-dom peer dep",
+    detail:
+      "removed the dead `react-dom` peer dep declaration. Zero imports of `react-dom`, `ReactDOM`, `createRoot`, `hydrateRoot`, `flushSync`, or `createPortal` across all 32 files in `src/`. None of the exports (`/react`, `/nextjs`, `/react-start`) touch it. The declaration was generating peer dep warnings in `bun` and `pnpm` projects that don't use `react-dom`",
   },
   {
     repo: "shadcn-ui/ui",
@@ -389,11 +388,34 @@ export const merged: Contribution[] = [
       "registered the `@ramonclaudio-coderabbit` shadcn registry in the official open source directory after #8892 asked for it. Adds entries to `apps/v4/public/r/registries.json` and `apps/v4/registry/directory.json` so the registry is discoverable through the shadcn CLI. The registry itself ships a framework-agnostic CodeRabbit API client, pluggable storage adapters (LocalStorage, Convex, Supabase, PostgreSQL, MySQL), and React components for generating developer activity reports",
   },
   {
-    repo: "rorkai/App-Store-Connect-CLI",
-    number: 784,
-    title: "Mac App Store screenshot support for the asc CLI",
+    repo: "withastro/compiler-rs",
+    number: 25,
+    title:
+      "switch linux-gnu builds to --use-napi-cross, dropping the glibc floor to 2.17",
     detail:
-      "Mac App Store screenshot support for the `asc` CLI. New `--provider macos` grabs the frontmost window of a running macOS app by bundle ID using `screencapture -l <windowID>`, where the window ID comes from a Swift one-liner piped to `swift -` via `CGWindowListCopyWindowInfo`, without cgo or extra binaries. New `--device mac` renders to the 2880x1800 `APP_DESKTOP` canvas without a device bezel, with optional title, subtitle, and background color overlays. Also fixed `ASC_TIMEOUT` being silently ignored for `screenshots capture` and `screenshots frame`, both now use `ContextWithTimeout`",
+      "real fix for the `@astrojs/compiler-rs` `GLIBC_2.35` issue. [#22](https://github.com/withastro/compiler-rs/pull/22) added `-x` to the linux-gnu builds hoping zigbuild would pin glibc, but zigbuild without an explicit suffix falls back to zig's per-arch baseline (`GLIBC_2.35` on x86_64, `GLIBC_2.30` on aarch64 for zig 0.15), so the shipped 0.1.7 binary still couldn't load on Vercel (glibc 2.34), Amazon Linux 2023, AWS Lambda, RHEL/CentOS 7, or Debian 10. Switched both gnu targets to `--use-napi-cross`, which downloads `@napi-rs/cross-toolchain` with a sysroot pinned to glibc 2.17. Matches the pattern used by `oxc`, `@swc/core`, `@napi-rs/canvas`, `lightningcss`, and the official `@napi-rs/package-template`. Verified on a fork CI run plus a Vercel preview deploy with `experimental.rustCompiler: true`, both `objdump -T` showing `GLIBC_2.16` max on x64 and `GLIBC_2.17` on arm64. Shipped in `@astrojs/compiler-rs@0.1.8`",
+  },
+  {
+    repo: "withastro/compiler-rs",
+    number: 22,
+    title: "first glibc compat attempt, superseded by #25",
+    detail:
+      "first-attempt glibc compat fix, added `-x` to `x86_64-unknown-linux-gnu`. Turned out to be insufficient, superseded by #25",
+  },
+  {
+    repo: "napi-rs/napi-rs",
+    number: 3189,
+    title:
+      "respect --cross-compile when host matches target, fixing glibc breaks on Vercel and Lambda",
+    detail:
+      "cross-compile regression in the v3 CLI rewrite. When `--cross-compile` / `-x` was passed for a linux or darwin target, `pickBinary()` in `cli/src/api/build.ts` skipped `cargo-zigbuild` if host platform, arch, and abi matched target, logged a warning, then silently fell through to `cargo build`. The whole point of `--cross-compile` on a native build is to pin a lower glibc via zig's linker. Without it, building `x86_64-unknown-linux-gnu` on `ubuntu-latest` (glibc 2.39) produced binaries incompatible with glibc < 2.35 systems like Amazon Linux 2023 (glibc 2.34) and Vercel's build container. v2 had this fix in #1432 (resolving #1430) but it wasn't carried over during the v3 rewrite in #1492. Fix removes the platform-match conditions in the `else` branch of `pickBinary()` so `--cross-compile` always uses `cargo-zigbuild` for non-Windows targets",
+  },
+  {
+    repo: "TanStack/db",
+    number: 17,
+    title: "fix the stale example todo app link in the README",
+    detail:
+      "corrected the stale README link to the example todo app, repointing it at `examples/react/todo`. Tiny fix, but it was the first thing I clicked when I landed on the repo and it 404'd. Was PR #17 in the repo, early days",
   },
   {
     repo: "fuma-nama/fumadocs",
@@ -411,33 +433,11 @@ export const merged: Contribution[] = [
       "prettier formatting fix that unblocked the changesets release PR #2093 for `create-fumadocs-app@15.7.0`. The release PR was stuck on a formatting check, so I ran the formatter and shipped the diff so the release could go out",
   },
   {
-    repo: "oven-sh/bun",
-    number: 21855,
-    title: "typed decompress option for fetch, no more @ts-ignore",
+    repo: "rorkai/App-Store-Connect-CLI",
+    number: 784,
+    title: "Mac App Store screenshot support for the asc CLI",
     detail:
-      "added the `decompress` property to the `BunFetchRequestInit` interface with JSDoc documentation. The option already worked at runtime in Bun's `fetch()`, but TypeScript users had to `@ts-ignore` it on every call to disable response decompression. Now it's a first-class typed option, no escape hatch required",
-  },
-  {
-    repo: "facebook/hermes",
-    number: 2047,
-    title: "fix the armv7 CI job for forks not named hermes",
-    detail:
-      "swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import",
-  },
-  {
-    repo: "TanStack/db",
-    number: 17,
-    title: "fix the stale example todo app link in the README",
-    detail:
-      "corrected the stale README link to the example todo app, repointing it at `examples/react/todo`. Tiny fix, but it was the first thing I clicked when I landed on the repo and it 404'd. Was PR #17 in the repo, early days",
-  },
-  {
-    repo: "react/react-native",
-    number: 57518,
-    title:
-      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
-    detail:
-      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
+      "Mac App Store screenshot support for the `asc` CLI. New `--provider macos` grabs the frontmost window of a running macOS app by bundle ID using `screencapture -l <windowID>`, where the window ID comes from a Swift one-liner piped to `swift -` via `CGWindowListCopyWindowInfo`, without cgo or extra binaries. New `--device mac` renders to the 2880x1800 `APP_DESKTOP` canvas without a device bezel, with optional title, subtitle, and background color overlays. Also fixed `ASC_TIMEOUT` being silently ignored for `screenshots capture` and `screenshots frame`, both now use `ContextWithTimeout`",
   },
 ];
 
@@ -461,6 +461,12 @@ export const open: Contribution[] = [
       "set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning",
   },
   {
+    repo: "react/react-native",
+    number: 57517,
+    title:
+      "declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers",
+  },
+  {
     repo: "oven-sh/bun",
     number: 30855,
     title:
@@ -470,18 +476,6 @@ export const open: Contribution[] = [
     repo: "oven-sh/bun",
     number: 27086,
     title: "invalid YAML in the `update-root-certs` workflow `labels` field",
-  },
-  {
-    repo: "better-auth/better-auth",
-    number: 9345,
-    title:
-      "preserve the current session on `change-password` when `revokeOtherSessions` is set",
-  },
-  {
-    repo: "shadcn-ui/ui",
-    number: 10364,
-    title:
-      "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
   },
   {
     repo: "expo/expo",
@@ -496,10 +490,16 @@ export const open: Contribution[] = [
       "exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently",
   },
   {
-    repo: "react/react-native",
-    number: 57517,
+    repo: "better-auth/better-auth",
+    number: 9345,
     title:
-      "declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers",
+      "preserve the current session on `change-password` when `revokeOtherSessions` is set",
+  },
+  {
+    repo: "shadcn-ui/ui",
+    number: 10364,
+    title:
+      "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
   },
 ];
 
