@@ -1,10 +1,10 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Contributions"
-description: "55 PRs merged across 11 upstream repos, plus a public patches repo with 60 drop-in fixes for Bun, npm, pnpm, and Yarn."
+description: "55 PRs merged across 11 upstream repos, plus a public patches repo with 68 drop-in fixes for Bun, npm, pnpm, and Yarn."
 ---
 
-55 PRs merged across 11 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 60 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI, docs, and native code. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
+55 PRs merged across 11 upstream repos. Plus a public [patches](https://github.com/ramonclaudio/patches) repo with 68 patches: drop-in for Bun, npm, pnpm, and Yarn, plus source-only ones for CI, docs, and native code. I find the bug, file the upstream PR, and drop the patch into the repo so my projects, and anyone else hitting the same bug, can ship without waiting for the merge to land. When the fix lands in a release, I bump the dep and delete the patch. Every merged PR listed here shipped as a patch first.
 
 ### Merged PRs
 
@@ -81,6 +81,9 @@ Drop-in for Bun, npm, pnpm, and Yarn. Source-only patches for CI, docs, and nati
 
 PRs still in review upstream. Every one has a live patch in the repo.
 
+- `react-native`: Add the missing `react/bridging/ArrayBuffer.h` include in the TurboModule ArrayBuffer unit test so `yarn test-ios` compiles on OSS main again. [react/react-native#57518](https://github.com/react/react-native/pull/57518)
+- `react-native`: Declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally instead of behind `#if RCT_DEV_MENU | RCT_PACKAGER_LOADING_FUNCTIONALITY`, so the dev-only API stops vanishing in Release builds and breaking out-of-tree callers like `expo-dev-launcher`. [react/react-native#57517](https://github.com/react/react-native/pull/57517)
+- `expo`: Exit 1 when `et generate-docs-api-data` fails for any package and run the `expotools` test suite in CI, so dead mapping entries like the two fixed in [#47670](https://github.com/expo/expo/pull/47670) stop shipping silently. [expo/expo#47691](https://github.com/expo/expo/pull/47691)
 - `expo-updates` `57.0.6`: Set `:always_out_of_date` on `EXUpdates.podspec`'s `Generate updates resources` script phase so Xcode stops warning that it runs every build without declaring outputs. The phase rebundles the app's JS into `EXUpdates.bundle` by design, so it can't declare stable outputs. Same block `EXConstants`, `ExpoWidgets`, and `ExpoLogBox` already ship, CocoaPods version guard included. [expo/expo#47622](https://github.com/expo/expo/pull/47622)
 - `react-native` `0.85.3`: Set `:always_out_of_date` on `hermes-engine.podspec`'s `Replace Hermes` script phase so Xcode stops warning that it runs every build without declaring outputs. Matches the guard already on the sibling `Replace X` phases, while the phase still swaps the prebuilt Hermes binary per `$CONFIGURATION`. [react/react-native#56912](https://github.com/react/react-native/pull/56912)
 - `hermes`: Cherry-pick `18a9634659` onto the `250829098.0.0-stable` branch RN 0.85 ships. `genObjectExpr` passed `nullptr` as the home object for object-literal getters and setters, so `super.x` inside an accessor compiled against a null home object and SIGSEGV'd `hermesc` at compile time. Routes accessors through the same `capturedObj` path regular methods already use. Source fix for one of the Hermes V1 codegen bugs `babel-preset-expo` works around, root cause [facebook/hermes#1761](https://github.com/facebook/hermes/issues/1761). [facebook/hermes#2045](https://github.com/facebook/hermes/pull/2045)
