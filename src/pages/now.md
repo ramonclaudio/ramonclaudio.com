@@ -25,7 +25,7 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [react/react-native#57518](https://github.com/react/react-native/pull/57518): import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again.
 <!-- open-prs:end -->
 
-Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
+Most of these ship as patches in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review. The CI and test-infra fixes don't need one.
 
 ### Maintaining
 
