@@ -4,7 +4,7 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-07-08.
+Last updated: 2026-07-13.
 
 ### Shipping
 
@@ -20,6 +20,9 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
 - [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
 - [expo/expo#47622](https://github.com/expo/expo/pull/47622): set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning.
+- [expo/expo#47691](https://github.com/expo/expo/pull/47691): exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently.
+- [react/react-native#57517](https://github.com/react/react-native/pull/57517): declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers.
+- [react/react-native#57518](https://github.com/react/react-native/pull/57518): import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again.
 <!-- open-prs:end -->
 
 Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
