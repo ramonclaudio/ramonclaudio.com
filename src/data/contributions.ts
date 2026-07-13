@@ -77,6 +77,45 @@ export const merged: Contribution[] = [
   },
   {
     repo: "expo/expo",
+    number: 47748,
+    title:
+      'surface the real `xcodebuild` error when `expo run:ios` fails but the log formatter parsed none, instead of "0 error(s)" and a truncated dump',
+    detail:
+      "on the `expo run:ios` failure path where `@expo/xcpretty` parsed zero errors, `_assertXcodeBuildResults` dumped the entire raw log, which CI truncates before the real error line, so genuine build failures read as `0 error(s)` with exit 65 and no visible cause (how #47688's `ios-build` failures presented). Pinned two live formatter gaps on the way: a routine `.xcodeproj`-prefixed `ld: warning: ignoring duplicate libraries: '-lc++'` line latches the compile-warning matcher so the parser emits the next complete compile error as a warning, and the anchored matchers never see diagnostics that xcodebuild forwards indented, while stderr never reaches the formatter at all. The fix scans the complete stdout and stderr for `error:` lines on that zero-parsed path, dedupes, prints them directly under the `CommandError` header, and keeps the full log below for context. Verified end to end on a fresh `create-expo-app` project: unpatched, the real error sat at line 15402 of a 15425-line dump, patched it prints at line 69. New tests drive the real `ExpoRunFormatter` against both gaps, written red first. Filed and merged the same day",
+  },
+  {
+    repo: "expo/expo",
+    number: 47693,
+    title:
+      "fix the `expo-dev-menu` macOS build against react-native-macos's older `RCTDevMenu` surface",
+    detail:
+      "guarded the `RCTDevMenu.devMenuEnabled` and `keyboardShortcutsEnabled` writes added in #47638 with `#if !os(macOS)` so `expo-dev-menu` compiles on macOS again. react-native-macos trails RN core and its `RCTDevMenu` gains those members only in core 0.83, so the writes failed with `value of type 'RCTDevMenu' has no member 'devMenuEnabled'` and broke the `test-suite-macos` CI job. The guard in `openRNDevMenu` covers only the enabled toggle: macOS `RCTDevMenu` still has `show()` with no enabled gate, so the Open RN dev menu button keeps working by calling `show()` directly. iOS and tvOS use RN core and keep the writes. Verified both ways against `react-native-macos@0.81.8`: the bare-expo `ExpoMacOS-macOS` scheme fails without the guard and builds with it, and iOS native unit tests pass unchanged",
+  },
+  {
+    repo: "expo/expo",
+    number: 47688,
+    title:
+      "guard the dev-only `RCTBundleURLProviderAllowPackagerServerAccess` calls so `expo-dev-launcher` compiles in Release again",
+    detail:
+      "fixed `expo-dev-launcher` Release builds broken by #47638's swizzling removal. The new direct calls to `RCTBundleURLProviderAllowPackagerServerAccess` reference a function React Native declares only under `#if RCT_DEV_MENU | RCT_PACKAGER_LOADING_FUNCTIONALITY`, both 0 in Release, so clang failed with `call to undeclared function` and the `ios-build` job went red on every PR that triggered it. The removed swizzle had been accidentally Release-safe: it resolved `guessPackagerHost` at runtime via `class_getInstanceMethod`, which returns NULL in Release, so it silently no-opped. Wrapped both call sites in the header's exact guard, since plain `RCT_DEV` would still break a `RCT_DEV=1` `RCT_DEV_MENU=0` build. Verified with a standalone clang repro in both configs, the CI-parity bare-expo Release build, native unit tests, and a Debug sim boot exercising dev server discovery. Filed and merged the same afternoon",
+  },
+  {
+    repo: "expo/expo",
+    number: 47670,
+    title: "fix dead docs data mapping entries, report all failures",
+    detail:
+      "fixed two dead entries in the docs data generator's package mapping: `expo-ui/jetpack-compose/filterchip` pointed at a file removed when FilterChip merged into `Chip` (#43900), and `expo-speech` pointed at `Speech/Speech.ts`, flattened to `Speech.ts` in the TypeScript 6 bump (#44791). The old runner logged only the first `Promise.all` rejection, so the filterchip error hid the speech one and `expo-speech.json` sat unregenerable from April to July, its content frozen at a February refresh. Switched the runner to `Promise.allSettled` so every failure reports by package name (exit semantics unchanged), added a unit test asserting all 215 mapping entries resolve to existing source files, and shipped the regenerated `expo-speech.json`, which only generates with the fixed mapping",
+  },
+  {
+    repo: "expo/expo",
+    number: 47663,
+    title:
+      "regenerate 32 drifted unversioned API data files so local docs stop rendering stale content",
+    detail:
+      "regenerated the unversioned docs API data for every package where the committed JSON no longer matched a clean `et generate-docs-api-data` run, 32 files. The last full refresh was the SDK 56 cut-off, then the TypeScript 6 + TypeDoc bump landed a day later without a regen and nothing had been swept since. `expo-cellular.json` still documented `allowsVoipAsync` (removed in #47148), `expo-location.json` was missing the Motion Activity API, and ~25 more files differed only by TypeScript 6 union ordering. Production regenerates this data at build time, but local docs dev rendered stale content and any PR regenerating a single package inherited the whole drift in its diff. Also drops the cellular page intro's VoIP mention, whose API is gone. `expo-speech.json` was left out on purpose, its mapping pointed at a moved source file, fixed in #47670",
+  },
+  {
+    repo: "expo/expo",
     number: 47472,
     title:
       "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch",
@@ -144,7 +183,7 @@ export const merged: Contribution[] = [
     number: 46007,
     title: "font textStyle for iOS Dynamic Type, all 11 Font.TextStyle cases",
     detail:
-      "iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases, with `extraLargeTitle` and `extraLargeTitle2` on iOS 17+. Shipped in `56.0.10`",
+      "iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases. Shipped in `56.0.10`",
   },
   {
     repo: "expo/expo",
@@ -272,7 +311,7 @@ export const merged: Contribution[] = [
     number: 45782,
     title: "make five auto-firing scheduled workflows fork-safe",
     detail:
-      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` and gated `validate-npm-owners`, `check-issues-nightly`, `publish-canaries`, and both `development-client-e2e` matrices on the repo check. Dropped failing checks and 120-minute fork CI burns",
+      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` in `fingerprint` and both `development-client-e2e` matrices, and gated `validate-npm-owners`, `check-issues-nightly`, and `publish-canaries` on the repo check. Dropped failing checks and 120-minute fork CI burns",
   },
   {
     repo: "expo/expo",
@@ -285,9 +324,9 @@ export const merged: Contribution[] = [
   {
     repo: "expo/expo",
     number: 45859,
-    title: "skip 18 secret-gated workflows on forks",
+    title: "skip 13 secret-gated workflows on forks",
     detail:
-      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 18 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
+      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 13 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
   },
   {
     repo: "withastro/compiler-rs",
@@ -441,6 +480,24 @@ export const open: Contribution[] = [
     number: 47622,
     title:
       "set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning",
+  },
+  {
+    repo: "expo/expo",
+    number: 47691,
+    title:
+      "exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently",
+  },
+  {
+    repo: "react/react-native",
+    number: 57517,
+    title:
+      "declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers",
+  },
+  {
+    repo: "react/react-native",
+    number: 57518,
+    title:
+      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
   },
 ];
 

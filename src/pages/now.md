@@ -4,7 +4,7 @@ title: "Now"
 description: "What Ray is shipping right now and the upstream PRs still in flight. Updated as things change."
 ---
 
-Last updated: 2026-07-08.
+Last updated: 2026-07-13.
 
 ### Shipping
 
@@ -20,16 +20,19 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
 - [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
 - [expo/expo#47622](https://github.com/expo/expo/pull/47622): set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning.
+- [expo/expo#47691](https://github.com/expo/expo/pull/47691): exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently.
+- [react/react-native#57517](https://github.com/react/react-native/pull/57517): declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers.
+- [react/react-native#57518](https://github.com/react/react-native/pull/57518): import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again.
 <!-- open-prs:end -->
 
-Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
+Most of these ship as patches in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review. The CI and test-infra fixes don't need one.
 
 ### Maintaining
 
 - [vexpo](https://github.com/ramonclaudio/vexpo): Expo SDK 56 + Convex + Better Auth + Resend, wired for iOS. Email + password, OTP, Apple Sign In, push notifications, universal links, OTA via EAS Update, submit + workflows.
 - [seetree](https://github.com/ramonclaudio/seetree) at v0.1.1. Live tree viewer for Claude Code, written in Zig. Lights up files as Claude reads, writes, edits, or deletes them. ~200K binary, brew + npm.
-- [convex-revenuecat](/projects/convex-revenuecat) at v0.3.2. Around 7,700 downloads, listed in the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). Sync hooks, webhook handlers, lifecycle transitions.
-- [tanstack-cn](/projects/tanstack-cn) + [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn): CLI scaffolder and shared runtime package, same shape as shadcn's (`bun create tanstack-cn my-app`). Around 1,050 downloads combined. TanStack Start + Vite 8 + Base UI + shadcn + oxlint/oxfmt. The [shadcn dark mode PR](https://github.com/shadcn-ui/ui/pull/10396) is wired in.
+- [convex-revenuecat](/projects/convex-revenuecat) at v0.3.2. Around 12,500 downloads, listed in the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). Sync hooks, webhook handlers, lifecycle transitions.
+- [tanstack-cn](/projects/tanstack-cn) + [create-tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn): CLI scaffolder and shared runtime package, same shape as shadcn's (`bun create tanstack-cn my-app`). Around 1,250 downloads combined. TanStack Start + Vite 8 + Base UI + shadcn + oxlint/oxfmt. The [shadcn dark mode PR](https://github.com/shadcn-ui/ui/pull/10396) is wired in.
 - [tanvex](/projects/tanvex): tanstack-cn extended with Better Auth and Convex, running on latest majors (Vite 8, Oxc, canary). My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs.
 - [ccbase](/projects/ccbase) for Claude Code analytics. Just shipped `ccbase mv` for rewriting paths when you move or rename a Claude Code project.
 - [gitbar](/projects/gitbar): Tauri menubar GitHub dashboard. PRs, issues, reviews, and activity in one window. ~5MB binary.

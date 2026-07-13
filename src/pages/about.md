@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
-description: "Ray, product engineer in NYC, freelance since 2013. Expo, Convex, Better Auth, plus 50 merged PRs upstream and a public patches repo."
+description: "Ray, product engineer in NYC, freelance since 2013. Expo, Convex, Better Auth, plus 55 merged PRs upstream and a public patches repo."
 ---
 
 I've been freelancing out of New York since 2013. Started by reverse engineering APIs and scraping datasets with Python, figuring out how things worked by poking at them from the outside. I still debug the same way. A few of those scraper bots and automation tools cleared six figures a year before I moved on. The freelance life let me travel the world and still be with the people I love while I worked.
