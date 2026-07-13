@@ -29,7 +29,7 @@ export const projects: Project[] = [
     description:
       "Live tree viewer for Claude Code, written in Zig. Lights up files as Claude reads, writes, edits, or deletes them. ~200K binary, on Homebrew and npm.",
     repo: "ramonclaudio/seetree",
-    detail: "~200K binary · 264 total downloads",
+    detail: "~200K binary · 319 total downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/seetree",
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     description:
       "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code.",
     repo: "ramonclaudio/ccbase",
-    detail: "224 total downloads",
+    detail: "282 total downloads",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     description:
       "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "7,659 total downloads · Convex Components Directory",
+    detail: "12,561 total downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
@@ -97,7 +97,7 @@ export const projects: Project[] = [
     description:
       "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon.",
     repo: "ramonclaudio/vexpo",
-    detail: "422 total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
+    detail: "5,773 total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
     featured: true,
     status: "maintained",
     liveUrl: "/apps/vexpo",
@@ -176,7 +176,7 @@ export const projects: Project[] = [
     description:
       "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "1,056 total downloads across tanstack-cn and create-tanstack-cn",
+    detail: "1,249 total downloads across tanstack-cn and create-tanstack-cn",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -257,7 +257,7 @@ export const projects: Project[] = [
     description:
       "Customizable status line for Claude Code with project, git, runtime, and model info.",
     repo: "ramonclaudio/claude-code-statusline",
-    detail: "739 total downloads",
+    detail: "513 total downloads",
   },
   {
     slug: "create-claude",
@@ -266,7 +266,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap Claude Code into any project with hooks, agents, slash commands, and safety in one command.",
     repo: "ramonclaudio/create-claude",
-    detail: "1,643 total downloads",
+    detail: "1,811 total downloads",
   },
   {
     slug: "create-codex",
@@ -275,7 +275,7 @@ export const projects: Project[] = [
     description:
       "Bootstrap AGENTS.md into any project with auto-detection of your stack.",
     repo: "ramonclaudio/create-codex",
-    detail: "310 total downloads",
+    detail: "354 total downloads",
   },
   {
     slug: "raycast-mcp-server-manager",
