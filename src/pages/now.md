@@ -15,13 +15,13 @@ Just shipped [vexpo](https://github.com/ramonclaudio/vexpo), the mobile sibling 
 - [facebook/hermes#2045](https://github.com/facebook/hermes/pull/2045): cherry-pick the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships, so `super.x` in a getter or setter stops SIGSEGV'ing `hermesc`. The direct source fix that replaced the `babel-preset` workaround.
 - [facebook/hermes#2046](https://github.com/facebook/hermes/pull/2046): cherry-pick the class-in-`finally` variable-caching fix so a `class` declared in a `finally` block stops miscompiling. Same Hermes V1 root cause.
 - [react/react-native#56912](https://github.com/react/react-native/pull/56912): set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning.
+- [react/react-native#57517](https://github.com/react/react-native/pull/57517): declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers.
 - [oven-sh/bun#30855](https://github.com/oven-sh/bun/pull/30855): drop the order-dependent peer-dep early match so `bun.lock` stops varying run to run, and fix `bun add X@version` being ignored when `X` is a same-name peer dep.
 - [oven-sh/bun#27086](https://github.com/oven-sh/bun/pull/27086): invalid YAML in the `update-root-certs` workflow `labels` field.
-- [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
-- [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
 - [expo/expo#47622](https://github.com/expo/expo/pull/47622): set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning.
 - [expo/expo#47691](https://github.com/expo/expo/pull/47691): exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently.
-- [react/react-native#57517](https://github.com/react/react-native/pull/57517): declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers.
+- [better-auth/better-auth#9345](https://github.com/better-auth/better-auth/pull/9345): preserve the current session on `change-password` when `revokeOtherSessions` is set.
+- [shadcn-ui/ui#10364](https://github.com/shadcn-ui/ui/pull/10364): strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI.
 <!-- open-prs:end -->
 
 Patches for each one live in [ramonclaudio/patches](https://github.com/ramonclaudio/patches) so my projects aren't waiting on review.
