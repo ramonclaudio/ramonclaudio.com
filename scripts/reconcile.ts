@@ -40,6 +40,7 @@ import {
   lastPullLink,
   mergedListBlock,
   openListBlock,
+  orderGroups,
   pageSection,
   serializeData,
 } from "./content.ts";
@@ -335,11 +336,19 @@ if (!fixMode && drift.length) {
   process.exit(1);
 }
 
+const firstMerge = new Map<string, string>();
+for (const p of liveMerged)
+  if (p.mergedAt && p.mergedAt < (firstMerge.get(p.repo) ?? "~"))
+    firstMerge.set(p.repo, p.mergedAt);
+const orderedMerged = orderGroups(desiredMerged, firstMerge);
+
 const distinct = (l: Contribution[]) => new Set(l.map(c => c.repo)).size;
+const repoCount = (repo: string) =>
+  orderedMerged.filter(c => c.repo === repo).length;
 const canon = {
-  merged: desiredMerged.length,
-  mergedRepos: distinct(desiredMerged),
-  expo: desiredMerged.filter(c => c.repo === "expo/expo").length,
+  merged: orderedMerged.length,
+  mergedRepos: distinct(orderedMerged),
+  expo: repoCount("expo/expo"),
   open: desiredOpen.length,
   openRepos: distinct(desiredOpen),
   patches,
@@ -350,13 +359,16 @@ const canon = {
 const snap = (l: Contribution[]) =>
   JSON.stringify(l.map(c => [c.repo, c.number, c.title, c.detail ?? null]));
 const dataChanged =
-  snap(desiredMerged) !== snap(dataMerged) ||
+  snap(orderedMerged) !== snap(dataMerged) ||
   snap(desiredOpen) !== snap(dataOpen) ||
   patches !== dataPatches;
 if (dataChanged && fixMode) {
-  writeFileSync(DATA_PATH, serializeData(desiredMerged, desiredOpen, patches));
+  writeFileSync(DATA_PATH, serializeData(orderedMerged, desiredOpen, patches));
   await $`bunx oxfmt --write ${DATA_PATH}`.nothrow().quiet();
   applied.push("regenerated src/data/contributions.ts");
+} else if (dataChanged) {
+  // states already match GitHub past the gate, so this is pure group order
+  drift.push("contributions.ts: group order is stale, run bun reconcile:fix");
 }
 
 // ---------- regenerate the markdown surfaces ----------
@@ -397,7 +409,7 @@ function replaceBlock(
 replaceBlock(
   "src/pages/contributions.md",
   "contributions",
-  mergedListBlock(desiredMerged),
+  mergedListBlock(orderedMerged),
   "merged-PR list",
 );
 

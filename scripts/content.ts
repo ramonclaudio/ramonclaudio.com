@@ -39,7 +39,9 @@ export function serializeData(
 // \`bun reconcile:fix\` fixes it: new PRs get scaffolded entries, open PRs
 // move to merged when they land, closed ones drop out, and patchesCount
 // refreshes from the patches README. Titles and details are editorial — polish
-// the scaffolds, the structure is machine-managed.
+// the scaffolds, the structure is machine-managed. Group order is derived:
+// merged-PR count, then earliest first merge. \`bun reconcile:fix\` reorders,
+// hand-sorting is overwritten.
 
 export type Contribution = {
   repo: string;
@@ -90,6 +92,26 @@ export const stats = {
   patches: patchesCount,
 };
 `;
+}
+
+// Group order for the merged list: PR count desc, then earliest first merge,
+// then repo name. The sort is stable, so within-group order stays editorial.
+// "~" sorts a repo with no known merge date after every ISO timestamp.
+export function orderGroups(
+  list: Contribution[],
+  firstMerge: Map<string, string>,
+): Contribution[] {
+  const counts = new Map<string, number>();
+  for (const c of list) counts.set(c.repo, (counts.get(c.repo) ?? 0) + 1);
+  const date = (repo: string) => firstMerge.get(repo) ?? "~";
+  const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+  return [...list].sort((a, b) =>
+    a.repo === b.repo
+      ? 0
+      : counts.get(b.repo)! - counts.get(a.repo)! ||
+        cmp(date(a.repo), date(b.repo)) ||
+        cmp(a.repo, b.repo),
+  );
 }
 
 // Rewrite the count in a matched check span. The count is the last number in
