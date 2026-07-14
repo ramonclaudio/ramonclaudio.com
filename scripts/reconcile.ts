@@ -112,6 +112,18 @@ for (const c of [...dataMerged, ...dataOpen]) repos.add(c.repo);
 const live: LivePR[] = (
   await Promise.all(
     [...repos].sort().map(async repo => {
+      // A renamed repo would double-scaffold: search returns the new name
+      // while gh follows the redirect on the old one, so the same PRs read
+      // as two repos. Refuse until the data uses the canonical name.
+      const canonical = (
+        await retryOnce(() => $`gh api repos/${repo} --jq .full_name`.quiet())
+      ).stdout
+        .toString()
+        .trim();
+      if (canonical !== repo)
+        throw new Error(
+          `${repo} is now ${canonical} on GitHub. Update contributions.ts and the prose, then rerun`,
+        );
       const out = await retryOnce(() =>
         $`gh pr list -R ${repo} --author ${AUTHOR} --state all --limit 200 --json number,state,title,labels,mergeCommit,mergedAt,closedAt`.quiet(),
       );
