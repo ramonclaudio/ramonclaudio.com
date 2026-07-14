@@ -92,6 +92,11 @@ export const stats = {
 `;
 }
 
+// Rewrite the count in a matched check span. The count is the last number in
+// the span: earlier digits can belong to a URL (the 3 in is%3Apr).
+export const bumpLastNumber = (span: string, n: number) =>
+  span.replace(/\d+(?!.*\d)/, String(n));
+
 const detailLine = (c: Contribution) =>
   `[#${c.number}](${prUrl(c)}) ${c.detail ?? c.title}`;
 

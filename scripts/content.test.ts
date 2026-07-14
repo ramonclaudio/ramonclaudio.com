@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import {
+  bumpLastNumber,
   cleanTitle,
   key,
   lastPullLink,
@@ -74,4 +75,18 @@ test("lastPullLink picks the row's own PR, not a cited one", () => {
 
 test("key formats repo#number", () => {
   expect(key({ repo: "expo/expo", number: 47472 })).toBe("expo/expo#47472");
+});
+
+test("bumpLastNumber rewrites the count, not digits inside the URL", () => {
+  expect(
+    bumpLastNumber(
+      "[shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+is%3Amerged) (5)",
+      6,
+    ),
+  ).toBe(
+    "[shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+is%3Amerged) (6)",
+  );
+  expect(bumpLastNumber("56 PRs merged upstream across", 57)).toBe(
+    "57 PRs merged upstream across",
+  );
 });

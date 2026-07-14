@@ -34,6 +34,7 @@ import {
   parseOpenRows,
 } from "../../patches/scripts/readme.ts";
 import {
+  bumpLastNumber,
   cleanTitle,
   key,
   lastPullLink,
@@ -543,7 +544,7 @@ for (const c of CHECKS) {
   }
   if (!matches.some(m => Number(m[1]) !== want)) continue;
   if (fixMode) {
-    text = text.replace(c.re, span => span.replace(/\d+/, String(want)));
+    text = text.replace(c.re, span => bumpLastNumber(span, want));
     writeFileSync(path, text);
     if (c.file === "resume/resume.typ") resumeTypChanged = true;
     applied.push(`fixed ${c.file}: ${c.key} -> ${want}`);
