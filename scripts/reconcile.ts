@@ -326,19 +326,17 @@ for (const p of liveOpen
 
 // patchesCount mirrors the ledger row count (Open + Merged tables), parsed
 // with the patches repo's own parsers so both tools agree on what a row is.
-let patches = dataPatches;
-const patchesReadme = existsSync(PATCHES_README)
-  ? readFileSync(PATCHES_README, "utf8")
-  : null;
-if (patchesReadme) {
-  const rows =
-    parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
-  if (rows !== dataPatches)
-    act(
-      `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${rows}${fixMode ? " — updated" : ""}`,
-    );
-  patches = rows;
-}
+// The sibling checkout is a hard requirement (the parsers import from it), so
+// a missing README is a broken setup, not a skippable check.
+if (!existsSync(PATCHES_README))
+  throw new Error(`patches README not found at ${PATCHES_README}`);
+const patchesReadme = readFileSync(PATCHES_README, "utf8");
+const patches =
+  parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
+if (patches !== dataPatches)
+  act(
+    `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${patches}${fixMode ? " — updated" : ""}`,
+  );
 
 // The data file is the source everything derives from. If it disagrees with
 // GitHub, downstream checks are meaningless — stop here and fix it first.
@@ -450,47 +448,45 @@ if (
 // README Merged rows still marked `unreleased` against "#### Merged". Rows
 // with a real Fixed-in version are Dropped history, left editorial. A row's
 // own PR link is the last /pull/ link in it.
-if (patchesReadme) {
-  const prKey = (pr: { owner: string; repo: string; number: number }) =>
-    `${pr.owner}/${pr.repo}#${pr.number}`;
-  const ledgerSet = (
-    rows: { pr: { owner: string; repo: string; number: number } | null }[],
-  ) => new Set(rows.flatMap(r => (r.pr ? [prKey(r.pr)] : [])));
-  const bulletSet = (text: string, header: string) =>
-    new Set(
-      pageSection(text, header, "#### ")
-        .split("\n")
-        .filter(l => l.startsWith("- "))
-        .map(lastPullLink)
-        .filter((k): k is string => k !== null),
-    );
-  const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
-  const parity: [string, Set<string>, Set<string>][] = [
-    [
-      "Open",
-      ledgerSet(parseOpenRows(patchesReadme)),
-      bulletSet(cmText, "#### Open"),
-    ],
-    [
-      "Merged",
-      ledgerSet(
-        parseMergedRows(patchesReadme).filter(r => r.marker === "unreleased"),
-      ),
-      bulletSet(cmText, "#### Merged"),
-    ],
-  ];
-  for (const [name, readmeSet, cmSet] of parity) {
-    for (const k of readmeSet)
-      if (!cmSet.has(k))
-        (fixMode ? manual : drift).push(
-          `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
-        );
-    for (const k of cmSet)
-      if (!readmeSet.has(k))
-        (fixMode ? manual : drift).push(
-          `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
-        );
-  }
+const prKey = (pr: { owner: string; repo: string; number: number }) =>
+  `${pr.owner}/${pr.repo}#${pr.number}`;
+const ledgerSet = (
+  rows: { pr: { owner: string; repo: string; number: number } | null }[],
+) => new Set(rows.flatMap(r => (r.pr ? [prKey(r.pr)] : [])));
+const bulletSet = (text: string, header: string) =>
+  new Set(
+    pageSection(text, header, "#### ")
+      .split("\n")
+      .filter(l => l.startsWith("- "))
+      .map(lastPullLink)
+      .filter((k): k is string => k !== null),
+  );
+const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
+const parity: [string, Set<string>, Set<string>][] = [
+  [
+    "Open",
+    ledgerSet(parseOpenRows(patchesReadme)),
+    bulletSet(cmText, "#### Open"),
+  ],
+  [
+    "Merged",
+    ledgerSet(
+      parseMergedRows(patchesReadme).filter(r => r.marker === "unreleased"),
+    ),
+    bulletSet(cmText, "#### Merged"),
+  ],
+];
+for (const [name, readmeSet, cmSet] of parity) {
+  for (const k of readmeSet)
+    if (!cmSet.has(k))
+      (fixMode ? manual : drift).push(
+        `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
+      );
+  for (const k of cmSet)
+    if (!readmeSet.has(k))
+      (fixMode ? manual : drift).push(
+        `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
+      );
 }
 
 // ---------- prose count literals that can't import the data ----------
