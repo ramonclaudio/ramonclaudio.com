@@ -1,11 +1,14 @@
 import { expect, test } from "bun:test";
 import {
+  bumpLastNumber,
   cleanTitle,
   key,
   lastPullLink,
   mergedListBlock,
   openListBlock,
+  orderGroups,
   pageSection,
+  publicResume,
   serializeData,
 } from "./content.ts";
 
@@ -74,4 +77,55 @@ test("lastPullLink picks the row's own PR, not a cited one", () => {
 
 test("key formats repo#number", () => {
   expect(key({ repo: "expo/expo", number: 47472 })).toBe("expo/expo#47472");
+});
+
+test("bumpLastNumber rewrites the count, not digits inside the URL", () => {
+  expect(
+    bumpLastNumber(
+      "[shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+is%3Amerged) (5)",
+      6,
+    ),
+  ).toBe(
+    "[shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+is%3Amerged) (6)",
+  );
+  expect(bumpLastNumber("56 PRs merged upstream across", 57)).toBe(
+    "57 PRs merged upstream across",
+  );
+});
+
+test("orderGroups ranks count desc, then first merge, then name, stable within groups", () => {
+  const out = orderGroups(
+    [
+      { repo: "b/b", number: 1, title: "b1" },
+      { repo: "a/a", number: 2, title: "a2" },
+      { repo: "a/a", number: 1, title: "a1" },
+      { repo: "d/d", number: 1, title: "d1" },
+      { repo: "c/c", number: 1, title: "c1" },
+      { repo: "e/e", number: 1, title: "e1" },
+    ],
+    new Map([
+      ["a/a", "2025-06-01T00:00:00Z"], // latest date, but count wins
+      ["b/b", "2024-01-01T00:00:00Z"],
+      ["c/c", "2024-03-01T00:00:00Z"],
+      ["d/d", "2024-03-01T00:00:00Z"], // ties c/c on date, name breaks it
+      // e/e has no date and sorts last
+    ]),
+  );
+  expect(out.map(c => `${c.repo}#${c.number}`)).toEqual([
+    "a/a#2",
+    "a/a#1",
+    "b/b#1",
+    "c/c#1",
+    "d/d#1",
+    "e/e#1",
+  ]);
+});
+
+test("publicResume swaps the frontmatter for the letterhead", () => {
+  const src =
+    "---\nlayout: ../layouts/ResumeLayout.astro\ntitle: Resume\n---\n\n**Product Engineer**\n\n[links](https://x)\n\n## Summary\n\nbody\n";
+  expect(publicResume(src)).toBe(
+    "# Ramon Claudio\n\n**Product Engineer**\n\n[links](https://x)\n\n---\n\n## Summary\n\nbody\n",
+  );
+  expect(() => publicResume("---\nx: y\n---\n\nno summary\n")).toThrow();
 });

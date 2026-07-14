@@ -8,9 +8,10 @@
 //                      live GitHub, report release status. Exits 1 on drift.
 //   bun reconcile:fix  reconcile: scaffold new merged and open PRs, move landed
 //                      open PRs to merged, drop closed ones, refresh
-//                      patchesCount, regenerate contributions.md and now.md,
-//                      sync prose count literals, recompile the resume PDF when
-//                      its source changes.
+//                      patchesCount, reorder repo groups (count desc, then
+//                      earliest merge), regenerate contributions.md, now.md,
+//                      and public/resume.md, sync prose count literals,
+//                      recompile the resume PDF when its source changes.
 //
 // Flags: --release-days=N|all   release-status window (default 30, 0 = off)
 //        --no-ai                skip Claude-drafted copy for new scaffolds
@@ -34,12 +35,15 @@ import {
   parseOpenRows,
 } from "../../patches/scripts/readme.ts";
 import {
+  bumpLastNumber,
   cleanTitle,
   key,
   lastPullLink,
   mergedListBlock,
   openListBlock,
+  orderGroups,
   pageSection,
+  publicResume,
   serializeData,
 } from "./content.ts";
 
@@ -110,6 +114,18 @@ for (const c of [...dataMerged, ...dataOpen]) repos.add(c.repo);
 const live: LivePR[] = (
   await Promise.all(
     [...repos].sort().map(async repo => {
+      // A renamed repo would double-scaffold: search returns the new name
+      // while gh follows the redirect on the old one, so the same PRs read
+      // as two repos. Refuse until the data uses the canonical name.
+      const canonical = (
+        await retryOnce(() => $`gh api repos/${repo} --jq .full_name`.quiet())
+      ).stdout
+        .toString()
+        .trim();
+      if (canonical !== repo)
+        throw new Error(
+          `${repo} is now ${canonical} on GitHub. Update contributions.ts and the prose, then rerun`,
+        );
       const out = await retryOnce(() =>
         $`gh pr list -R ${repo} --author ${AUTHOR} --state all --limit 200 --json number,state,title,labels,mergeCommit,mergedAt,closedAt`.quiet(),
       );
@@ -310,21 +326,28 @@ for (const p of liveOpen
   );
 }
 
+// The resume's open sentence enumerates specific open PRs ("2 source fixes to
+// facebook/hermes"), which no count check covers. Any change to the open set
+// means that prose needs a re-read.
+const openSet = (l: Contribution[]) => l.map(key).sort().join(" ");
+if (openSet(desiredOpen) !== openSet(dataOpen))
+  manual.push(
+    "the open-PR set changed: re-read the open sentence in src/pages/resume.md and resume/resume.typ",
+  );
+
 // patchesCount mirrors the ledger row count (Open + Merged tables), parsed
 // with the patches repo's own parsers so both tools agree on what a row is.
-let patches = dataPatches;
-const patchesReadme = existsSync(PATCHES_README)
-  ? readFileSync(PATCHES_README, "utf8")
-  : null;
-if (patchesReadme) {
-  const rows =
-    parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
-  if (rows !== dataPatches)
-    act(
-      `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${rows}${fixMode ? " — updated" : ""}`,
-    );
-  patches = rows;
-}
+// The sibling checkout is a hard requirement (the parsers import from it), so
+// a missing README is a broken setup, not a skippable check.
+if (!existsSync(PATCHES_README))
+  throw new Error(`patches README not found at ${PATCHES_README}`);
+const patchesReadme = readFileSync(PATCHES_README, "utf8");
+const patches =
+  parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
+if (patches !== dataPatches)
+  act(
+    `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${patches}${fixMode ? " — updated" : ""}`,
+  );
 
 // The data file is the source everything derives from. If it disagrees with
 // GitHub, downstream checks are meaningless — stop here and fix it first.
@@ -334,11 +357,24 @@ if (!fixMode && drift.length) {
   process.exit(1);
 }
 
+const firstMerge = new Map<string, string>();
+for (const p of liveMerged)
+  if (p.mergedAt && p.mergedAt < (firstMerge.get(p.repo) ?? "~"))
+    firstMerge.set(p.repo, p.mergedAt);
+const orderedMerged = orderGroups(desiredMerged, firstMerge);
+
 const distinct = (l: Contribution[]) => new Set(l.map(c => c.repo)).size;
+const repoCount = (repo: string) =>
+  orderedMerged.filter(c => c.repo === repo).length;
 const canon = {
-  merged: desiredMerged.length,
-  mergedRepos: distinct(desiredMerged),
-  expo: desiredMerged.filter(c => c.repo === "expo/expo").length,
+  merged: orderedMerged.length,
+  mergedRepos: distinct(orderedMerged),
+  expo: repoCount("expo/expo"),
+  shadcn: repoCount("shadcn-ui/ui"),
+  convexBetterAuth: repoCount("get-convex/better-auth"),
+  betterAuth: repoCount("better-auth/better-auth"),
+  fumadocs: repoCount("fuma-nama/fumadocs"),
+  compilerRs: repoCount("withastro/compiler-rs"),
   open: desiredOpen.length,
   openRepos: distinct(desiredOpen),
   patches,
@@ -349,13 +385,16 @@ const canon = {
 const snap = (l: Contribution[]) =>
   JSON.stringify(l.map(c => [c.repo, c.number, c.title, c.detail ?? null]));
 const dataChanged =
-  snap(desiredMerged) !== snap(dataMerged) ||
+  snap(orderedMerged) !== snap(dataMerged) ||
   snap(desiredOpen) !== snap(dataOpen) ||
   patches !== dataPatches;
 if (dataChanged && fixMode) {
-  writeFileSync(DATA_PATH, serializeData(desiredMerged, desiredOpen, patches));
+  writeFileSync(DATA_PATH, serializeData(orderedMerged, desiredOpen, patches));
   await $`bunx oxfmt --write ${DATA_PATH}`.nothrow().quiet();
   applied.push("regenerated src/data/contributions.ts");
+} else if (dataChanged) {
+  // states already match GitHub past the gate, so this is pure group order
+  drift.push("contributions.ts: group order is stale, run bun reconcile:fix");
 }
 
 // ---------- regenerate the markdown surfaces ----------
@@ -396,7 +435,7 @@ function replaceBlock(
 replaceBlock(
   "src/pages/contributions.md",
   "contributions",
-  mergedListBlock(desiredMerged),
+  mergedListBlock(orderedMerged),
   "merged-PR list",
 );
 
@@ -425,53 +464,81 @@ if (
 // README Merged rows still marked `unreleased` against "#### Merged". Rows
 // with a real Fixed-in version are Dropped history, left editorial. A row's
 // own PR link is the last /pull/ link in it.
-if (patchesReadme) {
-  const prKey = (pr: { owner: string; repo: string; number: number }) =>
-    `${pr.owner}/${pr.repo}#${pr.number}`;
-  const ledgerSet = (
-    rows: { pr: { owner: string; repo: string; number: number } | null }[],
-  ) => new Set(rows.flatMap(r => (r.pr ? [prKey(r.pr)] : [])));
-  const bulletSet = (text: string, header: string) =>
-    new Set(
-      pageSection(text, header, "#### ")
-        .split("\n")
-        .filter(l => l.startsWith("- "))
-        .map(lastPullLink)
-        .filter((k): k is string => k !== null),
-    );
-  const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
-  const parity: [string, Set<string>, Set<string>][] = [
-    [
-      "Open",
-      ledgerSet(parseOpenRows(patchesReadme)),
-      bulletSet(cmText, "#### Open"),
-    ],
-    [
-      "Merged",
-      ledgerSet(
-        parseMergedRows(patchesReadme).filter(r => r.marker === "unreleased"),
-      ),
-      bulletSet(cmText, "#### Merged"),
-    ],
-  ];
-  for (const [name, readmeSet, cmSet] of parity) {
-    for (const k of readmeSet)
-      if (!cmSet.has(k))
-        (fixMode ? manual : drift).push(
-          `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
-        );
-    for (const k of cmSet)
-      if (!readmeSet.has(k))
-        (fixMode ? manual : drift).push(
-          `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
-        );
-  }
+const prKey = (pr: { owner: string; repo: string; number: number }) =>
+  `${pr.owner}/${pr.repo}#${pr.number}`;
+const ledgerSet = (
+  rows: { pr: { owner: string; repo: string; number: number } | null }[],
+) => new Set(rows.flatMap(r => (r.pr ? [prKey(r.pr)] : [])));
+const bulletSet = (text: string, header: string) =>
+  new Set(
+    pageSection(text, header, "#### ")
+      .split("\n")
+      .filter(l => l.startsWith("- "))
+      .map(lastPullLink)
+      .filter((k): k is string => k !== null),
+  );
+const cmText = readFileSync(join(ROOT, "src/pages/contributions.md"), "utf8");
+const parity: [string, Set<string>, Set<string>][] = [
+  [
+    "Open",
+    ledgerSet(parseOpenRows(patchesReadme)),
+    bulletSet(cmText, "#### Open"),
+  ],
+  [
+    "Merged",
+    ledgerSet(
+      parseMergedRows(patchesReadme).filter(r => r.marker === "unreleased"),
+    ),
+    bulletSet(cmText, "#### Merged"),
+  ],
+];
+for (const [name, readmeSet, cmSet] of parity) {
+  for (const k of readmeSet)
+    if (!cmSet.has(k))
+      (fixMode ? manual : drift).push(
+        `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
+      );
+  for (const k of cmSet)
+    if (!readmeSet.has(k))
+      (fixMode ? manual : drift).push(
+        `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
+      );
 }
 
 // ---------- prose count literals that can't import the data ----------
 
 type Key = keyof typeof canon;
 type Check = { file: string; re: RegExp; key: Key };
+
+// Repos with a per-repo (N) count in the resume enumeration. The label is the
+// link text there. Every other repo sits in the prose tail with one merged PR.
+const COUNTED: { key: Key; repo: string; label: string }[] = [
+  { key: "expo", repo: "expo/expo", label: "expo/expo" },
+  { key: "shadcn", repo: "shadcn-ui/ui", label: "shadcn-ui/ui" },
+  {
+    key: "convexBetterAuth",
+    repo: "get-convex/better-auth",
+    label: "get-convex/better-auth",
+  },
+  { key: "betterAuth", repo: "better-auth/better-auth", label: "better-auth" },
+  { key: "fumadocs", repo: "fuma-nama/fumadocs", label: "fumadocs" },
+  {
+    key: "compilerRs",
+    repo: "withastro/compiler-rs",
+    label: "withastro/compiler-rs",
+  },
+];
+
+// A tail repo's second merged PR makes the resume undercount it: the totals
+// auto-fix but its tail entry still links one PR. Loud until a human promotes
+// it into the enumeration and this table.
+const countedRepos = new Set(COUNTED.map(r => r.repo));
+for (const repo of new Set(orderedMerged.map(c => c.repo)))
+  if (!countedRepos.has(repo) && repoCount(repo) > 1)
+    (fixMode ? manual : drift).push(
+      `resume: ${repo} has ${repoCount(repo)} merged PRs, promote it out of the prose tail and add it to COUNTED`,
+    );
+
 const CHECKS: Check[] = [
   {
     file: "src/pages/contributions.md",
@@ -503,32 +570,54 @@ const CHECKS: Check[] = [
     re: /(\d+) patches across Bun/g,
     key: "patches",
   },
-  ...["src/pages/resume.md", "public/resume.md", "resume/resume.typ"].flatMap(
-    (file): Check[] => [
-      { file, re: /(\d+) PRs merged upstream to Expo/g, key: "merged" },
-      { file, re: /(\d+) PRs merged upstream across/g, key: "merged" },
-      { file, re: /merged upstream across (\d+) repos/g, key: "mergedRepos" },
-      { file, re: /(\d+) patches for Bun/g, key: "patches" },
-      { file, re: /(\d+) more open across/g, key: "open" },
-      { file, re: /more open across (\d+) repos/g, key: "openRepos" },
-    ],
-  ),
+  ...["src/pages/resume.md", "resume/resume.typ"].flatMap((file): Check[] => [
+    { file, re: /(\d+) PRs merged upstream to Expo/g, key: "merged" },
+    { file, re: /(\d+) PRs merged upstream across/g, key: "merged" },
+    { file, re: /merged upstream across (\d+) repos/g, key: "mergedRepos" },
+    { file, re: /(\d+) patches for Bun/g, key: "patches" },
+    { file, re: /(\d+) more open across/g, key: "open" },
+    { file, re: /more open across (\d+) repos/g, key: "openRepos" },
+  ]),
+  // per-repo counts in the resume's repo enumeration; md links carry a (url),
+  // typ links put the label after #link("url")
+  ...COUNTED.flatMap(({ key, label }): Check[] => [
+    {
+      file: "src/pages/resume.md",
+      re: new RegExp(`\\[${escapeRe(label)}\\]\\([^)]+\\) \\((\\d+)\\)`, "g"),
+      key,
+    },
+    {
+      file: "resume/resume.typ",
+      re: new RegExp(`\\[${escapeRe(label)}\\] \\((\\d+)\\)`, "g"),
+      key,
+    },
+  ]),
   {
     file: "src/pages/resume.md",
     re: /(\d+) merged PRs upstream/g,
     key: "merged",
   },
+  // two Selected-PRs bullets restate their repo's count in prose
   {
     file: "src/pages/resume.md",
-    re: /\((\d+)\), \[shadcn-ui\/ui\]/g,
-    key: "expo",
+    re: /\[get-convex\/better-auth\]\([^)]+\): (\d+) merged PRs/g,
+    key: "convexBetterAuth",
   },
   {
-    file: "public/resume.md",
-    re: /\((\d+)\), \[shadcn-ui\/ui\]/g,
-    key: "expo",
+    file: "src/pages/resume.md",
+    re: /\[shadcn-ui\/ui\]\([^)]+\): (\d+) merged PRs/g,
+    key: "shadcn",
   },
-  { file: "resume/resume.typ", re: /\[expo\/expo\] \((\d+)\)/g, key: "expo" },
+  {
+    file: "resume/resume.typ",
+    re: /\[get-convex\/better-auth\]\]: (\d+) merged PRs/g,
+    key: "convexBetterAuth",
+  },
+  {
+    file: "resume/resume.typ",
+    re: /\[shadcn-ui\/ui\]\]: (\d+) merged PRs/g,
+    key: "shadcn",
+  },
 ];
 
 let resumeTypChanged = false;
@@ -543,10 +632,20 @@ for (const c of CHECKS) {
   }
   if (!matches.some(m => Number(m[1]) !== want)) continue;
   if (fixMode) {
-    text = text.replace(c.re, span => span.replace(/\d+/, String(want)));
+    text = text.replace(c.re, span => bumpLastNumber(span, want));
     writeFileSync(path, text);
     if (c.file === "resume/resume.typ") resumeTypChanged = true;
     applied.push(`fixed ${c.file}: ${c.key} -> ${want}`);
+    // the resume's repo-count sentences carry an editorial name list, so a
+    // changed repo count means a repo joined or left the enumeration there.
+    // contributions.md states the bare count with no list, nothing to edit.
+    if (
+      (c.key === "mergedRepos" || c.key === "openRepos") &&
+      c.file !== "src/pages/contributions.md"
+    )
+      manual.push(
+        `${c.file}: ${c.key} changed to ${want} — work the repo in or out of the name list in the same sentence`,
+      );
   } else {
     for (const m of matches)
       if (Number(m[1]) !== want)
@@ -559,6 +658,18 @@ for (const c of CHECKS) {
 if (fixMode && resumeTypChanged) {
   await $`typst compile ${join(ROOT, "resume/resume.typ")} ${join(ROOT, "public/resume.pdf")}`;
   applied.push("recompiled public/resume.pdf");
+}
+
+// public/resume.md derives from the page source, after any count fixes above.
+const pubPath = join(ROOT, "public/resume.md");
+const pubWant = publicResume(
+  readFileSync(join(ROOT, "src/pages/resume.md"), "utf8"),
+);
+if (readFileSync(pubPath, "utf8") !== pubWant) {
+  if (fixMode) {
+    writeFileSync(pubPath, pubWant);
+    applied.push("regenerated public/resume.md");
+  } else drift.push("public/resume.md: stale, run bun reconcile:fix");
 }
 
 // ---------- release status (informational, never fails the run) ----------
