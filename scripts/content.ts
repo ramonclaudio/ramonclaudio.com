@@ -119,6 +119,15 @@ export function orderGroups(
 export const bumpLastNumber = (span: string, n: number) =>
   span.replace(/\d+(?!.*\d)/, String(n));
 
+// public/resume.md is the resume page body under a plain-markdown letterhead,
+// served as a raw file. Derived so the two can never drift.
+export function publicResume(src: string): string {
+  const body = src.replace(/^---\n[\s\S]*?\n---\n\n/, "");
+  const at = body.indexOf("## Summary");
+  if (at === -1) throw new Error("resume.md has no ## Summary heading");
+  return `# Ramon Claudio\n\n${body.slice(0, at)}---\n\n${body.slice(at)}`;
+}
+
 const detailLine = (c: Contribution) =>
   `[#${c.number}](${prUrl(c)}) ${c.detail ?? c.title}`;
 

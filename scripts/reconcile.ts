@@ -8,9 +8,10 @@
 //                      live GitHub, report release status. Exits 1 on drift.
 //   bun reconcile:fix  reconcile: scaffold new merged and open PRs, move landed
 //                      open PRs to merged, drop closed ones, refresh
-//                      patchesCount, regenerate contributions.md and now.md,
-//                      sync prose count literals, recompile the resume PDF when
-//                      its source changes.
+//                      patchesCount, reorder repo groups (count desc, then
+//                      earliest merge), regenerate contributions.md, now.md,
+//                      and public/resume.md, sync prose count literals,
+//                      recompile the resume PDF when its source changes.
 //
 // Flags: --release-days=N|all   release-status window (default 30, 0 = off)
 //        --no-ai                skip Claude-drafted copy for new scaffolds
@@ -42,6 +43,7 @@ import {
   openListBlock,
   orderGroups,
   pageSection,
+  publicResume,
   serializeData,
 } from "./content.ts";
 
@@ -324,6 +326,15 @@ for (const p of liveOpen
   );
 }
 
+// The resume's open sentence enumerates specific open PRs ("2 source fixes to
+// facebook/hermes"), which no count check covers. Any change to the open set
+// means that prose needs a re-read.
+const openSet = (l: Contribution[]) => l.map(key).sort().join(" ");
+if (openSet(desiredOpen) !== openSet(dataOpen))
+  manual.push(
+    "the open-PR set changed: re-read the open sentence in src/pages/resume.md and resume/resume.typ",
+  );
+
 // patchesCount mirrors the ledger row count (Open + Merged tables), parsed
 // with the patches repo's own parsers so both tools agree on what a row is.
 // The sibling checkout is a hard requirement (the parsers import from it), so
@@ -359,6 +370,11 @@ const canon = {
   merged: orderedMerged.length,
   mergedRepos: distinct(orderedMerged),
   expo: repoCount("expo/expo"),
+  shadcn: repoCount("shadcn-ui/ui"),
+  convexBetterAuth: repoCount("get-convex/better-auth"),
+  betterAuth: repoCount("better-auth/better-auth"),
+  fumadocs: repoCount("fuma-nama/fumadocs"),
+  compilerRs: repoCount("withastro/compiler-rs"),
   open: desiredOpen.length,
   openRepos: distinct(desiredOpen),
   patches,
@@ -493,6 +509,36 @@ for (const [name, readmeSet, cmSet] of parity) {
 
 type Key = keyof typeof canon;
 type Check = { file: string; re: RegExp; key: Key };
+
+// Repos with a per-repo (N) count in the resume enumeration. The label is the
+// link text there. Every other repo sits in the prose tail with one merged PR.
+const COUNTED: { key: Key; repo: string; label: string }[] = [
+  { key: "expo", repo: "expo/expo", label: "expo/expo" },
+  { key: "shadcn", repo: "shadcn-ui/ui", label: "shadcn-ui/ui" },
+  {
+    key: "convexBetterAuth",
+    repo: "get-convex/better-auth",
+    label: "get-convex/better-auth",
+  },
+  { key: "betterAuth", repo: "better-auth/better-auth", label: "better-auth" },
+  { key: "fumadocs", repo: "fuma-nama/fumadocs", label: "fumadocs" },
+  {
+    key: "compilerRs",
+    repo: "withastro/compiler-rs",
+    label: "withastro/compiler-rs",
+  },
+];
+
+// A tail repo's second merged PR makes the resume undercount it: the totals
+// auto-fix but its tail entry still links one PR. Loud until a human promotes
+// it into the enumeration and this table.
+const countedRepos = new Set(COUNTED.map(r => r.repo));
+for (const repo of new Set(orderedMerged.map(c => c.repo)))
+  if (!countedRepos.has(repo) && repoCount(repo) > 1)
+    (fixMode ? manual : drift).push(
+      `resume: ${repo} has ${repoCount(repo)} merged PRs, promote it out of the prose tail and add it to COUNTED`,
+    );
+
 const CHECKS: Check[] = [
   {
     file: "src/pages/contributions.md",
@@ -524,32 +570,54 @@ const CHECKS: Check[] = [
     re: /(\d+) patches across Bun/g,
     key: "patches",
   },
-  ...["src/pages/resume.md", "public/resume.md", "resume/resume.typ"].flatMap(
-    (file): Check[] => [
-      { file, re: /(\d+) PRs merged upstream to Expo/g, key: "merged" },
-      { file, re: /(\d+) PRs merged upstream across/g, key: "merged" },
-      { file, re: /merged upstream across (\d+) repos/g, key: "mergedRepos" },
-      { file, re: /(\d+) patches for Bun/g, key: "patches" },
-      { file, re: /(\d+) more open across/g, key: "open" },
-      { file, re: /more open across (\d+) repos/g, key: "openRepos" },
-    ],
-  ),
+  ...["src/pages/resume.md", "resume/resume.typ"].flatMap((file): Check[] => [
+    { file, re: /(\d+) PRs merged upstream to Expo/g, key: "merged" },
+    { file, re: /(\d+) PRs merged upstream across/g, key: "merged" },
+    { file, re: /merged upstream across (\d+) repos/g, key: "mergedRepos" },
+    { file, re: /(\d+) patches for Bun/g, key: "patches" },
+    { file, re: /(\d+) more open across/g, key: "open" },
+    { file, re: /more open across (\d+) repos/g, key: "openRepos" },
+  ]),
+  // per-repo counts in the resume's repo enumeration; md links carry a (url),
+  // typ links put the label after #link("url")
+  ...COUNTED.flatMap(({ key, label }): Check[] => [
+    {
+      file: "src/pages/resume.md",
+      re: new RegExp(`\\[${escapeRe(label)}\\]\\([^)]+\\) \\((\\d+)\\)`, "g"),
+      key,
+    },
+    {
+      file: "resume/resume.typ",
+      re: new RegExp(`\\[${escapeRe(label)}\\] \\((\\d+)\\)`, "g"),
+      key,
+    },
+  ]),
   {
     file: "src/pages/resume.md",
     re: /(\d+) merged PRs upstream/g,
     key: "merged",
   },
+  // two Selected-PRs bullets restate their repo's count in prose
   {
     file: "src/pages/resume.md",
-    re: /\((\d+)\), \[shadcn-ui\/ui\]/g,
-    key: "expo",
+    re: /\[get-convex\/better-auth\]\([^)]+\): (\d+) merged PRs/g,
+    key: "convexBetterAuth",
   },
   {
-    file: "public/resume.md",
-    re: /\((\d+)\), \[shadcn-ui\/ui\]/g,
-    key: "expo",
+    file: "src/pages/resume.md",
+    re: /\[shadcn-ui\/ui\]\([^)]+\): (\d+) merged PRs/g,
+    key: "shadcn",
   },
-  { file: "resume/resume.typ", re: /\[expo\/expo\] \((\d+)\)/g, key: "expo" },
+  {
+    file: "resume/resume.typ",
+    re: /\[get-convex\/better-auth\]\]: (\d+) merged PRs/g,
+    key: "convexBetterAuth",
+  },
+  {
+    file: "resume/resume.typ",
+    re: /\[shadcn-ui\/ui\]\]: (\d+) merged PRs/g,
+    key: "shadcn",
+  },
 ];
 
 let resumeTypChanged = false;
@@ -568,6 +636,16 @@ for (const c of CHECKS) {
     writeFileSync(path, text);
     if (c.file === "resume/resume.typ") resumeTypChanged = true;
     applied.push(`fixed ${c.file}: ${c.key} -> ${want}`);
+    // the resume's repo-count sentences carry an editorial name list, so a
+    // changed repo count means a repo joined or left the enumeration there.
+    // contributions.md states the bare count with no list, nothing to edit.
+    if (
+      (c.key === "mergedRepos" || c.key === "openRepos") &&
+      c.file !== "src/pages/contributions.md"
+    )
+      manual.push(
+        `${c.file}: ${c.key} changed to ${want} — work the repo in or out of the name list in the same sentence`,
+      );
   } else {
     for (const m of matches)
       if (Number(m[1]) !== want)
@@ -580,6 +658,18 @@ for (const c of CHECKS) {
 if (fixMode && resumeTypChanged) {
   await $`typst compile ${join(ROOT, "resume/resume.typ")} ${join(ROOT, "public/resume.pdf")}`;
   applied.push("recompiled public/resume.pdf");
+}
+
+// public/resume.md derives from the page source, after any count fixes above.
+const pubPath = join(ROOT, "public/resume.md");
+const pubWant = publicResume(
+  readFileSync(join(ROOT, "src/pages/resume.md"), "utf8"),
+);
+if (readFileSync(pubPath, "utf8") !== pubWant) {
+  if (fixMode) {
+    writeFileSync(pubPath, pubWant);
+    applied.push("regenerated public/resume.md");
+  } else drift.push("public/resume.md: stale, run bun reconcile:fix");
 }
 
 // ---------- release status (informational, never fails the run) ----------
