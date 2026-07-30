@@ -84,7 +84,7 @@ export class ThinkingAnimation {
 
     if (this.options.thinkingContainer) {
       this.options.thinkingContainer.textContent =
-        "ERROR: Ray cant stop thinking, please try again later...";
+        "ERROR: Ray can't stop thinking, please try again later...";
 
       this.escapeTimeout = setTimeout(() => {
         this.startAnimation();

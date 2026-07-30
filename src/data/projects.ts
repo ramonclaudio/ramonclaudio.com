@@ -194,7 +194,7 @@ export const projects: Project[] = [
     status: "archived",
     hackathon: {
       name: "TanStack Start Hackathon",
-      date: "Oct–Nov 2025",
+      date: "Oct to Nov 2025",
     },
     backstory:
       'Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn\'t place. This repo is the original snapshot. Active version lives at <a href="https://github.com/ramonclaudio/tanvex">tanvex</a>.',

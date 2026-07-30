@@ -36,7 +36,7 @@ const { page, tagName } = Astro.props;
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}
     titleTransition={tag}
-    pageDesc={`All the articles with the tag "${tagName}".`}
+    pageDesc={`All the posts tagged "${tagName}".`}
   >
     <ul>
       {page.data.map((data) => <Card {...data} />)}

@@ -38,7 +38,7 @@ export function serializeData(
 // derive from this file. \`bun reconcile\` audits it against live GitHub;
 // \`bun reconcile:fix\` fixes it: new PRs get scaffolded entries, open PRs
 // move to merged when they land, closed ones drop out, and patchesCount
-// refreshes from the patches README. Titles and details are editorial — polish
+// refreshes from the patches README. Titles and details are editorial, polish
 // the scaffolds, the structure is machine-managed. Group order is derived:
 // merged-PR count, then earliest first merge. \`bun reconcile:fix\` reorders,
 // hand-sorting is overwritten.
