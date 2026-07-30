@@ -3,7 +3,7 @@
 // derive from this file. `bun reconcile` audits it against live GitHub;
 // `bun reconcile:fix` fixes it: new PRs get scaffolded entries, open PRs
 // move to merged when they land, closed ones drop out, and patchesCount
-// refreshes from the patches README. Titles and details are editorial — polish
+// refreshes from the patches README. Titles and details are editorial, polish
 // the scaffolds, the structure is machine-managed. Group order is derived:
 // merged-PR count, then earliest first merge. `bun reconcile:fix` reorders,
 // hand-sorting is overwritten.
@@ -16,16 +16,24 @@ export type Contribution = {
 };
 
 // Row count of the ramonclaudio/patches README tables (Open + Merged).
-export const patchesCount = 68;
+export const patchesCount = 70;
 
 export const merged: Contribution[] = [
   {
     repo: "expo/expo",
+    number: 47691,
+    title:
+      "make docs data generation fail loudly instead of shipping empty files",
+    detail:
+      "docs API data generation swallowed its own failures, so a broken mapping entry produced empty output and a green build. The generator now exits non-zero on error, and the `expotools` test suite runs in CI, which is what catches the mapping regressions before they reach the docs site",
+  },
+  {
+    repo: "expo/expo",
     number: 47748,
     title:
-      'surface the real `xcodebuild` error when `expo run:ios` fails but the log formatter parsed none, instead of "0 error(s)" and a truncated dump',
+      "print the real `xcodebuild` error when `expo run:ios` fails, instead of a truncated log",
     detail:
-      "on the `expo run:ios` failure path where `@expo/xcpretty` parsed zero errors, `_assertXcodeBuildResults` dumped the entire raw log, which CI truncates before the real error line, so genuine build failures read as `0 error(s)` with exit 65 and no visible cause (how #47688's `ios-build` failures presented). Pinned two live formatter gaps on the way: a routine `.xcodeproj`-prefixed `ld: warning: ignoring duplicate libraries: '-lc++'` line latches the compile-warning matcher so the parser emits the next complete compile error as a warning, and the anchored matchers never see diagnostics that xcodebuild forwards indented, while stderr never reaches the formatter at all. The fix scans the complete stdout and stderr for `error:` lines on that zero-parsed path, dedupes, prints them directly under the `CommandError` header, and keeps the full log below for context. Verified end to end on a fresh `create-expo-app` project: unpatched, the real error sat at line 15402 of a 15425-line dump, patched it prints at line 69. New tests drive the real `ExpoRunFormatter` against both gaps, written red first. Filed and merged the same day",
+      "on the `expo run:ios` failure path where `@expo/xcpretty` parsed zero errors, `_assertXcodeBuildResults` dumped the entire raw log, which CI truncates before the real error line, so genuine build failures read as `0 error(s)` with exit 65 and no visible cause (how #47688's `ios-build` failures presented). Pinned two live formatter gaps on the way: a routine `.xcodeproj`-prefixed `ld: warning: ignoring duplicate libraries: '-lc++'` line latches the compile-warning matcher so the parser emits the next complete compile error as a warning, and the anchored matchers never see diagnostics that xcodebuild forwards indented, while stderr never reaches the formatter at all. The fix scans the complete stdout and stderr for `error:` lines on that zero-parsed path, dedupes, prints them directly under the `CommandError` header, and keeps the full log below for context. Verified end to end on a fresh `create-expo-app` project: unpatched, the real error sat at line 15402 of a 15425-line dump, patched it prints at line 69. New tests drive the real `ExpoRunFormatter` against both gaps",
   },
   {
     repo: "expo/expo",
@@ -39,14 +47,15 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 47688,
     title:
-      "guard the dev-only `RCTBundleURLProviderAllowPackagerServerAccess` calls so `expo-dev-launcher` compiles in Release again",
+      "guard a dev-only React Native call so `expo-dev-launcher` compiles in Release again",
     detail:
-      "fixed `expo-dev-launcher` Release builds broken by #47638's swizzling removal. The new direct calls to `RCTBundleURLProviderAllowPackagerServerAccess` reference a function React Native declares only under `#if RCT_DEV_MENU | RCT_PACKAGER_LOADING_FUNCTIONALITY`, both 0 in Release, so clang failed with `call to undeclared function` and the `ios-build` job went red on every PR that triggered it. The removed swizzle had been accidentally Release-safe: it resolved `guessPackagerHost` at runtime via `class_getInstanceMethod`, which returns NULL in Release, so it silently no-opped. Wrapped both call sites in the header's exact guard, since plain `RCT_DEV` would still break a `RCT_DEV=1` `RCT_DEV_MENU=0` build. Verified with a standalone clang repro in both configs, the CI-parity bare-expo Release build, native unit tests, and a Debug sim boot exercising dev server discovery. Filed and merged the same afternoon",
+      "fixed `expo-dev-launcher` Release builds broken by #47638's swizzling removal. The new direct calls to `RCTBundleURLProviderAllowPackagerServerAccess` reference a function React Native declares only under `#if RCT_DEV_MENU | RCT_PACKAGER_LOADING_FUNCTIONALITY`, both 0 in Release, so clang failed with `call to undeclared function` and the `ios-build` job went red on every PR that triggered it. The removed swizzle had been accidentally Release-safe: it resolved `guessPackagerHost` at runtime via `class_getInstanceMethod`, which returns NULL in Release, so it silently no-opped. Wrapped both call sites in the header's exact guard, since plain `RCT_DEV` would still break a `RCT_DEV=1` `RCT_DEV_MENU=0` build. Verified with a standalone clang repro in both configs, the CI-parity bare-expo Release build, native unit tests, and a Debug sim boot that checks dev server discovery",
   },
   {
     repo: "expo/expo",
     number: 47670,
-    title: "fix dead docs data mapping entries, report all failures",
+    title:
+      "fix two dead docs mapping entries and report every failure, not just the first",
     detail:
       "fixed two dead entries in the docs data generator's package mapping: `expo-ui/jetpack-compose/filterchip` pointed at a file removed when FilterChip merged into `Chip` (#43900), and `expo-speech` pointed at `Speech/Speech.ts`, flattened to `Speech.ts` in the TypeScript 6 bump (#44791). The old runner logged only the first `Promise.all` rejection, so the filterchip error hid the speech one and `expo-speech.json` sat unregenerable from April to July, its content frozen at a February refresh. Switched the runner to `Promise.allSettled` so every failure reports by package name (exit semantics unchanged), added a unit test asserting all 215 mapping entries resolve to existing source files, and shipped the regenerated `expo-speech.json`, which only generates with the fixed mapping",
   },
@@ -54,7 +63,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 47663,
     title:
-      "regenerate 32 drifted unversioned API data files so local docs stop rendering stale content",
+      "regenerate 32 stale docs API data files so local docs stop showing old content",
     detail:
       "regenerated the unversioned docs API data for every package where the committed JSON no longer matched a clean `et generate-docs-api-data` run, 32 files. The last full refresh was the SDK 56 cut-off, then the TypeScript 6 + TypeDoc bump landed a day later without a regen and nothing had been swept since. `expo-cellular.json` still documented `allowsVoipAsync` (removed in #47148), `expo-location.json` was missing the Motion Activity API, and ~25 more files differed only by TypeScript 6 union ordering. Production regenerates this data at build time, but local docs dev rendered stale content and any PR regenerating a single package inherited the whole drift in its diff. Also drops the cellular page intro's VoIP mention, whose API is gone. `expo-speech.json` was left out on purpose, its mapping pointed at a moved source file, fixed in #47670",
   },
@@ -62,7 +71,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 47472,
     title:
-      "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so native tab items can be matched in end-to-end tests and relabeled for screen readers without the `unstable_nativeProps` escape hatch",
+      "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so tests can find tabs and screen readers can read them",
     detail:
       "add `testID` and `accessibilityLabel` props to `NativeTabs.Trigger`. `testID` maps to the tab bar item's `accessibilityIdentifier` on iOS, so XCUITest and Maestro can target tabs, and to the item's view tag on Android. `accessibilityLabel` sets the tab's screen-reader label (`contentDescription` on Android, iOS 26+ on iOS). The native `NativeTabsView` already accepted `tabBarItemTestID` and `tabBarItemAccessibilityLabel`, so this wires the two JS props through `convertTabPropsToOptions`",
   },
@@ -70,7 +79,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 47426,
     title:
-      "strokeBorder modifier for dashed and shape-following borders with a full StrokeStyle",
+      "`strokeBorder` modifier so a border can be dashed and follow the shape",
     detail:
       "iOS `strokeBorder` modifier for `@expo/ui` wrapping SwiftUI's `InsettableShape.strokeBorder(_:style:antialiased:)`. Strokes an inset border that follows the view's shape with a full `StrokeStyle` (line width, cap, join, miter limit, dash array, dash phase), so a border can be dashed or dotted and hug rounded corners instead of only a solid rectangle. Takes an optional `color` (omit for the foreground style), `style`, `antialiased`, a `shape` (`rectangle`, `circle`, `capsule`, `ellipse`, `roundedRectangle`, `containerRelativeShape`), and `cornerRadius`. Registers `StrokeBorderModifier` and exports `strokeBorder(params)`",
   },
@@ -78,7 +87,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 47387,
     title:
-      "accessibilityAddTraits and accessibilityRemoveTraits modifiers tagging a view's VoiceOver role",
+      "`accessibilityAddTraits` and `accessibilityRemoveTraits` so VoiceOver announces the right role",
     detail:
       "iOS `accessibilityAddTraits` and `accessibilityRemoveTraits` modifiers for `@expo/ui` wrapping SwiftUI's `accessibilityAddTraits(_:)` and `accessibilityRemoveTraits(_:)`. Tag a view with semantic traits so VoiceOver announces its role (`isButton`, `isHeader`, `isImage`, `isSelected`, `isModal`, `isSummaryElement`, and more) or strip inherited ones. Both take an `AccessibilityTrait[]`, with `isToggle` and `isTabBar` behind iOS 17. Registers `AccessibilityAddTraitsModifier` and `AccessibilityRemoveTraitsModifier` and exports the two factories",
   },
@@ -94,15 +103,14 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 46714,
     title:
-      "font, dynamicTypeSize, and resizable were dropped on Image, SF Symbols now scale with Dynamic Type",
+      "`Image` was dropping `font`, `dynamicTypeSize`, and `resizable`, so SF Symbols never scaled",
     detail:
       "`font`, `dynamicTypeSize`, and `resizable` modifiers were silently dropped on the `Image` component. `ImageView` pinned an internal `.font(.system(size: props.size ?? 24))` that beat any `font` modifier, since SwiftUI resolves `.font` nearest-to-leaf, and `resizable` got lost because the wrapper runs the view-modifier pipeline, not the image pipeline. Fix routes `size` and `color` through `font` and `foregroundStyle` modifiers from JS (a supplied `font` always wins), drops the native pins, and runs `applyImageModifiers` on the concrete `Image` so `resizable` applies to SF Symbols too. Symbols now scale with Dynamic Type via `font({ textStyle })`. Shipped in `56.0.17`",
   },
   {
     repo: "expo/expo",
     number: 45872,
-    title:
-      "Host modifiers were a silent no-op on iOS, one Swift field restored the whole set",
+    title: "`Host` modifiers did nothing on iOS, one missing Swift field",
     detail:
       "`<Host modifiers={...}>` was a silent no-op on iOS. `HostProps` extended `CommonViewModifierProps` and `Host/index.tsx` already forwarded `modifiers` to the native view, but the Swift `HostViewProps` never declared the field, so every typechecked modifier on `Host` did nothing. Adding the field plus one `.applyModifiers(...)` chain in `HostView.body` restored the entire registered modifier surface to `Host` in one shot. Shipped in `56.0.10`",
   },
@@ -110,7 +118,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 44652,
     title:
-      "scrollPosition and id modifiers binding a ScrollView's leading target to JS",
+      "`scrollPosition` and `id` so JS can read and set where a `ScrollView` sits",
     detail:
       "`scrollPosition` and `id` modifiers (iOS 17+) binding a `ScrollView`'s leading target to JS via `useNativeState` and the worklet `.value` write path. Reading `state.value` returns the id of the leading target; writing scrolls to the matching view. The optional `onChange` callback fires on the JS thread when the leading target changes. `id(string)` marks views as scroll targets and works on `ScrollView`, `LazyVStack`, and `LazyHStack`. Built on the worklet infrastructure from #44214 and #44215. Deferred from #43955 per [@intergalacticspacehighway](https://github.com/intergalacticspacehighway)",
   },
@@ -118,22 +126,22 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 45403,
     title:
-      "resolve workspace:* peer deps for scoped packages whose dir name differs",
+      "stop `workspace:*` shipping in the published canary tarballs for scoped packages",
     detail:
       '`getPackageByName` did a `packages/<name>/package.json` lookup, which misses for scoped packages whose dir name differs from the package name (`@expo/ui` lives at `packages/expo-ui/`, `@expo/app-integrity` at `packages/expo-app-integrity/`). On a miss, `Workspace.getInfoAsync` recorded empty `workspacePeerDependencies` for those packages, so `updateWorkspaceProjects` never rewrote `workspace:*` to the canary version, and the published canary tarballs shipped `peerDependencies.expo: "workspace:*"`. `bun add @expo/ui@canary` errored with `Workspace dependency "expo" not found` and `npm install @expo/ui@canary` errored with `EUNSUPPORTEDPROTOCOL`. Fix keeps the existing path-based fast path and falls back to scanning `cachedPackages` by `name` field when the path lookup misses. Same root cause as #44412, different call site',
   },
   {
     repo: "expo/expo",
     number: 46007,
-    title: "font textStyle for iOS Dynamic Type, all 11 Font.TextStyle cases",
+    title:
+      "`font({ textStyle })` so text scales with Dynamic Type, all 11 styles",
     detail:
       "iOS `font({ textStyle })` for Dynamic Type, wiring `textStyle` through to SwiftUI's `Font.system(_:design:)` and `Font.custom(_:size:relativeTo:)` so `@expo/ui` text scales with the user's preferred content size, the SwiftUI-native path for the Larger Text Accessibility Nutrition Label. All 11 `Font.TextStyle` cases. Shipped in `56.0.10`",
   },
   {
     repo: "expo/expo",
     number: 46540,
-    title:
-      "dynamicTypeSize modifier to clamp how far Dynamic Type scales, a single size or { min, max }",
+    title: "`dynamicTypeSize` modifier to clamp how far text grows",
     detail:
       "iOS `dynamicTypeSize` modifier to set or clamp Dynamic Type within a view. A single size pins it, `{ min, max }` bounds the range with either end optional. Caps how far text grows at the largest accessibility sizes for layout safety while still honoring Dynamic Type, and cascades from `<Host>` to every descendant. Bounds the `textStyle` scaling from #46007. Shipped in `56.0.16`",
   },
@@ -154,16 +162,14 @@ export const merged: Contribution[] = [
   {
     repo: "expo/expo",
     number: 46509,
-    title:
-      "font on concatenated Text runs, restoring Dynamic Type scaling and weight",
+    title: "`font` was losing scaling and weight on nested `<Text>` runs",
     detail:
       "the `font` modifier dropped Dynamic Type scaling (`relativeTo`) and `weight` on concatenated `<Text>` runs, so `font({ textStyle, weight })` scaled standalone but lost both once nested in another `<Text>`. Made `FontModifier.resolveFont()` non-private and routed the concatenation path through it so both resolve the identical `Font`. Completes #46007. Shipped in `56.0.16`",
   },
   {
     repo: "expo/expo",
     number: 44548,
-    title:
-      "textContentType modifier wiring text fields into iOS keychain autofill",
+    title: "`textContentType` so text fields work with iOS keychain autofill",
     detail:
       "`textContentType` modifier wrapping SwiftUI's `textContentType(_:)` with all 45 `UITextContentType` values. Wires `@expo/ui` `TextField` and `SecureField` into iOS keychain autofill for passwords, emails, addresses, credit cards, and OTP codes. Before this, `@expo/ui` text fields could not participate in iOS autofill at all. Includes `#available` guards for the iOS 17+ values (`creditCardExpiration`, `birthdate`, etc.) and iOS 17.4+ values (`cellularEID`, `cellularIMEI`)",
   },
@@ -191,8 +197,7 @@ export const merged: Contribution[] = [
   {
     repo: "expo/expo",
     number: 46774,
-    title:
-      "imageScale modifier so SF Symbols scale small, medium, or large relative to text",
+    title: "`imageScale` so SF Symbols size relative to the text around them",
     detail:
       "iOS `imageScale` modifier wrapping SwiftUI's `imageScale(_:)`. Scales SF Symbols relative to the surrounding text with the standard `small`, `medium`, and `large` sizes, and cascades from a container to descendant images like `controlSize`. Rounds out the symbol-sizing axis with `font({ textStyle })` from #46007 and `dynamicTypeSize` from #46540, and pairs with #46714, which made those modifiers apply to `Image` at all. Registers `ImageScaleModifier` and exports `imageScale(scale)`. Shipped in `56.0.17`",
   },
@@ -200,7 +205,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 46661,
     title:
-      "accessibilityInputLabels modifier setting the phrases Voice Control listens for",
+      "`accessibilityInputLabels` to set the phrases Voice Control listens for",
     detail:
       'iOS `accessibilityInputLabels` modifier wrapping SwiftUI\'s `accessibilityInputLabels(_:)`. Sets the alternative spoken phrases Voice Control listens for, so a control with a terse visible label like "End" answers to "Hang up" or "End call". The JS factory takes `string[]` and maps to `[Text]` natively. Registers `AccessibilityInputLabelsModifier` and exports `accessibilityInputLabels(labels)`. Shipped in `56.0.17`',
   },
@@ -208,7 +213,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 43158,
     title:
-      "ShapeType enum fix unblocking capsule and ellipse in clipShape and mask",
+      "`clipShape` and `mask` drew a rectangle for every shape but circle and rounded",
     detail:
       "`ClipShapeModifier` and `MaskModifier` were silently rendering `Rectangle` for any shape other than `circle` or `roundedRectangle` because they used a raw `String` field instead of the `ShapeType` enum from #40748. Every other shape modifier (`BackgroundModifier`, `ContainerShapeModifier`, `ContentShapeModifier`, `GlassEffectModifier`) already used `ShapeType`. Switched both to exhaustive `ShapeType` switching with no `default` fallthrough, added `roundedCornerStyle` and `cornerSize` fields, and unblocked `capsule` and `ellipse` in `clipShape()` and `mask()`",
   },
@@ -222,24 +227,21 @@ export const merged: Contribution[] = [
   {
     repo: "expo/expo",
     number: 46556,
-    title:
-      "accessibilityIdentifier modifier setting a stable id for XCUITest to target a view",
+    title: "`accessibilityIdentifier` so XCUITest can find a view",
     detail:
       "iOS `accessibilityIdentifier` modifier wrapping SwiftUI's `accessibilityIdentifier(_:)`. Sets a stable, machine-readable id that UI-testing tools like XCUITest read to locate a view, distinct from `accessibilityLabel` in that it's not user-visible and exists purely for test targeting. Registers `AccessibilityIdentifierModifier` and exports `accessibilityIdentifier(id)`. Shipped in `56.0.16`",
   },
   {
     repo: "expo/expo",
     number: 46579,
-    title:
-      "accessibilityHidden modifier hiding decorative views from VoiceOver",
+    title: "`accessibilityHidden` to hide decorative views from VoiceOver",
     detail:
       "iOS `accessibilityHidden` modifier wrapping SwiftUI's `accessibilityHidden(_:)`, hiding decorative views (hero icons, imagery already described by adjacent text) from VoiceOver traversal. Registers `AccessibilityHiddenModifier` and exports `accessibilityHidden(hidden?)`, defaulting to `true`. Shipped in `56.0.16`",
   },
   {
     repo: "expo/expo",
     number: 47156,
-    title:
-      "accessibilityElement modifier grouping a subtree into one VoiceOver element",
+    title: "`accessibilityElement` to group a subtree into one VoiceOver stop",
     detail:
       "iOS `accessibilityElement` modifier wrapping SwiftUI's `accessibilityElement(children:)`. Collapses a view's subtree into one accessibility element, so a `star.fill` symbol next to a \"4.8 out of 5 stars\" label reads as a single VoiceOver element instead of stopping on each. Takes `ignore`, `combine`, or `contain` and defaults to `ignore`, matching SwiftUI. iOS 13+ so no `#available` guard. Registers `AccessibilityElementModifier` and exports `accessibilityElement(children?)`",
   },
@@ -261,7 +263,7 @@ export const merged: Contribution[] = [
     repo: "expo/expo",
     number: 46050,
     title:
-      "fork-safety CI sweep finale, gating 15 more workflows on the upstream repo",
+      "gate 15 more workflows on the upstream repo, finishing the fork-safety sweep",
     detail:
       "closed the fork-safety sweep. Gated 15 more workflows on `github.repository == 'expo/expo'` so fork CI stops red-checking nightly RN and test-suite jobs, hourly issue-maintenance crons, the GCP publish path in `ios-prebuild-external-xcframeworks`, and Slack-notify steps that reference org-only webhooks. Covers `test-react-native-nightly`, `test-suite-nightly`, `lock`, `issue-stale`, `cli`, `create-expo-app`, `create-expo-module`, `fingerprint`, `sdk`, `ios-static-frameworks`, `bare-diffs`, `native-component-list`, `test-suite`, `test-suite-macos`, and drops a redundant step-level repo check in `development-client-latest-e2e`. Finishes what #45782 and #45859 started",
   },
@@ -368,6 +370,29 @@ export const merged: Contribution[] = [
       "incorrect `operationId` in the password reset callback endpoint, plus `forget` to `forgot` cleanup across demo apps and tests",
   },
   {
+    repo: "facebook/hermes",
+    number: 2046,
+    title:
+      "cherry-pick the class-in-`finally` fix so a `class` in a `finally` block stops miscompiling",
+    detail:
+      "cherry-picked onto the stable Hermes branch RN 0.85 ships. Same Hermes V1 variable-caching root cause as #2045",
+  },
+  {
+    repo: "facebook/hermes",
+    number: 2045,
+    title:
+      "cherry-pick the accessor fix so `super.x` in a getter or setter stops crashing `hermesc`",
+    detail:
+      "cherry-picked the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships. This is the source fix that replaced the `babel-preset` workaround",
+  },
+  {
+    repo: "facebook/hermes",
+    number: 2047,
+    title: "fix the armv7 CI job for forks not named hermes",
+    detail:
+      "swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import",
+  },
+  {
     repo: "fuma-nama/fumadocs",
     number: 2092,
     title:
@@ -398,6 +423,22 @@ export const merged: Contribution[] = [
       "first-attempt glibc compat fix, added `-x` to `x86_64-unknown-linux-gnu`. Turned out to be insufficient, superseded by #25",
   },
   {
+    repo: "react/react-native",
+    number: 57517,
+    title:
+      "declare a dev-only React Native API unconditionally so it stops vanishing in Release",
+    detail:
+      "`RCTBundleURLProviderAllowPackagerServerAccess` was declared only under the dev-menu build guards, so it disappeared in Release and broke callers outside the repo. Expo's side of the same bug is #47688. Merged via Meta's internal import",
+  },
+  {
+    repo: "react/react-native",
+    number: 57518,
+    title:
+      "add a missing include so the TurboModule ArrayBuffer test compiles again",
+    detail:
+      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
+  },
+  {
     repo: "TanStack/db",
     number: 17,
     title: "fix the stale example todo app link in the README",
@@ -424,55 +465,22 @@ export const merged: Contribution[] = [
     title:
       "respect --cross-compile when host matches target, fixing glibc breaks on Vercel and Lambda",
     detail:
-      "cross-compile regression in the v3 CLI rewrite. When `--cross-compile` / `-x` was passed for a linux or darwin target, `pickBinary()` in `cli/src/api/build.ts` skipped `cargo-zigbuild` if host platform, arch, and abi matched target, logged a warning, then silently fell through to `cargo build`. The whole point of `--cross-compile` on a native build is to pin a lower glibc via zig's linker. Without it, building `x86_64-unknown-linux-gnu` on `ubuntu-latest` (glibc 2.39) produced binaries incompatible with glibc < 2.35 systems like Amazon Linux 2023 (glibc 2.34) and Vercel's build container. v2 had this fix in #1432 (resolving #1430) but it wasn't carried over during the v3 rewrite in #1492. Fix removes the platform-match conditions in the `else` branch of `pickBinary()` so `--cross-compile` always uses `cargo-zigbuild` for non-Windows targets",
-  },
-  {
-    repo: "facebook/hermes",
-    number: 2047,
-    title: "fix the armv7 CI job for forks not named hermes",
-    detail:
-      "swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import",
-  },
-  {
-    repo: "react/react-native",
-    number: 57518,
-    title:
-      "import `react/bridging/ArrayBuffer.h` in the TurboModule ArrayBuffer test so `yarn test-ios` compiles on OSS main again",
-    detail:
-      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
+      "cross-compile regression in the v3 CLI rewrite. When `--cross-compile` (or `-x`) was passed for a linux or darwin target, `pickBinary()` in `cli/src/api/build.ts` skipped `cargo-zigbuild` if host platform, arch, and abi matched target, logged a warning, then silently fell through to `cargo build`. The whole point of `--cross-compile` on a native build is to pin a lower glibc via zig's linker. Without it, building `x86_64-unknown-linux-gnu` on `ubuntu-latest` (glibc 2.39) produced binaries incompatible with glibc < 2.35 systems like Amazon Linux 2023 (glibc 2.34) and Vercel's build container. v2 had this fix in #1432 (resolving #1430) but it wasn't carried over during the v3 rewrite in #1492. Fix removes the platform-match conditions in the `else` branch of `pickBinary()` so `--cross-compile` always uses `cargo-zigbuild` for non-Windows targets",
   },
 ];
 
 export const open: Contribution[] = [
   {
-    repo: "facebook/hermes",
-    number: 2045,
-    title:
-      "cherry-pick the object-literal accessor home-object fix onto the stable Hermes branch RN 0.85 ships, so `super.x` in a getter or setter stops SIGSEGV'ing `hermesc`. The direct source fix that replaced the `babel-preset` workaround",
-  },
-  {
-    repo: "facebook/hermes",
-    number: 2046,
-    title:
-      "cherry-pick the class-in-`finally` variable-caching fix so a `class` declared in a `finally` block stops miscompiling. Same Hermes V1 root cause",
-  },
-  {
     repo: "react/react-native",
     number: 56912,
     title:
-      "set `always_out_of_date` on the `hermes-engine` podspec's Replace Hermes phase to silence the Xcode clean-build warning",
-  },
-  {
-    repo: "react/react-native",
-    number: 57517,
-    title:
-      "declare `RCTBundleURLProviderAllowPackagerServerAccess` unconditionally so the dev-only API stops vanishing in Release and breaking out-of-tree callers",
+      "silence the Xcode clean-build warning on the `hermes-engine` podspec",
   },
   {
     repo: "oven-sh/bun",
     number: 30855,
     title:
-      "drop the order-dependent peer-dep early match so `bun.lock` stops varying run to run, and fix `bun add X@version` being ignored when `X` is a same-name peer dep",
+      "make `bun.lock` come out the same every run, and stop `bun add X@version` being ignored for peer deps",
   },
   {
     repo: "oven-sh/bun",
@@ -482,14 +490,7 @@ export const open: Contribution[] = [
   {
     repo: "expo/expo",
     number: 47622,
-    title:
-      "set `always_out_of_date` on the `EXUpdates` podspec's Generate updates resources phase to silence the Xcode every-build warning",
-  },
-  {
-    repo: "expo/expo",
-    number: 47691,
-    title:
-      "exit 1 when docs API data generation fails and run the `expotools` test suite in CI, so dead mapping entries stop shipping silently",
+    title: "silence the Xcode every-build warning on the `EXUpdates` podspec",
   },
   {
     repo: "better-auth/better-auth",
@@ -502,6 +503,17 @@ export const open: Contribution[] = [
     number: 10364,
     title:
       "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
+  },
+  {
+    repo: "expo/expo",
+    number: 47772,
+    title: "fix deep import warning baked into the web overlay bundle",
+  },
+  {
+    repo: "microsoft/react-native-macos",
+    number: 3045,
+    title:
+      "accept `React.ComponentRef` as the first argument of a codegen command",
   },
 ];
 

@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const body = `# Ramon Claudio (Ray)
 
-> Ray is a freelance product engineer in NYC, building since 2013. He ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: ${stats.merged} merged PRs across ${stats.mergedRepos} open-source repos and a public patches repo with ${stats.patches} drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
+> Ray is a freelance developer tools engineer in NYC, building since 2013. He builds CLIs, scaffolders, and Claude Code tooling, ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: ${stats.merged} merged PRs across ${stats.mergedRepos} open-source repos and a public patches repo with ${stats.patches} drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
 
 ## Pages
 ${pages.map(([name, path, note]) => `- [${name}](${base}${path}): ${note}`).join("\n")}
