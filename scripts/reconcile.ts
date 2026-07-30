@@ -394,8 +394,10 @@ const canon = {
   shadcn: repoCount("shadcn-ui/ui"),
   convexBetterAuth: repoCount("get-convex/better-auth"),
   betterAuth: repoCount("better-auth/better-auth"),
+  hermes: repoCount("facebook/hermes"),
   fumadocs: repoCount("fuma-nama/fumadocs"),
   compilerRs: repoCount("withastro/compiler-rs"),
+  reactNative: repoCount("react/react-native"),
   open: desiredOpen.length,
   openRepos: distinct(desiredOpen),
   patches,
@@ -542,12 +544,14 @@ const COUNTED: { key: Key; repo: string; label: string }[] = [
     label: "get-convex/better-auth",
   },
   { key: "betterAuth", repo: "better-auth/better-auth", label: "better-auth" },
+  { key: "hermes", repo: "facebook/hermes", label: "hermes" },
   { key: "fumadocs", repo: "fuma-nama/fumadocs", label: "fumadocs" },
   {
     key: "compilerRs",
     repo: "withastro/compiler-rs",
     label: "withastro/compiler-rs",
   },
+  { key: "reactNative", repo: "react/react-native", label: "react-native" },
 ];
 
 // A tail repo's second merged PR makes the resume undercount it: the totals
