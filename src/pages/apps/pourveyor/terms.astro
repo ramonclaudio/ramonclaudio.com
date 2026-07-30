@@ -1,0 +1,128 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+---
+
+<Layout
+  title={`Terms of Service · Pourveyor | ${SITE.title}`}
+  description="Ramon Claudio, LLC · Pourveyor Terms of Service"
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content">
+    <section class="app-prose mb-28 max-w-app prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">Terms of Service</h1>
+      <p class="text-sm text-muted-foreground">Ramon Claudio, LLC · Pourveyor</p>
+      <p class="text-sm text-muted-foreground">Last Updated: July 30, 2026</p>
+
+      <p>
+        These Terms of Service ("Terms") govern your use of the Pourveyor mobile
+        application operated by Ramon Claudio, LLC ("we," "our," or "us"). By
+        using Pourveyor, you agree to these Terms.
+      </p>
+
+      <h3>About Pourveyor</h3>
+      <p>
+        Pourveyor is a curated guide to specialty coffee shops in New York City.
+        The list is editorial. Shops are chosen by us, and the pick and the
+        reason attached to each one are our opinion, not a professional
+        recommendation or a rating.
+      </p>
+
+      <h3>Shop Information</h3>
+      <p>
+        Addresses, hours, phone numbers, and other details are gathered from
+        public sources and can go out of date. Shops close, move, and change
+        their hours without telling us. Check with the shop before you travel.
+        We do not guarantee that any listing is current, complete, or accurate.
+      </p>
+
+      <h3>No Affiliation or Endorsement</h3>
+      <p>
+        We are not affiliated with, sponsored by, or endorsed by any shop or
+        roaster listed in the app. Shop names, logos, and trademarks belong to
+        their respective owners and appear for identification only. Appearing in
+        the app is not a paid placement, and we accept no payment for inclusion.
+      </p>
+
+      <h3>Account Registration</h3>
+      <p>
+        Browsing does not require an account. If you create one, you must
+        provide accurate information and you are responsible for maintaining the
+        security of your credentials. You must be at least 13 years old to
+        create an account.
+      </p>
+
+      <h3>Acceptable Use</h3>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the app for any unlawful purpose</li>
+        <li>Attempt to gain unauthorized access to the app or its systems</li>
+        <li>Interfere with or disrupt the app or its infrastructure</li>
+        <li>Impersonate any person or entity</li>
+        <li>Use the app to harass, abuse, or harm others</li>
+        <li>
+          Scrape, bulk-copy, or redistribute the shop list or the editorial
+          write-ups
+        </li>
+      </ul>
+
+      <h3>Intellectual Property</h3>
+      <p>
+        The Pourveyor name, brand, App Store listing, app design, and the
+        editorial write-ups are owned by Ramon Claudio, LLC. Source code is
+        available at
+        <a href="https://github.com/ramonclaudio/pourveyor"
+          >github.com/ramonclaudio/pourveyor</a
+        >
+        under the license posted there. That license covers the code, not the brand
+        or the editorial content.
+      </p>
+
+      <h3>Termination</h3>
+      <p>
+        We reserve the right to suspend or terminate your account if you violate
+        these Terms. You may delete your account at any time from Profile, which
+        removes your data after a 30-day grace window.
+      </p>
+
+      <h3>Disclaimer of Warranties</h3>
+      <p>
+        Pourveyor is provided "as is" and "as available" without warranties of
+        any kind, either express or implied. We do not guarantee that the app
+        will be uninterrupted, error-free, or secure, or that any shop listing
+        is accurate or current.
+      </p>
+
+      <h3>Limitation of Liability</h3>
+      <p>
+        To the maximum extent permitted by law, Ramon Claudio, LLC shall not be
+        liable for any indirect, incidental, special, consequential, or punitive
+        damages arising from your use of the app, including any wasted trip to a
+        shop that has closed, moved, or changed its hours.
+      </p>
+
+      <h3>Governing Law</h3>
+      <p>
+        These Terms are governed by the laws of the State of New York, without
+        regard to its conflict of law provisions.
+      </p>
+
+      <h3>Changes to These Terms</h3>
+      <p>
+        We may update these Terms from time to time. Continued use of the app
+        after changes constitutes acceptance of the updated Terms.
+      </p>
+
+      <h3>Contact Us</h3>
+      <p>
+        If you have questions about these Terms, contact us at
+        <a href="mailto:team@ramonclaudio.com">team@ramonclaudio.com</a>.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>

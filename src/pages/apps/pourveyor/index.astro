@@ -1,0 +1,134 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+import { PERSON_ID } from "@/utils/schema";
+
+const appCanonical = new URL(Astro.url.pathname, Astro.url).toString();
+const appSchema = {
+  "@type": "SoftwareApplication",
+  "@id": `${appCanonical}#app`,
+  name: "Pourveyor",
+  applicationCategory: "TravelApplication",
+  operatingSystem: "iOS",
+  description:
+    "A curated map of specialty coffee shops in New York, with what to order at each one, hours, and directions.",
+  url: appCanonical,
+  author: { "@id": PERSON_ID },
+};
+
+const stack = [
+  {
+    name: "Expo SDK 57",
+    description:
+      "React Native 0.86, Expo Router, native SwiftUI throughout via @expo/ui.",
+  },
+  {
+    name: "Convex",
+    description: "Reactive queries over the curated shop list, real-time sync.",
+  },
+  {
+    name: "Better Auth",
+    description:
+      "Email + password, email OTP, Apple Sign In, per-device session revocation.",
+  },
+  {
+    name: "Apple Maps",
+    description: "expo-maps for the map, directions, and Look Around.",
+  },
+  {
+    name: "Icon Composer",
+    description: "Layered vector app icon with Liquid Glass on iOS 26.",
+  },
+];
+
+const features = [
+  "Browse as a map or as an alphabetical list, no account needed",
+  "Every shop carries a pick (what to order) and a reason it made the list",
+  "Open-now count, and hours for every day with today called out",
+  "Directions in Apple Maps, plus Look Around to see the block first",
+  "Tap to call, website, and Instagram for each shop",
+  "Neighborhood, address, and the roaster they pour",
+  "Manhattan and Brooklyn: West Village, East Village, SoHo, Little Italy, Williamsburg, East Williamsburg, Bushwick, Crown Heights",
+  "VoiceOver, Dynamic Type, reduced motion, light and dark themes",
+  "iOS only.",
+];
+---
+
+<Layout
+  schema={[appSchema]}
+  title={`Pourveyor | ${SITE.title}`}
+  description="A curated map of NYC specialty coffee. What to order, where, and when they open."
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <section class="pt-4 pb-2">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-6 sm:text-4xl">
+        Pourveyor
+      </h1>
+      <p class="text-sm italic text-muted-foreground">
+        Curated NYC specialty coffee.
+      </p>
+      <p class="mt-4">
+        A short, hand-picked list of coffee shops in New York worth crossing a
+        borough for. Not every cafe in the city. Every shop comes with a pick,
+        which is what to order when you get there, and a reason it made the list
+        at all.
+      </p>
+      <p class="mt-4">
+        Source: <a
+          href="https://github.com/ramonclaudio/pourveyor"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >github.com/ramonclaudio/pourveyor</a
+        >
+      </p>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[features]</h2>
+      <ul class="mt-4 list-disc pl-6">
+        {features.map((f) => <li class="my-2 text-muted-foreground">{f}</li>)}
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">[stack]</h2>
+      <ul class="mt-4">
+        {
+          stack.map((item) => (
+            <li class="my-3">
+              <strong>{item.name}</strong>:{" "}
+              <span class="text-muted-foreground">{item.description}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="pt-8 pb-6 text-sm text-muted-foreground">
+      <p>
+        <a
+          href="/apps/pourveyor/privacy"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >Privacy</a
+        >
+        {" · "}
+        <a
+          href="/apps/pourveyor/terms"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >Terms</a
+        >
+        {" · "}
+        <a
+          href="https://github.com/ramonclaudio/pourveyor"
+          class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+          >Source</a
+        >
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>

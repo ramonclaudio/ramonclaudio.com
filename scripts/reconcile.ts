@@ -91,6 +91,7 @@ type LivePR = {
   labels: string[];
   mergeSha: string | null;
   mergedAt: string | null;
+  createdAt: string;
 };
 
 // One search finds every public PR the account ever authored; external means
@@ -111,6 +112,15 @@ const repos = new Set(
 );
 for (const c of [...dataMerged, ...dataOpen]) repos.add(c.repo);
 
+// PRs to CUTOFF_REPO opened from CUTOFF_DATE on are out of scope for this list
+// and never enter the data.
+//
+// Keyed on when the PR was opened, not when it merged, so the two opened before
+// the cutoff stay counted however long review takes. A merge-date rule would
+// drop them the day they land.
+const CUTOFF_REPO = "expo/expo";
+const CUTOFF_DATE = "2026-07-20";
+
 const live: LivePR[] = (
   await Promise.all(
     [...repos].sort().map(async repo => {
@@ -127,7 +137,7 @@ const live: LivePR[] = (
           `${repo} is now ${canonical} on GitHub. Update contributions.ts and the prose, then rerun`,
         );
       const out = await retryOnce(() =>
-        $`gh pr list -R ${repo} --author ${AUTHOR} --state all --limit 200 --json number,state,title,labels,mergeCommit,mergedAt,closedAt`.quiet(),
+        $`gh pr list -R ${repo} --author ${AUTHOR} --state all --limit 200 --json number,state,title,labels,mergeCommit,mergedAt,closedAt,createdAt`.quiet(),
       );
       type Raw = {
         number: number;
@@ -137,6 +147,7 @@ const live: LivePR[] = (
         mergeCommit: { oid: string } | null;
         mergedAt: string | null;
         closedAt: string | null;
+        createdAt: string;
       };
       return (JSON.parse(out.stdout.toString()) as Raw[]).map(p => ({
         repo,
@@ -146,10 +157,15 @@ const live: LivePR[] = (
         labels: p.labels.map(l => l.name),
         mergeSha: p.mergeCommit?.oid ?? null,
         mergedAt: p.mergedAt ?? p.closedAt,
+        createdAt: p.createdAt,
       }));
     }),
   )
-).flat();
+)
+  .flat()
+  .filter(
+    p => !(p.repo === CUTOFF_REPO && p.createdAt.slice(0, 10) >= CUTOFF_DATE),
+  );
 
 // Meta's codesync bot lands PRs via internal import: GitHub reports CLOSED,
 // the bot applies a "Merged" label and comments the landed sha. Read every
@@ -259,7 +275,9 @@ for (const c of dataMerged)
   if (!liveMergedKeys.has(key(c))) {
     const l = liveByKey.get(key(c));
     if (!l)
-      throw new Error(`${key(c)} not found on GitHub — refusing to reconcile`);
+      throw new Error(
+        `${key(c)} not found on GitHub — refusing to reconcile. Either the search index dropped it, or it is a ${CUTOFF_REPO} PR opened on or after ${CUTOFF_DATE} and the cutoff above excludes it, in which case delete the entry from contributions.ts`,
+      );
     act(
       `contributions.ts: ${key(c)} is listed merged but GitHub says ${l.state}${fixMode ? " — removed" : ""}`,
     );
