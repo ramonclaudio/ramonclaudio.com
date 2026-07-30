@@ -330,9 +330,9 @@ export const projects: Project[] = [
   {
     slug: "ramonclaudio-com",
     name: "ramonclaudio.com",
-    stack: "Astro 6 · Tailwind v4 · TypeScript",
+    stack: "Astro 7 · Tailwind v4 · TypeScript",
     description:
-      "Personal site at ramonclaudio.com. Astro 6 + Tailwind v4 + TypeScript, deployed on Vercel.",
+      "Personal site at ramonclaudio.com. Astro 7 + Tailwind v4 + TypeScript, deployed on Vercel.",
     repo: "ramonclaudio/ramonclaudio.com",
   },
   {
