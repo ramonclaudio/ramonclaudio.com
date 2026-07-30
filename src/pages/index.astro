@@ -29,6 +29,12 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const mergedGroups = groupByRepo(merged);
+
+// PR titles carry backticked code references. This list is plain text, not
+// markdown, so split on the backticks and render the odd parts as code.
+const codeParts = (title: string) =>
+  title.split(/`([^`]+)`/).map((part, i) => ({ part, isCode: i % 2 === 1 }));
+const codeClass = "rounded bg-muted px-1 py-0.5 text-xs";
 ---
 
 <Layout title="Ray · Product Engineer" profilePage>
@@ -158,7 +164,9 @@ const mergedGroups = groupByRepo(merged);
               <ul class="mt-1 ml-4 list-disc text-sm text-muted-foreground">
                 {contrib.items.map((item) => (
                   <li class="my-1">
-                    {item.title}{" "}
+                    {codeParts(item.title).map(({ part, isCode }) =>
+                      isCode ? <code class={codeClass}>{part}</code> : part,
+                    )}{" "}
                     <a
                       href={prUrl(item)}
                       target="_blank"
