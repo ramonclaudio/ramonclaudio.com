@@ -66,20 +66,23 @@ const act = (msg: string) => (fixMode ? applied : drift).push(msg);
 // ---------- live state, straight from the GitHub CLI ----------
 
 // gh flakes under burst pressure (up to ~25 parallel calls here, often right
-// after prw audit's own searches); retry once with a beat of backoff, then
-// let the failure crash loud — an audit without GitHub data is no audit
-async function retryOnce<T>(run: () => Promise<T>): Promise<T> {
-  try {
-    return await run();
-  } catch {
-    await Bun.sleep(2000);
-    return run();
+// after prw audit's own searches). Search allows 30 calls a minute on a rolling
+// window, so a two-second retry lands inside the same exhausted window and 403s
+// again: back off past the window before giving up. The last attempt crashes
+// loud — an audit without GitHub data is no audit.
+const BACKOFF_MS = [2000, 15000, 45000];
+async function retry<T>(run: () => Promise<T>): Promise<T> {
+  for (const wait of BACKOFF_MS) {
+    try {
+      return await run();
+    } catch {
+      await Bun.sleep(wait);
+    }
   }
+  return run();
 }
 
-const AUTHOR = (
-  await retryOnce(() => $`gh api user --jq .login`.quiet())
-).stdout
+const AUTHOR = (await retry(() => $`gh api user --jq .login`.quiet())).stdout
   .toString()
   .trim();
 
@@ -97,7 +100,7 @@ type LivePR = {
 // One search finds every public PR the account ever authored; external means
 // someone else's repo. Union with repos already in the data so search-index
 // lag can never make a tracked PR read as deleted.
-const searchRaw = await retryOnce(() =>
+const searchRaw = await retry(() =>
   $`gh search prs is:public --author ${AUTHOR} --limit 1000 --json repository`.quiet(),
 );
 const searchRows = JSON.parse(searchRaw.stdout.toString()) as {
@@ -128,7 +131,7 @@ const live: LivePR[] = (
       // while gh follows the redirect on the old one, so the same PRs read
       // as two repos. Refuse until the data uses the canonical name.
       const canonical = (
-        await retryOnce(() => $`gh api repos/${repo} --jq .full_name`.quiet())
+        await retry(() => $`gh api repos/${repo} --jq .full_name`.quiet())
       ).stdout
         .toString()
         .trim();
@@ -136,7 +139,7 @@ const live: LivePR[] = (
         throw new Error(
           `${repo} is now ${canonical} on GitHub. Update contributions.ts and the prose, then rerun`,
         );
-      const out = await retryOnce(() =>
+      const out = await retry(() =>
         $`gh pr list -R ${repo} --author ${AUTHOR} --state all --limit 200 --json number,state,title,labels,mergeCommit,mergedAt,closedAt,createdAt`.quiet(),
       );
       type Raw = {
@@ -175,7 +178,7 @@ await Promise.all(
   live
     .filter(p => p.state === "CLOSED")
     .map(async p => {
-      const out = await retryOnce(() =>
+      const out = await retry(() =>
         $`gh pr view ${p.number} -R ${p.repo} --json comments`.quiet(),
       );
       const { comments } = JSON.parse(out.stdout.toString()) as {
