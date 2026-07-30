@@ -20,9 +20,10 @@ export const personEntity: SchemaNode = {
   alternateName: "Ray",
   url: ORIGIN,
   image: `${ORIGIN}/ramonclaudio-og.jpg`,
-  jobTitle: "Product Engineer",
-  description: `Product engineer. Writing code since 2013. Ships React Native apps on Expo with Convex for backend and Better Auth for auth. ${stats.merged} merged PRs upstream to Expo, React Native, Hermes, Bun, Convex, Better Auth, shadcn/ui, Astro, napi-rs, TanStack, fumadocs, and App Store Connect CLI.`,
+  jobTitle: "Developer Tools Engineer",
+  description: `Developer tools engineer. Writing code since 2013. Builds CLIs, scaffolders, and Claude Code tooling, and ships React Native apps on Expo with Convex for backend and Better Auth for auth. ${stats.merged} merged PRs upstream to Expo, React Native, Hermes, Bun, Convex, Better Auth, shadcn/ui, Astro, napi-rs, TanStack, fumadocs, and App Store Connect CLI.`,
   knowsAbout: [
+    "Developer Tools",
     "TypeScript",
     "Swift",
     "Rust",

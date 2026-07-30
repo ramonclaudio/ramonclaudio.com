@@ -123,9 +123,9 @@ test("orderGroups ranks count desc, then first merge, then name, stable within g
 
 test("publicResume swaps the frontmatter for the letterhead", () => {
   const src =
-    "---\nlayout: ../layouts/ResumeLayout.astro\ntitle: Resume\n---\n\n**Product Engineer**\n\n[links](https://x)\n\n## Summary\n\nbody\n";
+    "---\nlayout: ../layouts/ResumeLayout.astro\ntitle: Resume\n---\n\n**Developer Tools Engineer**\n\n[links](https://x)\n\n## Summary\n\nbody\n";
   expect(publicResume(src)).toBe(
-    "# Ramon Claudio\n\n**Product Engineer**\n\n[links](https://x)\n\n---\n\n## Summary\n\nbody\n",
+    "# Ramon Claudio\n\n**Developer Tools Engineer**\n\n[links](https://x)\n\n---\n\n## Summary\n\nbody\n",
   );
   expect(() => publicResume("---\nx: y\n---\n\nno summary\n")).toThrow();
 });
