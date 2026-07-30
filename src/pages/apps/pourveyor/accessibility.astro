@@ -1,0 +1,95 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+---
+
+<Layout
+  title={`Accessibility · Pourveyor | ${SITE.title}`}
+  description="Ramon Claudio, LLC · Pourveyor Accessibility Statement"
+>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content">
+    <section class="app-prose mb-28 max-w-app prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">Accessibility</h1>
+      <p class="text-sm text-muted-foreground">Ramon Claudio, LLC · Pourveyor</p>
+      <p class="text-sm text-muted-foreground">Last Updated: July 30, 2026</p>
+
+      <p>
+        Pourveyor is built to work with the accessibility features already in
+        iOS. Nothing below is a separate mode you have to turn on. If you use
+        VoiceOver, larger text, or reduced motion, the app follows the settings
+        you already have.
+      </p>
+
+      <h3>What the App Supports</h3>
+      <ul>
+        <li>
+          <strong>VoiceOver:</strong> screens are labelled throughout. Map pins
+          carry the shop name, and each row in the hours table is combined into
+          one element that reads as "Today, Friday, 7:00 AM to 5:00 PM" rather
+          than as three separate fragments.
+        </li>
+        <li>
+          <strong>Voice Control:</strong> controls carry spoken alternates, so
+          "tap location" works as well as the label printed on screen.
+        </li>
+        <li>
+          <strong>Larger Text:</strong> type scales through the system Dynamic
+          Type sizes, all the way up the accessibility range. Scaling happens in
+          SwiftUI rather than by multiplying a font size in JavaScript, so
+          layouts reflow instead of clipping.
+        </li>
+        <li>
+          <strong>Dark Interface:</strong> a full dark theme that follows the
+          system, with light and dark also selectable in the app.
+        </li>
+        <li>
+          <strong>Sufficient Contrast:</strong> colours are declared as dynamic
+          pairs, so each one resolves separately in light and dark and in
+          increased-contrast mode.
+        </li>
+        <li>
+          <strong>Differentiate Without Colour Alone:</strong> a closed day says
+          "Closed" in words, and today's row is set in a heavier weight as well
+          as a different colour, so neither depends on seeing the colour.
+        </li>
+        <li>
+          <strong>Reduced Motion:</strong> screen transitions drop to a short
+          cross-fade when the system setting is on.
+        </li>
+      </ul>
+
+      <h3>Controls Inside the App</h3>
+      <p>Under Settings, then Preferences:</p>
+      <ul>
+        <li>Theme: system, light, or dark</li>
+        <li>
+          Reduced motion: follow the system setting, always reduce, or never
+          reduce. The override is there for people whose preference differs
+          between apps.
+        </li>
+        <li>Haptic feedback: on or off</li>
+      </ul>
+
+      <h3>Not Applicable</h3>
+      <p>
+        Pourveyor ships no audio or video, so captions and audio descriptions do
+        not apply.
+      </p>
+
+      <h3>Reporting a Problem</h3>
+      <p>
+        If something in the app does not work with the assistive technology you
+        use, tell us and we will fix it. Email
+        <a href="mailto:team@rmncldyo.com">team@rmncldyo.com</a> with the feature
+        you were using and what happened. A report about accessibility gets
+        answered before anything else in the queue.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>
