@@ -23,19 +23,58 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "seetree",
-    name: "seetree",
-    stack: "Zig · CLI · TUI",
+    slug: "convex-revenuecat",
+    name: "convex-revenuecat",
+    stack: "TypeScript · Convex",
     description:
-      "Terminal tree viewer written in Zig. Tails Claude Code's JSONL session logs and lights up files as they get read, written, edited, or deleted. ~200K binary, on Homebrew and npm.",
-    repo: "ramonclaudio/seetree",
-    detail: "~200K binary · Homebrew + npm",
+      "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
+    repo: "ramonclaudio/convex-revenuecat",
+    detail: "21,500+ total downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
-    liveUrl: "https://www.npmjs.com/package/seetree",
+    liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
     liveLabel: "npm",
     backstory:
-      "I usually have at least four or five Claude Code sessions going at once. I tell Claude what I want, it goes off and reads files, edits them, writes to them, but I can never tell exactly which files got touched without reading through all the thinking and bash calls. My IDE shows the same modified dot for every tracked or untracked file, so the file edited a second ago looks identical to the file edited two weeks ago. So I built a live tree viewer that lights up as Claude works.\n\nWrote it in Zig because a CLI that sits in a side pane all day has to start fast and stay small. Hand-rolled the JSONL scanner from scratch and swapped <code>std.process.spawn</code> and <code>std.Io.Dir</code> for direct POSIX so the binary fits at or around 200K. Default polls <code>~/.claude/projects/*.jsonl</code> every 2 seconds, with an optional <code>FileChanged</code> hook that drops the poll to 30 seconds and refreshes on every event instead.",
+      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and covers the tricky cases: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
+  },
+  {
+    slug: "vexpo",
+    name: "vexpo",
+    stack: "Expo SDK 57 · Convex · Better Auth · Resend",
+    description:
+      "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon. My mobile dogfood, where I hit the Expo, React Native, and Hermes edge cases I file upstream.",
+    repo: "ramonclaudio/vexpo",
+    detail:
+      "7,200+ total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
+    featured: true,
+    status: "maintained",
+    liveUrl: "/apps/vexpo",
+    liveLabel: "App page",
+  },
+  {
+    slug: "tanstack-cn",
+    name: "tanstack-cn",
+    stack: "TanStack Start · Vite 8 · Tailwind v4",
+    description:
+      "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
+    repo: "ramonclaudio/tanstack-cn",
+    detail: "1,300 total downloads across tanstack-cn and create-tanstack-cn",
+    featured: true,
+    status: "live",
+    liveUrl: "https://tanstack-cn.vercel.app",
+    liveLabel: "Demo",
+    backstory:
+      "Most TanStack Start + shadcn starters on GitHub still ship the older choices like Radix, ESLint, Prettier, and Webpack-era Vite. I wanted one on the latest majors: Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt. SEO and security plumbing are already wired up so there's nothing to strip out before starting a new project.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), and <code>tanstack-cn</code> is the shared package the scaffolded project consumes. The CLI detects your package manager (bun, pnpm, yarn, or npm), installs dependencies, and initializes git with an initial commit.",
+  },
+  {
+    slug: "tanvex",
+    name: "tanvex",
+    stack: "TanStack Start · Convex · Better Auth",
+    description:
+      "tanstack-cn extended with Better Auth and Convex, running on latest majors. My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs. SSR auth, email OTP, rate limiting, one-command setup.",
+    repo: "ramonclaudio/tanvex",
+    featured: true,
+    status: "maintained",
   },
   {
     slug: "ccbase",
@@ -53,6 +92,21 @@ export const projects: Project[] = [
       "The CLI only lists sessions for the project you're standing in, and there's no way to search across all of them. Everything is already on disk in <code>~/.claude/</code>, just not indexed. So I read the format and pulled out the rest of it too: commits per day, cache hit rates, which sessions are active.\n\nBuilt a dashboard that parses everything into SQLite and stays local. Full-text chat search across every project (the CLI only shows sessions for the project you're in). Also shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history, since Claude Code stores absolute paths and doesn't handle moves. <code>ccbase mv</code> rewrites them.",
   },
   {
+    slug: "seetree",
+    name: "seetree",
+    stack: "Zig · CLI · TUI",
+    description:
+      "Terminal tree viewer written in Zig. Tails Claude Code's JSONL session logs and lights up files as they get read, written, edited, or deleted. ~200K binary, on Homebrew and npm.",
+    repo: "ramonclaudio/seetree",
+    detail: "~200K binary · Homebrew + npm",
+    featured: true,
+    status: "maintained",
+    liveUrl: "https://www.npmjs.com/package/seetree",
+    liveLabel: "npm",
+    backstory:
+      "I usually have at least four or five Claude Code sessions going at once. I tell Claude what I want, it goes off and reads files, edits them, writes to them, but I can never tell exactly which files got touched without reading through all the thinking and bash calls. My IDE shows the same modified dot for every tracked or untracked file, so the file edited a second ago looks identical to the file edited two weeks ago. So I built a live tree viewer that lights up as Claude works.\n\nWrote it in Zig because a CLI that sits in a side pane all day has to start fast and stay small. Hand-rolled the JSONL scanner from scratch and swapped <code>std.process.spawn</code> and <code>std.Io.Dir</code> for direct POSIX so the binary fits at or around 200K. Default polls <code>~/.claude/projects/*.jsonl</code> every 2 seconds, with an optional <code>FileChanged</code> hook that drops the poll to 30 seconds and refreshes on every event instead.",
+  },
+  {
     slug: "gitbar",
     name: "gitbar",
     stack: "Tauri · Rust · TypeScript · React",
@@ -64,45 +118,6 @@ export const projects: Project[] = [
     status: "maintained",
     backstory:
       'Got tired of context-switching between GitHub tabs for PRs, issues, and notifications. Every time I wanted to check "what needs my attention?" I\'d open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.',
-  },
-  {
-    slug: "convex-revenuecat",
-    name: "convex-revenuecat",
-    stack: "TypeScript · Convex",
-    description:
-      "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
-    repo: "ramonclaudio/convex-revenuecat",
-    detail: "21,500+ total downloads · Convex Components Directory",
-    featured: true,
-    status: "maintained",
-    liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
-    liveLabel: "npm",
-    backstory:
-      "I use RevenueCat for in-app purchases and Convex for everything else. Needed a way to check entitlements server-side without hitting RevenueCat's API on every request, so I built a Convex component that receives webhooks and keeps subscription state in your database. Query it like any other Convex table, get real-time reactivity for free.\n\nHandles every webhook event type RevenueCat emits, dedupes by event ID, and covers the tricky cases: cancellation keeps access until expiration, pause doesn't revoke, grace periods stay active, and refunds (CANCELLATION with <code>cancel_reason: \"CUSTOMER_SUPPORT\"</code>) revoke immediately. Listed on the Convex Components Directory.",
-  },
-  {
-    slug: "tanvex",
-    name: "tanvex",
-    stack: "TanStack Start · Convex · Better Auth",
-    description:
-      "tanstack-cn extended with Better Auth and Convex, running on latest majors. My web dogfood, where I reproduce edge cases for TanStack, Convex, and Better Auth PRs. SSR auth, email OTP, rate limiting, one-command setup.",
-    repo: "ramonclaudio/tanvex",
-    featured: true,
-    status: "maintained",
-  },
-  {
-    slug: "vexpo",
-    name: "vexpo",
-    stack: "Expo SDK 57 · Convex · Better Auth · Resend",
-    description:
-      "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon. My mobile dogfood, where I hit the Expo, React Native, and Hermes edge cases I file upstream.",
-    repo: "ramonclaudio/vexpo",
-    detail:
-      "7,200+ total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
-    featured: true,
-    status: "maintained",
-    liveUrl: "/apps/vexpo",
-    liveLabel: "App page",
   },
   {
     slug: "counter",
@@ -169,21 +184,6 @@ export const projects: Project[] = [
     repo: "ramonclaudio/patches",
     detail:
       "@expo/ui, react-native, @convex-dev/better-auth, better-auth, shadcn, bun, hermes, and more",
-  },
-  {
-    slug: "tanstack-cn",
-    name: "tanstack-cn",
-    stack: "TanStack Start · Vite 8 · Tailwind v4",
-    description:
-      "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
-    repo: "ramonclaudio/tanstack-cn",
-    detail: "1,300 total downloads across tanstack-cn and create-tanstack-cn",
-    featured: true,
-    status: "live",
-    liveUrl: "https://tanstack-cn.vercel.app",
-    liveLabel: "Demo",
-    backstory:
-      "Most TanStack Start + shadcn starters on GitHub still ship the older choices like Radix, ESLint, Prettier, and Webpack-era Vite. I wanted one on the latest majors: Vite 8 Rolldown+Oxc, Tailwind v4, shadcn base-luma on Base UI, Oxlint+Oxfmt. SEO and security plumbing are already wired up so there's nothing to strip out before starting a new project.\n\nTwo npm packages ship it: <code>create-tanstack-cn</code> scaffolds a new project (<code>bun create tanstack-cn my-app</code>), and <code>tanstack-cn</code> is the shared package the scaffolded project consumes. The CLI detects your package manager (bun, pnpm, yarn, or npm), installs dependencies, and initializes git with an initial commit.",
   },
   {
     slug: "tanstack-start-hackathon",
