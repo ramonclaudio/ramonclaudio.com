@@ -13,7 +13,7 @@ tags:
 description: I needed server-side entitlement checks in my Convex app. No component existed. So I built one.
 ---
 
-I wanted to enter my first hackathon. [RevenueCat Shipyard](https://www.revenuecat.com/shipyard) was running, so I joined. The app was Expo with Convex and Better Auth, and I needed to gate features by subscription. RevenueCat's SDK handles purchases on the client fine, but checking entitlements on the server meant hitting their [REST API](https://www.revenuecat.com/docs/customers/customer-info) on every request. No caching, no reactivity, a blocking HTTP call every time someone opened a gated screen.
+RevenueCat Shipyard was running, so I entered. The app was Expo with Convex and Better Auth, and I needed to gate features by subscription. RevenueCat's SDK handles purchases on the client fine, but checking entitlements on the server meant hitting their [REST API](https://www.revenuecat.com/docs/customers/customer-info) on every request. No caching, no reactivity, a blocking HTTP call every time someone opened a gated screen.
 
 No Convex component existed, so I built one during the hackathon as a side project, tested it against real sandbox purchases in the app, and published it to npm as [`convex-revenuecat`](https://www.npmjs.com/package/convex-revenuecat) in case anyone else hit the same wall.
 
@@ -22,8 +22,6 @@ npm install convex-revenuecat
 ```
 
 Convex happened to be running a [component authoring challenge](https://www.convex.dev/component-authoring?ref=ramonclaudio.com) at the same time, so I submitted what I had. It got accepted, won a $100 gift card, and is now listed on [convex.dev/components](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). I'd already been PRing bug fixes to their better-auth component ([#218](https://github.com/get-convex/better-auth/pull/218), [#245](https://github.com/get-convex/better-auth/pull/245), [#267](https://github.com/get-convex/better-auth/pull/267), [#278](https://github.com/get-convex/better-auth/pull/278)) so I was deep in the Convex ecosystem already.
-
-I didn't place in the RevenueCat hackathon. Spent way more time on the component than the submission.
 
 ### How it works
 
@@ -57,11 +55,11 @@ No polling, no client-side state to invalidate, no REST call to RevenueCat on th
 
 ### The edge cases
 
-The happy path was the easy part. The RC docs bury the subtleties.
+The happy path was the easy part, and the subtleties are buried in the RC docs.
 
-The one that got me was cancellation. I assumed it revoked access. It doesn't. The user keeps the entitlement until `expirationAtMs`, and I shipped a broken version of the app before I figured that out. Pause is the same: doesn't revoke, entitlement stays active through the billing pause. Grace periods too. A failed charge starts a grace window and access continues until it expires.
+The one that got me was cancellation. I assumed it revoked access, but the user keeps the entitlement until `expirationAtMs`, and I shipped a broken version of the app before I figured that out. Pause works the same way and the entitlement stays active through the billing pause. Grace periods too, since a failed charge starts a grace window and access continues until it expires.
 
-Refunds, on the other hand, revoke immediately. RC sends a `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"`, the component picks that up and expires the entitlement right away instead of waiting for the billing window to close. Transfers are the trickiest of the bunch: a single webhook deactivates on one `appUserId` and activates on another in the same mutation.
+Refunds revoke immediately. RC sends a `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"`, the component picks that up and expires the entitlement right away instead of waiting for the billing window to close. Transfers are the trickiest of the bunch, since a single webhook deactivates on one `appUserId` and activates on another in the same mutation.
 
 ### Transition hooks
 
@@ -87,6 +85,6 @@ Same transition hooks fire on sync-driven transitions with `sourceEventType: "SY
 
 ### Where it is now
 
-First release was January 2026. 14 versions later, around 5,700 downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
+First release was January 2026. 17 versions later, north of 21,000 downloads on npm. Listed on the [Convex Components Directory](https://www.convex.dev/components/ramonclaudio-convex-revenuecat). [Source](https://github.com/ramonclaudio/convex-revenuecat).
 
 \- Ray

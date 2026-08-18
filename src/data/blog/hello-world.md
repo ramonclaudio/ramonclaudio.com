@@ -2,7 +2,7 @@
 author: Ray
 pubDatetime: 2025-07-23T22:03:00Z
 title: Hello, World!
-featured: true
+featured: false
 draft: false
 tags:
   - first-post

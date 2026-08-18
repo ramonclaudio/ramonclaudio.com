@@ -22,7 +22,7 @@ So I built [Gitbar](https://github.com/ramonclaudio/gitbar), a menubar app that 
 
 I'm a CLI-first person. Ghostty, yazi, lazygit, if it runs in a terminal I'm probably interested. But this needed to be a menubar app, something that's always there without competing with 40 browser tabs. That meant a native wrapper, and I'd been wanting to build something with [Tauri](https://v2.tauri.app/) for a while.
 
-Rust backend, web frontend, ~5MB binary. Compare that to Electron's 100MB+ and it's not even a conversation. Tauri v2 gave me tray icon support, menubar window positioning, macOS vibrancy (the frosted glass effect), and a shell plugin for running `gh auth token` at runtime. The Rust side ended up being 118 lines. Window management, tray icon, vibrancy. Everything else is TypeScript and React.
+Rust backend, web frontend, ~5MB binary against Electron's 100MB+. Tauri v2 gave me tray icon support, menubar window positioning, macOS vibrancy (the frosted glass effect), and a shell plugin for running `gh auth token` at runtime. The Rust side ended up being 118 lines for window management, the tray icon, and vibrancy. Everything else is TypeScript and React.
 
 ### Auth via `gh`
 
@@ -48,13 +48,13 @@ Three GraphQL queries and one REST call fire in parallel the moment the window o
 3. `ISSUE_SEARCH_QUERY`: issues where you're the author, assignee, or mentioned
 4. `/users/:username/events`: recent activity feed (no GraphQL equivalent, so REST)
 
-The left panel renders as soon as the viewer data lands. PRs and issues fill in when their searches complete. Activity loads last. Each section has its own error boundary so a flaky query doesn't take the whole dashboard down.
+The left panel renders as soon as the viewer data lands, PRs and issues fill in when their searches complete, and activity loads last. Each section has its own error boundary so a flaky query doesn't take the whole dashboard down.
 
 Everything is cached in `localStorage` with a 30-minute TTL. The cached username lives under a separate key so the events call can fire in parallel with the viewer query on first load instead of waiting for the viewer response to learn the username. Cold starts are basically instant because stale data renders first and the background refresh swaps it in.
 
 ### The native bits
 
-Tauri gives you the tray icon's position and the monitor's dimensions. It does not give you "put the window under the tray, fit to monitor, don't clip off-screen on a 4K display with retina scaling." That's a `fit_to_monitor` helper in `src-tauri/src/lib.rs`:
+Tauri gives you the tray icon's position and the monitor's dimensions, but putting the window under the tray, fitting it to the monitor, and keeping it from clipping off-screen on a 4K display with retina scaling is on you. That's the `fit_to_monitor` helper in `src-tauri/src/lib.rs`:
 
 ```rust
 fn fit_to_monitor(
@@ -93,7 +93,7 @@ apply_vibrancy(
 );
 ```
 
-`FullScreenUI` is the blur level macOS uses for notification center and the app switcher. `12.0` is the corner radius so the window matches the native menubar rounding. Feels like a native OS widget.
+`FullScreenUI` is the blur level macOS uses for notification center and the app switcher. `12.0` is the corner radius so the window matches the native menubar rounding, and it ends up feeling like a native OS widget.
 
 ### Merging PR review comments with issue comments
 
@@ -117,7 +117,7 @@ export async function fetchAllComments(
 }
 ```
 
-Normalizing the two shapes into a single `Comment` type so they sort chronologically took longer than I want to admit. [`react-markdown`](https://github.com/remarkjs/react-markdown) with `rehype-sanitize` and `rehype-raw` handles the rendering so PR bodies with inline HTML don't execute anything they shouldn't.
+Normalizing the two shapes into a single `Comment` type so they sort chronologically was the fiddly part. [`react-markdown`](https://github.com/remarkjs/react-markdown) with `rehype-sanitize` and `rehype-raw` handles the rendering so PR bodies with inline HTML don't execute anything they shouldn't.
 
 ### The privacy toggle
 
@@ -127,6 +127,6 @@ This came from a real situation. I was on a call sharing my screen and realized 
 
 Tauri shell with a TypeScript + React frontend, ~118 lines of Rust for the native bits. No state library, no data-fetching library, just `fetch`, `localStorage`, and `useState`. Built and shipped on January 29, 2026.
 
-I use Gitbar every day. It's not flashy, it just does the thing I needed it to do. If you live on GitHub and you're tired of tab-hopping, [give it a try](https://github.com/ramonclaudio/gitbar).
+I use Gitbar every day. It does the thing I needed it to do. If you live on GitHub and you're tired of tab-hopping, [give it a try](https://github.com/ramonclaudio/gitbar).
 
 \- Ray
