@@ -1,5 +1,5 @@
 // Pure content transforms for the site's derived surfaces. The gh calls and
-// file I/O live in reconcile.ts; everything here is string in, string out.
+// file I/O live in reconcile.ts, so everything here is string in, string out.
 import {
   groupByRepo,
   prUrl,
@@ -34,7 +34,7 @@ export function serializeData(
         : ""
     } },`;
   return `// Single source of truth for upstream contributions. The homepage, the
-// contributions page, now.md's open-PR list, llms.txt, and the JSON-LD schema
+// contributions page's merged and open lists, llms.txt, and the JSON-LD schema
 // derive from this file. \`bun reconcile\` audits it against live GitHub;
 // \`bun reconcile:fix\` fixes it: new PRs get scaffolded entries, open PRs
 // move to merged when they land, closed ones drop out, and patchesCount
@@ -46,7 +46,7 @@ export function serializeData(
 export type Contribution = {
   repo: string;
   number: number;
-  title: string; // terse one-liner (homepage, now.md open list)
+  title: string; // terse one-liner (homepage, open-PR list)
   detail?: string; // fuller description (contributions page); falls back to title
 };
 
@@ -115,7 +115,7 @@ export function orderGroups(
 }
 
 // Rewrite the count in a matched check span. The count is the last number in
-// the span: earlier digits can belong to a URL (the 3 in is%3Apr).
+// the span, because earlier digits can belong to a URL (the 3 in is%3Apr).
 export const bumpLastNumber = (span: string, n: number) =>
   span.replace(/\d+(?!.*\d)/, String(n));
 
@@ -144,7 +144,7 @@ export const mergedListBlock = (list: Contribution[]) =>
     )
     .join("\n");
 
-// now.md's generated open-PR list.
+// the generated open-PR list.
 export const openListBlock = (list: Contribution[]) =>
   list.map(c => `- [${key(c)}](${prUrl(c)}): ${c.title}.`).join("\n");
 
@@ -156,7 +156,7 @@ export const pageSection = (text: string, from: string, next: string) => {
   return text.slice(i, j === -1 ? undefined : j);
 };
 
-// The last /pull/ link in a line owns the row or bullet; earlier links are
+// The last /pull/ link in a line owns the row or bullet, and earlier links are
 // references ("root cause", "supersedes"). Returns owner/repo#number.
 export const lastPullLink = (line: string): string | null => {
   const all = [
