@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://ramonclaudio.com",
   author: "Ray",
   profile: "https://ramonclaudio.com",
-  desc: "Developer tools engineer in NYC. CLIs, scaffolders, and Claude Code tooling, plus React Native apps on Expo with Convex and Better Auth. Upstream fixes to Expo, Convex, Bun, shadcn/ui.",
+  desc: "Developer tools engineer in NYC. CLIs and build tooling, plus React Native apps on Expo with Convex and Better Auth. Upstream fixes to Expo, React Native, Bun, Convex, shadcn/ui.",
   title: "Ray",
   ogImage: "ramonclaudio-og.jpg",
   lightAndDarkMode: true,

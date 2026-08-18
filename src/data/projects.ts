@@ -27,30 +27,30 @@ export const projects: Project[] = [
     name: "seetree",
     stack: "Zig · CLI · TUI",
     description:
-      "Live tree viewer for Claude Code, written in Zig. Lights up files as Claude reads, writes, edits, or deletes them. ~200K binary, on Homebrew and npm.",
+      "Terminal tree viewer written in Zig. Tails Claude Code's JSONL session logs and lights up files as they get read, written, edited, or deleted. ~200K binary, on Homebrew and npm.",
     repo: "ramonclaudio/seetree",
-    detail: "~200K binary · 319 total downloads",
+    detail: "~200K binary · Homebrew + npm",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/seetree",
     liveLabel: "npm",
     backstory:
-      "I usually have at least four or five Claude Code sessions going at once. I tell Claude what I want, it goes off and reads files, edits them, writes to them, but I can never tell exactly which files got touched without reading through all the thinking and bash calls. My IDE shows the same modified dot for every tracked or untracked file, so the file edited a second ago looks identical to the file edited two weeks ago. So I built a live tree viewer that lights up as Claude works.\n\nWanted an excuse to build something in Zig given all the hype, and a CLI that lives in a side pane all day felt like a good start. Hand-rolled the JSONL scanner from scratch and swapped <code>std.process.spawn</code> and <code>std.Io.Dir</code> for direct POSIX so the binary fits at or around 200K. Default polls <code>~/.claude/projects/*.jsonl</code> every 2 seconds, with an optional <code>FileChanged</code> hook that drops the poll to 30 seconds and refreshes on every event instead.",
+      "I usually have at least four or five Claude Code sessions going at once. I tell Claude what I want, it goes off and reads files, edits them, writes to them, but I can never tell exactly which files got touched without reading through all the thinking and bash calls. My IDE shows the same modified dot for every tracked or untracked file, so the file edited a second ago looks identical to the file edited two weeks ago. So I built a live tree viewer that lights up as Claude works.\n\nWrote it in Zig because a CLI that sits in a side pane all day has to start fast and stay small. Hand-rolled the JSONL scanner from scratch and swapped <code>std.process.spawn</code> and <code>std.Io.Dir</code> for direct POSIX so the binary fits at or around 200K. Default polls <code>~/.claude/projects/*.jsonl</code> every 2 seconds, with an optional <code>FileChanged</code> hook that drops the poll to 30 seconds and refreshes on every event instead.",
   },
   {
     slug: "ccbase",
     name: "ccbase",
     stack: "TypeScript · Bun · SQLite",
     description:
-      "Local analytics dashboard, productivity tracker, conversation viewer, and searchable session history for Claude Code.",
+      "Local log indexer. Parses Claude Code's session directory into SQLite with full-text search across every project, plus a dashboard over the result.",
     repo: "ramonclaudio/ccbase",
-    detail: "282 total downloads",
+    detail: "SQLite full-text search · stays local",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/@ramonclaudio/ccbase",
     liveLabel: "npm",
     backstory:
-      "I use Claude Code every day. Got curious how much value I'm actually getting out of the Max plan, so I started digging into <code>~/.claude/</code>. Turns out I'm saving a ton. That got me looking at the rest of the data: commits per day, cache hit rates, what sessions I'm working on, all of it.\n\nBuilt a dashboard that parses everything into SQLite and stays local. Full-text chat search across every project (the CLI only shows sessions for the project you're in). Also shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history: Claude Code stores absolute paths and doesn't handle moves. Now it does.",
+      "The CLI only lists sessions for the project you're standing in, and there's no way to search across all of them. Everything is already on disk in <code>~/.claude/</code>, just not indexed. So I read the format and pulled out the rest of it too: commits per day, cache hit rates, which sessions are active.\n\nBuilt a dashboard that parses everything into SQLite and stays local. Full-text chat search across every project (the CLI only shows sessions for the project you're in). Also shipped <code>ccbase mv</code> because moving a project (private dir to public after open-sourcing, for example) breaks all session history, since Claude Code stores absolute paths and doesn't handle moves. <code>ccbase mv</code> rewrites them.",
   },
   {
     slug: "gitbar",
@@ -63,7 +63,7 @@ export const projects: Project[] = [
     featured: true,
     status: "maintained",
     backstory:
-      'Got tired of context-switching between GitHub tabs. PRs here, issues there, notifications somewhere else. Every time I wanted to check "what needs my attention?" I\'d open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.',
+      'Got tired of context-switching between GitHub tabs for PRs, issues, and notifications. Every time I wanted to check "what needs my attention?" I\'d open 4 tabs and lose 5 minutes. Built a menubar app on Tauri instead: PRs (yours, assigned, review requested, mentioned), issues, owned and contributed repos, contribution graph, activity feed.\n\n3 parallel GraphQL queries + REST events, not one blocking call. Viewer data renders as soon as it arrives, PR and issue data fills in when searches complete, activity loads last in the background. Progressive rendering via <code>IntersectionObserver</code> so only visible items render. Stale-while-revalidate caching so cached data shows instantly, fresh data loads behind it.',
   },
   {
     slug: "convex-revenuecat",
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     description:
       "Convex component that mirrors RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions.",
     repo: "ramonclaudio/convex-revenuecat",
-    detail: "12,561 total downloads · Convex Components Directory",
+    detail: "21,500+ total downloads · Convex Components Directory",
     featured: true,
     status: "maintained",
     liveUrl: "https://www.npmjs.com/package/convex-revenuecat",
@@ -93,11 +93,12 @@ export const projects: Project[] = [
   {
     slug: "vexpo",
     name: "vexpo",
-    stack: "Expo SDK 56 · Convex · Better Auth · Resend",
+    stack: "Expo SDK 57 · Convex · Better Auth · Resend",
     description:
       "Mobile sibling of tanvex. iOS starter wiring Expo, Convex, Better Auth, and Resend. Email + password, OTP, Apple Sign In, push notifications, universal links, profile uploads, full-text search, OTA updates, EAS submit and workflows. create-vexpo scaffolds it, then the vexpo CLI provisions Convex, Apple, EAS, and Resend, so you go from new project to TestFlight in one afternoon. My mobile dogfood, where I hit the Expo, React Native, and Hermes edge cases I file upstream.",
     repo: "ramonclaudio/vexpo",
-    detail: "5,773 total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
+    detail:
+      "7,200+ total downloads · @ramonclaudio/vexpo + create-vexpo on npm",
     featured: true,
     status: "maintained",
     liveUrl: "/apps/vexpo",
@@ -118,7 +119,7 @@ export const projects: Project[] = [
       date: "Mar 2026",
     },
     backstory:
-      "Hackathon submission for ElevenHacks Season 1, the ElevenLabs × Firecrawl collab. A weekend project, not a product.\n\nThree voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during an actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nDidn't place but I kept building it after the hackathon.",
+      "Hackathon submission for ElevenHacks Season 1, the ElevenLabs × Firecrawl collab.\n\nThree voice modes in one app. <strong>Research</strong>: ask about any product, Counter searches the web and drops intel cards with prices, market sentiment, and scam warnings as results come back. <strong>Live</strong>: keep it in your ear during an actual negotiation and it whispers coaching. <strong>Practice</strong>: a tough AI salesman that throws real tactics at you (anchoring, urgency, good cop/bad cop), scores your technique, and tells you what to fix.\n\nElevenLabs Conversational AI runs the voice agent via <code>@elevenlabs/react-native</code> over WebRTC. Each mode has its own system prompt. The agent calls custom tools (<code>updateIntelCards</code>, <code>skipTurn</code>) to push structured data back to the client as it talks. Firecrawl runs the web search on the Convex backend and feeds results back as tool context.\n\nKept building it after the hackathon.",
   },
   {
     slug: "dreamseeker",
@@ -135,7 +136,7 @@ export const projects: Project[] = [
       date: "Feb 2026",
     },
     backstory:
-      "Hackathon submission for RevenueCat Shipyard 2026. A weekend project, not a product.\n\nYou pick a goal and break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. Ten levels from Dreamer to Legend, four achievement badges, a 16-week streak heatmap. Auth state syncs to RevenueCat on login, and every UI read is a live Convex subscription. There's row-level security on every table, rate limiting on every endpoint, and input validation on every mutation.",
+      "Hackathon submission for RevenueCat Shipyard 2026.\n\nYou pick a goal and break it into small actions. The Today tab pulls everything into one place so you always know what to do right now. Every completed action triggers haptics, hype copy, XP, and a streak update. Completing a goal walks you through an achievement screen, guided reflection, and next steps.\n\nXP drives progression: +10 per action, +100 per goal, +15 per focus session. Ten levels from Dreamer to Legend, four achievement badges, a 16-week streak heatmap. Auth state syncs to RevenueCat on login, and every UI read is a live Convex subscription. There's row-level security on every table, rate limiting on every endpoint, and input validation on every mutation.",
   },
   {
     slug: "coderabbit-shadcn-registry",
@@ -154,9 +155,9 @@ export const projects: Project[] = [
   {
     slug: "skills",
     name: "skills",
-    stack: "TypeScript · Bun · Claude Code",
+    stack: "TypeScript · Bun",
     description:
-      "Custom Claude Code skills, installable individually as plugins. handoff, qmd, commit, polish, audit, techdebt, teams, gif, frames.",
+      "Nine plugins for Claude Code, each installable on its own. handoff, qmd, commit, polish, audit, techdebt, teams, gif, frames.",
     repo: "ramonclaudio/skills",
   },
   {
@@ -176,7 +177,7 @@ export const projects: Project[] = [
     description:
       "CLI scaffolder (bun create tanstack-cn my-app) and shared runtime package, same shape as shadcn's. Vite 8 Rolldown+Oxc, Tailwind v4 and shadcn/ui base-luma on Base UI, Oxlint+Oxfmt instead of Radix, ESLint, and Prettier.",
     repo: "ramonclaudio/tanstack-cn",
-    detail: "1,249 total downloads across tanstack-cn and create-tanstack-cn",
+    detail: "1,300 total downloads across tanstack-cn and create-tanstack-cn",
     featured: true,
     status: "live",
     liveUrl: "https://tanstack-cn.vercel.app",
@@ -197,7 +198,7 @@ export const projects: Project[] = [
       date: "Oct to Nov 2025",
     },
     backstory:
-      'Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn\'t place. This repo is the original snapshot. Active version lives at <a href="https://github.com/ramonclaudio/tanvex">tanvex</a>.',
+      'Built for the TanStack Start Hackathon, $140k prize pool, co-hosted by TanStack, Convex, Cloudflare, Netlify, Firecrawl, Autumn, CodeRabbit, and Sentry. Submission was a complete SaaS starter with SSR auth via Better Auth, Autumn billing, and Sentry monitoring wired up end-to-end.\n\nDidn\'t place. This repo is the original snapshot, and the active version lives at <a href="https://github.com/ramonclaudio/tanvex">tanvex</a>.',
   },
   {
     slug: "polar-commerce",
@@ -224,7 +225,7 @@ export const projects: Project[] = [
     description:
       "shadcn/ui for React Native. Copy and paste components built on Uniwind. iOS, Android, and Web from one codebase.",
     repo: "ramonclaudio/uniwind-ui",
-    detail: "My own apps are moving off this toward native Swift via @expo/ui.",
+    detail: "Superseded by native SwiftUI through @expo/ui.",
   },
   {
     slug: "vercel-blob-client-starter",
@@ -257,25 +258,25 @@ export const projects: Project[] = [
     description:
       "Customizable status line for Claude Code with project, git, runtime, and model info.",
     repo: "ramonclaudio/claude-code-statusline",
-    detail: "513 total downloads",
+    detail: "project, git, runtime, and model info",
   },
   {
     slug: "create-claude",
     name: "create-claude",
     stack: "JavaScript · CLI",
     description:
-      "Bootstrap Claude Code into any project with hooks, agents, slash commands, and safety in one command.",
+      "Scaffolder that wires Claude Code into an existing project. Hooks, agents, slash commands, and guardrails in one command.",
     repo: "ramonclaudio/create-claude",
-    detail: "1,811 total downloads",
+    detail: "1,870+ total downloads",
   },
   {
     slug: "create-codex",
     name: "create-codex",
     stack: "TypeScript · CLI",
     description:
-      "Bootstrap AGENTS.md into any project with auto-detection of your stack.",
+      "Scaffolder that writes an AGENTS.md into an existing project, detecting the stack on the way.",
     repo: "ramonclaudio/create-codex",
-    detail: "354 total downloads",
+    detail: "detects the stack on the way in",
   },
   {
     slug: "raycast-mcp-server-manager",
@@ -299,7 +300,7 @@ export const projects: Project[] = [
     name: "cursor-ai-usage-spending-limit-manager",
     stack: "JavaScript · Browser",
     description:
-      "Browser console script for managing Cursor's spending limit and usage-based pricing. Cursor eventually fixed the bug.",
+      "Cursor's billing UI wouldn't let you raise your own spending limit once you hit the cap. Found the API call behind it and set the limit from the console instead. Cursor later fixed the bug.",
     repo: "ramonclaudio/cursor-ai-usage-spending-limit-manager",
     status: "archived",
   },

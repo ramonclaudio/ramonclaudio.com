@@ -59,32 +59,22 @@ const codeClass = "rounded bg-muted px-1 py-0.5 text-xs";
       </a>
 
       <p>
-        Hi, I'm Ray. Developer tools engineer in NYC, solo since 2013. CLIs,
-        scaffolders, a Zig tree viewer for Claude Code, a Tauri menubar GitHub
+        Hi, I'm Ray. Developer tools engineer in NYC, building since 2013. CLIs and
+        build tooling, a terminal tree viewer in Zig, a Tauri menubar GitHub
         dashboard. Most of my <a
           href="/projects"
           class="text-foreground underline decoration-dashed underline-offset-4"
           >projects</a
-        > started as a bug somewhere upstream or a task I found myself doing way too
+        > started as a bug somewhere upstream or a task I found myself doing too
         often. When I hit a bug I try to find the cause at the source, <a
           href="/contributions"
           class="text-foreground underline decoration-dashed underline-offset-4"
           >file the PR</a
         >, and keep a patch around so my projects don't wait on review. More on <a
-          href="/now"
-          class="text-foreground underline decoration-dashed underline-offset-4"
-          >what I'm shipping now</a
-        >
-        and <a
           href="/setup"
           class="text-foreground underline decoration-dashed underline-offset-4"
           >how I'm set up</a
-        >. Also drink way too much coffee. Sey beans, V60, 1Zpresso ZP6, full
-        nerd mode (<a
-          href="/setup#coffee"
-          class="text-foreground underline decoration-dashed underline-offset-4"
-          >I go deeper here</a
-        >).
+        >.
       </p>
 
       <p class="mt-3 text-sm text-muted-foreground">
@@ -102,7 +92,7 @@ const codeClass = "rounded bg-muted px-1 py-0.5 text-xs";
           rel="noopener noreferrer"
           class="text-foreground decoration-dashed underline-offset-4 hover:underline"
           >patches</a
-        > · 10 npm packages
+        > · 11 npm packages
       </p>
 
       <div class="mt-4 flex flex-wrap items-center gap-4">
@@ -228,6 +218,41 @@ const codeClass = "rounded bg-muted px-1 py-0.5 text-xs";
       <h2 class="text-2xl font-semibold tracking-wide">[stack]</h2>
       <ul class="mt-4 space-y-3">
         <li>
+          <span class="font-medium text-foreground">Desktop + CLI.</span>
+          <span class="text-muted-foreground">
+            {" "}Tauri + Rust for menubar apps (<a
+              href="/projects/gitbar"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">gitbar</code
+              ></a
+            >). Bun everywhere else, compiled to single-file binaries when
+            shipping.
+          </span>
+        </li>
+        <li>
+          <span class="font-medium text-foreground">Local tooling.</span>
+          <span class="text-muted-foreground">
+            {" "}Nine Claude Code plugins in <a
+              href="https://github.com/ramonclaudio/skills"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">skills</code
+              ></a
+            >. Session handoff between agents in <code
+              class="rounded bg-muted px-1 py-0.5 text-xs">handoff</code
+            >. SQLite index over <code
+              class="rounded bg-muted px-1 py-0.5 text-xs">~/.claude/</code
+            > in <a
+              href="/projects/ccbase"
+              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
+              ><code class="rounded bg-muted px-1 py-0.5 text-xs">ccbase</code
+              ></a
+            >. <code class="rounded bg-muted px-1 py-0.5 text-xs">seetree</code> is
+            Zig, no external deps, ~200K binary.
+          </span>
+        </li>
+        <li>
           <span class="font-medium text-foreground">Mobile.</span>
           <span class="text-muted-foreground">
             {" "}React Native apps on Expo, canary. <code
@@ -260,44 +285,6 @@ const codeClass = "rounded bg-muted px-1 py-0.5 text-xs";
                 >convex-revenuecat</code
               ></a
             > component.
-          </span>
-        </li>
-        <li>
-          <span class="font-medium text-foreground">Desktop + CLI.</span>
-          <span class="text-muted-foreground">
-            {" "}Tauri + Rust for menubar apps (<a
-              href="/projects/gitbar"
-              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-              ><code class="rounded bg-muted px-1 py-0.5 text-xs">gitbar</code
-              ></a
-            >). Bun everywhere else, compiled to single-file binaries when
-            shipping.
-          </span>
-        </li>
-        <li>
-          <span class="font-medium text-foreground">Claude Code infra.</span>
-          <span class="text-muted-foreground">
-            {" "}Nine plugins in <a
-              href="https://github.com/ramonclaudio/skills"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-              ><code class="rounded bg-muted px-1 py-0.5 text-xs">skills</code
-              ></a
-            >. Session handoff in <code
-              class="rounded bg-muted px-1 py-0.5 text-xs">handoff</code
-            >. SQLite dashboard over <code
-              class="rounded bg-muted px-1 py-0.5 text-xs">~/.claude/</code
-            > in <a
-              href="/projects/ccbase"
-              class="text-foreground decoration-dashed underline-offset-4 hover:underline"
-              ><code class="rounded bg-muted px-1 py-0.5 text-xs">ccbase</code
-              ></a
-            >. Zig 0.16 at <code class="rounded bg-muted px-1 py-0.5 text-xs"
-              >std_options</code
-            > level in <code class="rounded bg-muted px-1 py-0.5 text-xs"
-              >seetree</code
-            >.
           </span>
         </li>
       </ul>
