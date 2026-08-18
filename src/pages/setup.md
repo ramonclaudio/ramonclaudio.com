@@ -16,7 +16,7 @@ All of this runs on a [MacBook Pro 14" M4 Pro](https://www.apple.com/shop/buy-ma
 
 ### Apps
 
-[Zed](https://zed.dev/) is my editor. It's fast and does what I want from an editor these days, mostly reviewing the code changes Claude Code or Codex made. [Ghostty](https://ghostty.org/) is my terminal, GPU-accelerated and native on macOS, with the config in a text file. I run zsh with a [starship](https://starship.rs/) prompt, plus [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting). Most of my time now is in [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://github.com/openai/codex), and GitHub.
+[Zed](https://zed.dev/) is my editor. It's fast and does what I want from an editor. [Ghostty](https://ghostty.org/) is my terminal, GPU-accelerated and native on macOS, with the config in a text file. I run zsh with a [starship](https://starship.rs/) prompt, plus [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
 
 [Helium](https://helium.computer/) for browsing.
 
