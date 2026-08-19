@@ -31,13 +31,13 @@ Three separate PRs have been opened to shadcn trying to fill this gap. None have
 
 - [#7173](https://github.com/shadcn-ui/ui/pull/7173) by @nisabmohd (April 2025) uses cookies via `createServerFn` + `getCookie`/`setCookie`. No `ScriptOnce`, no "system" mode. First-time visitors always get light mode regardless of OS preference. [@shadcn commented](https://github.com/shadcn-ui/ui/pull/7173#issuecomment-3023669836) asking how it compares to the next PR.
 - [#7490](https://github.com/shadcn-ui/ui/pull/7490) by @joeyfinkel (May 2025) was inspired by [TanStack.com's own ThemeToggle.tsx](https://github.com/TanStack/tanstack.com/blob/main/src/components/ThemeToggle.tsx). Also cookie-based. Uses `ScriptOnce` but only conditionally when theme is "system", which means it doesn't fire for users who explicitly set light or dark. [@shadcn commented](https://github.com/shadcn-ui/ui/pull/7490#issuecomment-3023666599) on this one too.
-- [#9096](https://github.com/shadcn-ui/ui/pull/9096) by @Knitesik (December 2025) wraps [tanstack-theme-kit](https://github.com/augiwan/tanstack-theme-kit), a 28-star adaptation of `next-themes`. Adds a third-party dependency to the official docs.
+- [#9096](https://github.com/shadcn-ui/ui/pull/9096) by @Knitesik (December 2025) wraps [tanstack-theme-kit](https://github.com/augiwan/tanstack-theme-kit), a 32-star adaptation of `next-themes`. Adds a third-party dependency to the official docs.
 
-Beyond the PRs, the community has been solving this in blog posts and libraries. [Leonardo Montini](https://leonardomontini.dev/tanstack-start-theme/) wrote a guide using `ScriptOnce` and `createIsomorphicFn()`. [tigawanna](https://dev.to/tigawanna/tanstack-start-ssr-friendly-theme-provider-5gee) wrapped `ScriptOnce` in a custom `FunctionOnce` abstraction. [ishchhabra](https://dev.to/ishchhabra/how-to-add-theming-to-an-ssr-app-tanstack-start-56mn) went full server-side with cookies, `beforeLoad` hooks, and `useOptimistic`. Two standalone libraries exist: [tanstack-theme-kit](https://github.com/augiwan/tanstack-theme-kit) (~28 stars, credits a [GitHub Gist by WellDone2094](https://gist.github.com/WellDone2094/16107a2a9476b28a5b394bee3fa1b8a3) as its origin) and [themer](https://github.com/lukonik/themer) (~30 stars).
+Beyond the PRs, the community has been solving this in blog posts and libraries. [Leonardo Montini](https://leonardomontini.dev/tanstack-start-theme/) wrote a guide using `ScriptOnce` and `createIsomorphicFn()`. [tigawanna](https://dev.to/tigawanna/tanstack-start-ssr-friendly-theme-provider-5gee) wrapped `ScriptOnce` in a custom `FunctionOnce` abstraction. [ishchhabra](https://dev.to/ishchhabra/how-to-add-theming-to-an-ssr-app-tanstack-start-56mn) went full server-side with cookies, `beforeLoad` hooks, and `useOptimistic`. Two standalone libraries exist: [tanstack-theme-kit](https://github.com/augiwan/tanstack-theme-kit) (32 stars, credits a [GitHub Gist by WellDone2094](https://gist.github.com/WellDone2094/16107a2a9476b28a5b394bee3fa1b8a3) as its origin) and [themer](https://github.com/lukonik/themer) (32 stars).
 
 Even the Vite dark mode guide has open PRs trying to patch the same underlying problems: [#8969](https://github.com/shadcn-ui/ui/pull/8969) adds `typeof window` guards to prevent the `localStorage` SSR crash, [#10132](https://github.com/shadcn-ui/ui/pull/10132) adds a FOUC prevention script to `index.html`, and [#7599](https://github.com/shadcn-ui/ui/pull/7599) adds the missing `colorScheme` style property. All open, none merged.
 
-Everyone hits the same wall. Nobody agrees on the fix.
+Everyone hits the same wall, and nobody has landed on one fix.
 
 I decided to go find the canonical answer.
 
@@ -59,13 +59,13 @@ const [theme, setTheme] = useState<Theme>(
 );
 ```
 
-No server render means no problem. TanStack Start does SSR. `localStorage` doesn't exist on the server. This either throws or produces a hydration mismatch where the server renders "system" and the client immediately reads "dark" from storage.
+On Vite there's no server render so that read is fine, but TanStack Start does SSR and `localStorage` doesn't exist on the server, so the read either throws or produces a hydration mismatch where the server renders "system" and the client immediately reads "dark" from storage.
 
 The Next.js guide sidesteps this with `next-themes`. Remix uses `remix-themes` with cookie sessions. Both are framework-specific. TanStack Start doesn't have an equivalent, and pulling `next-themes` into a non-Next.js app felt wrong.
 
 ### ScriptOnce + Context
 
-The solution is two layers. `ScriptOnce` handles the DOM before React touches it. A React Context handles state after hydration.
+The solution is two layers, `ScriptOnce` for the DOM before React touches it and a React Context for state after hydration.
 
 The inline script reads `localStorage`, resolves the preference, and adds the class to `<html>` before the browser paints. Wrapping it in a function threads the provider's `storageKey` and `defaultTheme` props through `JSON.stringify`, so custom configs actually reach the pre-hydration pass:
 
@@ -88,7 +88,7 @@ function getThemeScript(storageKey: string, defaultTheme: Theme) {
 }
 ```
 
-The `colorScheme` line is easy to miss. Without it, native browser controls (scrollbars, form inputs, color picker) ignore your theme and render in their default scheme. None of the three open PRs set it. None of the community guides set it. TanStack's own [document head management example](https://tanstack.com/router/latest/docs/framework/react/guide/document-head-management#inline-scripts-with-scriptonce) doesn't set it. There's an [open PR to the Vite guide](https://github.com/shadcn-ui/ui/pull/7599) that adds it, but it's been sitting since June 2025.
+The `colorScheme` line is easy to miss. Without it, native browser controls (scrollbars, form inputs, color picker) ignore your theme and render in their default scheme. None of the three open PRs set it, and neither do the community guides or TanStack's own [document head management example](https://tanstack.com/router/latest/docs/framework/react/guide/document-head-management#inline-scripts-with-scriptonce). There's an [open PR to the Vite guide](https://github.com/shadcn-ui/ui/pull/7599) that adds it, but it's been sitting since June 2025.
 
 On the React side, `useState` initializes to `defaultTheme` (not from storage) so server and client produce the same initial render. A `mounted` flag gates the apply-side effects so the inline script's work isn't clobbered before `localStorage` is read:
 
@@ -107,7 +107,7 @@ useEffect(() => {
 }, [defaultTheme, storageKey]);
 ```
 
-Server renders "system". Client hydrates "system". No mismatch. The effect fires, state updates, and React re-renders with the stored value. The user never sees a flash because `ScriptOnce` already applied the right class before any of this ran.
+The server renders "system" and the client hydrates "system", so there's no mismatch. The effect fires, state updates, and React re-renders with the stored value. The user never sees a flash because `ScriptOnce` already applied the right class before any of that ran.
 
 A second effect applies the resolved class whenever theme changes. A third listens for OS-level `prefers-color-scheme` changes when mode is "system", so toggling your Mac between light and dark while the tab is open actually updates the page. Both route through a shared `applyTheme` helper and both wait on `mounted`. Neither [#7173](https://github.com/shadcn-ui/ui/pull/7173) nor [#7490](https://github.com/shadcn-ui/ui/pull/7490) include this listener.
 
@@ -362,7 +362,7 @@ Drop `<ModeToggle />` wherever you want the toggle to appear.
 
 ### The PR
 
-After doing this manually enough times I opened [shadcn-ui/ui#10396](https://github.com/shadcn-ui/ui/pull/10396) adding TanStack Start as a fifth dark mode guide next to Next.js, Vite, Astro, and Remix. Three files. The MDX guide with a `ThemeProvider`, root layout, and mode toggle. An index card with the TanStack logo. A `meta.json` update.
+After doing this manually enough times I opened [shadcn-ui/ui#10396](https://github.com/shadcn-ui/ui/pull/10396) adding TanStack Start as a fifth dark mode guide next to Next.js, Vite, Astro, and Remix. It's three files. The MDX guide carries the `ThemeProvider`, root layout, and mode toggle, and the other two are an index card with the TanStack logo and a `meta.json` update.
 
 Merged on April 21, 2026. It's now the [official TanStack Start dark mode guide](https://ui.shadcn.com/docs/dark-mode/tanstack-start).
 
@@ -380,7 +380,5 @@ Two npm packages back it:
 - [`tanstack-cn`](https://www.npmjs.com/package/tanstack-cn) is the shared package the scaffolded project consumes
 
 Live demo: [tanstack-cn.vercel.app](https://tanstack-cn.vercel.app/).
-
-#10396 shipped. The starter mirrors the official guide for anyone hitting the same wall.
 
 \- Ray

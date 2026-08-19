@@ -18,19 +18,14 @@ export const GET: APIRoute = async ({ site }) => {
       "contributions",
       `${stats.merged} PRs merged across ${stats.mergedRepos} upstream repos (Expo, React Native, Hermes, Bun, Convex, Better Auth, shadcn/ui, Astro, napi-rs, TanStack, fumadocs, App-Store-Connect-CLI), plus a public patches repo with ${stats.patches} drop-in fixes for Bun, npm, pnpm, and Yarn.`,
     ],
-    ["Projects", "projects", "Open-source projects, CLIs, and experiments."],
-    [
-      "Now",
-      "now",
-      "What Ray is shipping right now and which upstream PRs are open.",
-    ],
+    ["Projects", "projects", "Open-source projects, CLIs, and build tooling."],
     ["Resume", "resume", "Work history and selected merged PRs."],
     ["Setup", "setup", "Daily-driver editor, terminal, CLI tools, and gear."],
   ] as const;
 
   const body = `# Ramon Claudio (Ray)
 
-> Ray is a freelance developer tools engineer in NYC, building since 2013. He builds CLIs, scaffolders, and Claude Code tooling, ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: ${stats.merged} merged PRs across ${stats.mergedRepos} open-source repos and a public patches repo with ${stats.patches} drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
+> Ray is a developer tools engineer in NYC, building since 2013. He builds CLIs and works on build tooling, ships React Native apps on Expo with Convex for backend and Better Auth for auth, and contributes fixes upstream: ${stats.merged} merged PRs across ${stats.mergedRepos} open-source repos and a public patches repo with ${stats.patches} drop-in fixes. When he hits a dependency bug he traces the root cause, files the upstream PR, and ships a patch so his projects (and anyone else) aren't blocked on the merge.
 
 ## Pages
 ${pages.map(([name, path, note]) => `- [${name}](${base}${path}): ${note}`).join("\n")}
@@ -42,7 +37,7 @@ ${featured
       `- [${p.name}](https://github.com/${p.repo}): ${p.description}${p.detail ? ` (${p.detail})` : ""}`,
   )
   .join("\n")}
-- [All projects](${base}projects): the full list, including archived experiments.
+- [All projects](${base}projects): the full list, including the archived ones.
 
 ## Writing
 ${posts

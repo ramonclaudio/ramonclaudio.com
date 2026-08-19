@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 // All-in-one contribution reconciler. GitHub is the source of truth for PR
-// state; src/data/contributions.ts is the source of truth for content, and
+// state, src/data/contributions.ts is the source of truth for content, and
 // every surface derives from it.
 //
 //   bun reconcile      audit: discover every external PR the account authored,
@@ -9,7 +9,7 @@
 //   bun reconcile:fix  reconcile: scaffold new merged and open PRs, move landed
 //                      open PRs to merged, drop closed ones, refresh
 //                      patchesCount, reorder repo groups (count desc, then
-//                      earliest merge), regenerate contributions.md, now.md,
+//                      earliest merge), regenerate contributions.md,
 //                      and public/resume.md, sync prose count literals,
 //                      recompile the resume PDF when its source changes.
 //
@@ -28,7 +28,7 @@ import {
   type Contribution,
 } from "../src/data/contributions.ts";
 // One import-merge detector and one ledger parser, shared with prw and the
-// patches reconciler; the repos are sibling checkouts.
+// patches reconciler. The repos are sibling checkouts.
 import { detectImportMerge } from "../../patches/scripts/merge.ts";
 import {
   parseMergedRows,
@@ -68,8 +68,8 @@ const act = (msg: string) => (fixMode ? applied : drift).push(msg);
 // gh flakes under burst pressure (up to ~25 parallel calls here, often right
 // after prw audit's own searches). Search allows 30 calls a minute on a rolling
 // window, so a two-second retry lands inside the same exhausted window and 403s
-// again: back off past the window before giving up. The last attempt crashes
-// loud — an audit without GitHub data is no audit.
+// again, so back off past the window before giving up. The last attempt crashes
+// loud rather than reporting on data we never fetched.
 const BACKOFF_MS = [2000, 15000, 45000];
 async function retry<T>(run: () => Promise<T>): Promise<T> {
   for (const wait of BACKOFF_MS) {
@@ -97,7 +97,7 @@ type LivePR = {
   createdAt: string;
 };
 
-// One search finds every public PR the account ever authored; external means
+// One search finds every public PR the account ever authored, where external means
 // someone else's repo. Union with repos already in the data so search-index
 // lag can never make a tracked PR read as deleted.
 const searchRaw = await retry(() =>
@@ -107,7 +107,7 @@ const searchRows = JSON.parse(searchRaw.stdout.toString()) as {
   repository: { nameWithOwner: string };
 }[];
 if (searchRows.length >= 1000)
-  throw new Error("gh search hit the 1000-result cap — results truncated");
+  throw new Error("gh search hit the 1000-result cap, results are truncated");
 const repos = new Set(
   searchRows
     .map(r => r.repository.nameWithOwner)
@@ -115,21 +115,21 @@ const repos = new Set(
 );
 for (const c of [...dataMerged, ...dataOpen]) repos.add(c.repo);
 
-// PRs to CUTOFF_REPO opened from CUTOFF_DATE on are out of scope for this list
-// and never enter the data.
+// PRs to a CUTOFF_REPOS repo opened from CUTOFF_DATE on are out of scope for
+// this list and never enter the data.
 //
 // Keyed on when the PR was opened, not when it merged, so the two opened before
 // the cutoff stay counted however long review takes. A merge-date rule would
 // drop them the day they land.
-const CUTOFF_REPO = "expo/expo";
+const CUTOFF_REPOS = new Set(["expo/expo", "expo/eas-cli"]);
 const CUTOFF_DATE = "2026-07-20";
 
 const live: LivePR[] = (
   await Promise.all(
     [...repos].sort().map(async repo => {
-      // A renamed repo would double-scaffold: search returns the new name
-      // while gh follows the redirect on the old one, so the same PRs read
-      // as two repos. Refuse until the data uses the canonical name.
+      // A renamed repo would double-scaffold, because search returns the new
+      // name while gh follows the redirect on the old one, so the same PRs
+      // read as two repos. Refuse until the data uses the canonical name.
       const canonical = (
         await retry(() => $`gh api repos/${repo} --jq .full_name`.quiet())
       ).stdout
@@ -167,11 +167,11 @@ const live: LivePR[] = (
 )
   .flat()
   .filter(
-    p => !(p.repo === CUTOFF_REPO && p.createdAt.slice(0, 10) >= CUTOFF_DATE),
+    p => !(CUTOFF_REPOS.has(p.repo) && p.createdAt.slice(0, 10) >= CUTOFF_DATE),
   );
 
-// Meta's codesync bot lands PRs via internal import: GitHub reports CLOSED,
-// the bot applies a "Merged" label and comments the landed sha. Read every
+// Meta's codesync bot lands PRs via internal import, so GitHub reports CLOSED
+// while the bot applies a "Merged" label and comments the landed sha. Read every
 // closed PR's comments so a landed import is never counted as closed, and an
 // abandoned import is never counted as merged.
 await Promise.all(
@@ -203,8 +203,8 @@ const liveOpenKeys = new Set(liveOpen.map(key));
 // ---------- reconcile the data file against GitHub ----------
 
 // Claude drafts editorial copy for new scaffolds (headless, structured output).
-// Optional by design: no claude on PATH, --no-ai, or any failure falls back to
-// the mechanical cleanTitle scaffold plus the usual "needs a human" note.
+// Optional by design, so no claude on PATH, --no-ai, or any failure falls back
+// to the mechanical cleanTitle scaffold plus the usual "needs a human" note.
 const useAI =
   fixMode && !process.argv.includes("--no-ai") && !!Bun.which("claude");
 const DRAFT_SCHEMA = JSON.stringify({
@@ -225,7 +225,8 @@ async function draftCopy(
     ).slice(0, 4000);
     const prompt = [
       "Write ledger copy for one upstream PR on a personal contributions site.",
-      `PR: ${p.repo}#${p.number} — ${p.title}`,
+      `PR: ${p.repo}#${p.number}`,
+      `PR title: ${p.title}`,
       `PR body:\n${body}`,
       "",
       "title: one terse line, imperative verb first (add/fix/drop/wire), lowercase",
@@ -234,7 +235,7 @@ async function draftCopy(
       "Never use em dashes, semicolons, or the words: comprehensive, robust,",
       "seamless, leverage, utilize, facilitate, enhance, streamline.",
     ].join("\n");
-    // spawn with a hard timeout: a stalled claude must not hang the whole run
+    // spawn with a hard timeout so a stalled claude can't hang the whole run
     const proc = Bun.spawn(
       [
         "claude",
@@ -279,10 +280,10 @@ for (const c of dataMerged)
     const l = liveByKey.get(key(c));
     if (!l)
       throw new Error(
-        `${key(c)} not found on GitHub — refusing to reconcile. Either the search index dropped it, or it is a ${CUTOFF_REPO} PR opened on or after ${CUTOFF_DATE} and the cutoff above excludes it, in which case delete the entry from contributions.ts`,
+        `${key(c)} not found on GitHub, refusing to reconcile. Either the search index dropped it, or it is a PR to ${[...CUTOFF_REPOS].join(" or ")} opened on or after ${CUTOFF_DATE} and the cutoff above excludes it, in which case delete the entry from contributions.ts`,
       );
     act(
-      `contributions.ts: ${key(c)} is listed merged but GitHub says ${l.state}${fixMode ? " — removed" : ""}`,
+      `contributions.ts: ${key(c)} is listed merged but GitHub says ${l.state}${fixMode ? ", removed" : ""}`,
     );
   }
 const desiredMerged = dataMerged.filter(c => liveMergedKeys.has(key(c)));
@@ -308,8 +309,8 @@ for (const p of liveMerged
   else desiredMerged.splice(at, 0, entry);
   act(
     carried
-      ? `contributions.ts: open ${key(p)} merged upstream — ${fixMode ? "moved to merged" : "--fix moves it to merged"}`
-      : `contributions.ts: merged ${key(p)} is missing — ${fixMode ? (drafted ? "drafted title and detail" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
+      ? `contributions.ts: open ${key(p)} merged upstream, ${fixMode ? "moved to merged" : "--fix moves it to merged"}`
+      : `contributions.ts: merged ${key(p)} is missing, ${fixMode ? (drafted ? "drafted title and detail" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
   );
   manual.push(
     carried
@@ -324,7 +325,7 @@ const desiredOpen = dataOpen.filter(c => {
   if (liveOpenKeys.has(key(c))) return true;
   if (!liveMergedKeys.has(key(c)))
     act(
-      `contributions.ts: open ${key(c)} closed without merging — ${fixMode ? "dropped" : "--fix drops it"}`,
+      `contributions.ts: open ${key(c)} closed without merging, ${fixMode ? "dropped" : "--fix drops it"}`,
     );
   return false; // merged moves were reported above
 });
@@ -338,7 +339,7 @@ for (const p of liveOpen
     title: draft?.title ?? cleanTitle(p.title),
   });
   act(
-    `contributions.ts: open ${key(p)} is missing — ${fixMode ? (draft ? "drafted title" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
+    `contributions.ts: open ${key(p)} is missing, ${fixMode ? (draft ? "drafted title" : "scaffolded from the upstream title") : "--fix scaffolds it"}`,
   );
   manual.push(
     draft
@@ -353,7 +354,7 @@ for (const p of liveOpen
 const openSet = (l: Contribution[]) => l.map(key).sort().join(" ");
 if (openSet(desiredOpen) !== openSet(dataOpen))
   manual.push(
-    "the open-PR set changed: re-read the open sentence in src/pages/resume.md and resume/resume.typ",
+    "the open-PR set changed, so re-read the open sentence in src/pages/resume.md and resume/resume.typ",
   );
 
 // patchesCount mirrors the ledger row count (Open + Merged tables), parsed
@@ -367,11 +368,11 @@ const patches =
   parseOpenRows(patchesReadme).length + parseMergedRows(patchesReadme).length;
 if (patches !== dataPatches)
   act(
-    `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${patches}${fixMode ? " — updated" : ""}`,
+    `contributions.ts: patchesCount is ${dataPatches}, the patches README has ${patches}${fixMode ? ", updated" : ""}`,
   );
 
 // The data file is the source everything derives from. If it disagrees with
-// GitHub, downstream checks are meaningless — stop here and fix it first.
+// GitHub, downstream checks are meaningless, so stop here and fix it first.
 if (!fixMode && drift.length) {
   console.log("Data file is out of sync with GitHub (reconcile it first):");
   for (const d of drift) console.log(`  ✗ ${d}`);
@@ -438,8 +439,8 @@ function replaceBlock(
     drift.push(`${path}: missing ${start} markers`);
     return false;
   }
-  // Blank line after the start marker, none before the end: the shape oxfmt
-  // normalizes markdown to, so `bun format` never fights the generator.
+  // Blank line after the start marker and none before the end. That is the
+  // shape oxfmt normalizes markdown to, so `bun format` never fights it.
   const next = `${start}\n\n${body}\n${end}`;
   if (text.includes(next)) return false;
   if (fixMode) {
@@ -451,7 +452,7 @@ function replaceBlock(
     applied.push(`regenerated the ${label} in ${path}`);
     return true;
   }
-  drift.push(`${path}: ${label} is stale — run bun reconcile:fix`);
+  drift.push(`${path}: ${label} is stale, run bun reconcile:fix`);
   return false;
 }
 
@@ -462,24 +463,12 @@ replaceBlock(
   "merged-PR list",
 );
 
-if (
-  replaceBlock(
-    "src/pages/now.md",
-    "open-prs",
-    openListBlock(desiredOpen),
-    "open-PR list",
-  )
-) {
-  const abs = join(ROOT, "src/pages/now.md");
-  const today = new Date().toISOString().slice(0, 10);
-  writeFileSync(
-    abs,
-    readFileSync(abs, "utf8").replace(
-      /Last updated: \d{4}-\d{2}-\d{2}\./,
-      `Last updated: ${today}.`,
-    ),
-  );
-}
+replaceBlock(
+  "src/pages/contributions.md",
+  "open-prs",
+  openListBlock(desiredOpen),
+  "open-PR list",
+);
 
 // contributions.md's patches sections mirror the patches README's ledger but
 // their wording is editorial, so they can't be generated. Check the PR sets
@@ -519,12 +508,12 @@ for (const [name, readmeSet, cmSet] of parity) {
   for (const k of readmeSet)
     if (!cmSet.has(k))
       (fixMode ? manual : drift).push(
-        `contributions.md: patches ${name} section is missing ${k} (in the patches README) — manual edit`,
+        `contributions.md: patches ${name} section is missing ${k} (in the patches README), manual edit`,
       );
   for (const k of cmSet)
     if (!readmeSet.has(k))
       (fixMode ? manual : drift).push(
-        `contributions.md: patches ${name} section lists ${k}, not in the patches README — manual edit`,
+        `contributions.md: patches ${name} section lists ${k}, not in the patches README, manual edit`,
       );
 }
 
@@ -554,9 +543,9 @@ const COUNTED: { key: Key; repo: string; label: string }[] = [
   { key: "reactNative", repo: "react/react-native", label: "react-native" },
 ];
 
-// A tail repo's second merged PR makes the resume undercount it: the totals
-// auto-fix but its tail entry still links one PR. Loud until a human promotes
-// it into the enumeration and this table.
+// A tail repo's second merged PR makes the resume undercount it. The totals
+// auto-fix but its tail entry still links one PR, so this stays loud until a
+// human promotes it into the enumeration and this table.
 const countedRepos = new Set(COUNTED.map(r => r.repo));
 for (const repo of new Set(orderedMerged.map(c => c.repo)))
   if (!countedRepos.has(repo) && repoCount(repo) > 1)
@@ -582,7 +571,7 @@ const CHECKS: Check[] = [
   },
   {
     file: "src/pages/contributions.md",
-    re: /(\d+) patches: drop-in/g,
+    re: /(\d+) patches, drop-in/g,
     key: "patches",
   },
   {
@@ -603,8 +592,8 @@ const CHECKS: Check[] = [
     { file, re: /(\d+) more open across/g, key: "open" },
     { file, re: /more open across (\d+) repos/g, key: "openRepos" },
   ]),
-  // per-repo counts in the resume's repo enumeration; md links carry a (url),
-  // typ links put the label after #link("url")
+  // per-repo counts in the resume's repo enumeration, where md links carry a
+  // (url) and typ links put the label after #link("url")
   ...COUNTED.flatMap(({ key, label }): Check[] => [
     {
       file: "src/pages/resume.md",
@@ -669,7 +658,7 @@ for (const c of CHECKS) {
       c.file !== "src/pages/contributions.md"
     )
       manual.push(
-        `${c.file}: ${c.key} changed to ${want} — work the repo in or out of the name list in the same sentence`,
+        `${c.file}: ${c.key} changed to ${want}, work the repo in or out of the name list in the same sentence`,
       );
   } else {
     for (const m of matches)
@@ -722,17 +711,17 @@ if (releaseDays > 0) {
         const rel = latest.get(p.repo);
         const day = p.mergedAt!.slice(0, 10);
         if (!rel)
-          return `  – ${key(p)} (merged ${day}): repo publishes no GitHub releases`;
+          return `  · ${key(p)} (merged ${day}): repo publishes no GitHub releases`;
         if (new Date(rel.published_at) < new Date(p.mergedAt!))
-          return `  ✗ ${key(p)} (merged ${day}): after latest release ${rel.tag_name} — not shipped yet`;
+          return `  ✗ ${key(p)} (merged ${day}): after latest release ${rel.tag_name}, not shipped yet`;
         if (!p.mergeSha)
-          return `  – ${key(p)} (merged ${day}): no landed sha to check against ${rel.tag_name}`;
+          return `  · ${key(p)} (merged ${day}): no landed sha to check against ${rel.tag_name}`;
         const cmp =
           await $`gh api ${`repos/${p.repo}/compare/${rel.tag_name}...${p.mergeSha}?per_page=1`} --jq .status`
             .nothrow()
             .quiet();
         if (cmp.exitCode !== 0)
-          return `  – ${key(p)} (merged ${day}): compare against ${rel.tag_name} failed`;
+          return `  · ${key(p)} (merged ${day}): compare against ${rel.tag_name} failed`;
         const status = cmp.stdout.toString().trim();
         return status === "behind" || status === "identical"
           ? `  ✓ ${key(p)} (merged ${day}): in ${rel.tag_name}`

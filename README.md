@@ -26,7 +26,7 @@ Requires Node.js 24+ and Bun.
 ```
 src/
   pages/          # file-based routing: posts, projects, apps, contributions,
-                  # resume, now, setup, tags, search, RSS, llms.txt, OG endpoints
+                  # resume, setup, tags, search, RSS, llms.txt, OG endpoints
   components/     # Header, Footer, Card, Tag, Pagination, ShareLinks, etc.
   layouts/        # Layout, Main, PostDetails, AboutLayout, ResumeLayout
   data/           # blog posts (markdown), projects.ts, contributions.ts

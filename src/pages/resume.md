@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/ResumeLayout.astro
 title: "Resume"
-description: "Ray, developer tools engineer in NYC, freelance since 2013. 60 merged PRs upstream, 10 npm packages, CLIs and Claude Code tooling, React Native on Expo with Convex and Better Auth."
+description: "Ray, developer tools engineer in NYC, 13 years shipping software. 63 merged PRs upstream, 11 npm packages, CLIs and build tooling, React Native on Expo with Convex and Better Auth."
 ---
 
 **Developer Tools Engineer** · Brooklyn, NY
@@ -10,18 +10,18 @@ description: "Ray, developer tools engineer in NYC, freelance since 2013. 60 mer
 
 ## Summary
 
-Developer tools engineer in New York. Freelancing solo since 2013. I build CLIs, scaffolders, and Claude Code tooling. Give me a real bug with the time to dig and I'll ship the fix. 60 PRs merged upstream to Expo, React Native, Convex, Bun, shadcn/ui, and others, every one came from hitting a wall in my own apps and chasing it down.
+Developer tools engineer in New York. 13 years shipping software. CLIs and build tooling. 63 PRs merged upstream to Expo, React Native, Convex, Bun, shadcn/ui, and others.
 
 ## Experience
 
-### Software Engineer · Independent
+### Software Engineer
 
 **2013 to Present · Brooklyn, NY**
 
-- 60 PRs merged upstream across 12 repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (34), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [hermes](https://github.com/facebook/hermes/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [react-native](https://github.com/react/react-native/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), plus [bun](https://github.com/oven-sh/bun/pull/21855), [TanStack/db](https://github.com/TanStack/db/pull/17), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), and App-Store-Connect-CLI. 8 more open across 6 repos including 2 in oven-sh/bun (CI YAML fix, peer-dep lockfile determinism), the hermes-engine podspec in react/react-native, and a codegen ref-type fix in microsoft/react-native-macos.
-- Build and maintain [convex-revenuecat](https://www.convex.dev/components/ramonclaudio-convex-revenuecat) (12,500+ npm downloads, listed on the Convex Components Directory), [tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) (CLI scaffolder, ~1,250 downloads), [create-claude](https://www.npmjs.com/package/create-claude) (1,800+ downloads), and 7 other shipped npm packages, 22,000+ downloads across all of them.
+- 63 PRs merged upstream across 12 repos: [expo/expo](https://github.com/expo/expo/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (36), [shadcn-ui/ui](https://github.com/shadcn-ui/ui/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [get-convex/better-auth](https://github.com/get-convex/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (5), [better-auth](https://github.com/better-auth/better-auth/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [hermes](https://github.com/facebook/hermes/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), [fumadocs](https://github.com/fuma-nama/fumadocs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [withastro/compiler-rs](https://github.com/withastro/compiler-rs/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (2), [react-native](https://github.com/react/react-native/pulls?q=is%3Apr+author%3Aramonclaudio+is%3Amerged) (3), plus [bun](https://github.com/oven-sh/bun/pull/21855), [TanStack/db](https://github.com/TanStack/db/pull/17), [napi-rs](https://github.com/napi-rs/napi-rs/pull/3189), and App-Store-Connect-CLI. 4 more open across 4 repos: `bun.lock` determinism in oven-sh/bun, session preservation on password change in better-auth, a pasted-control-character fix in the shadcn-ui/ui CLI, and a codegen ref-type backport in microsoft/react-native-macos.
+- Build and maintain [convex-revenuecat](https://www.convex.dev/components/ramonclaudio-convex-revenuecat) (21,500+ npm downloads, listed on the Convex Components Directory), [create-claude](https://www.npmjs.com/package/create-claude) (1,870+ downloads), [tanstack-cn](https://www.npmjs.com/package/create-tanstack-cn) (CLI scaffolder, ~1,300 downloads), and 8 other shipped npm packages, 34,000+ downloads across all of them.
 - Maintain [ramonclaudio/patches](https://github.com/ramonclaudio/patches) (70 patches for Bun, npm, pnpm, and Yarn) so my apps and other users ship the fix while upstream PRs are in review.
-- 10,800+ GitHub contributions since Dec 2023 across 52 public repos (384 stars earned).
+- 11,600+ GitHub contributions since Dec 2023 across 53 public repos (394 stars earned).
 - 2018 to 2021 at This Is Not Art: built and maintained a custom Shopify storefront (Liquid) with anti-bot protections (velocity detection, duplicate-order blocking, URL gating) years before Shopify shipped native mitigation. Built internal tools: AR sculpture preview app, Instagram head-tracking game, inventory management, custom event registration with timeslot booking.
 - 2013 to 2017 at Software Automation Services: designed and operated automation and monitoring infrastructure for the e-commerce sector, with hands-on application security research and API reverse-engineering. Shipped Python and JavaScript tooling, Chrome extensions, and related web services.
 
@@ -38,15 +38,16 @@ Developer tools engineer in New York. Freelancing solo since 2013. I build CLIs,
 
 ## Projects
 
-- **[convex-revenuecat](https://github.com/ramonclaudio/convex-revenuecat)**: Convex component mirroring RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. ~12,500 npm downloads, listed on the Convex Components Directory.
-- **[vexpo](https://github.com/ramonclaudio/vexpo)**: Expo SDK 56 + Convex + Better Auth + Resend starter paired with a CLI that runs the full 0-to-1. `create-vexpo` scaffolds the template, then `vexpo full` provisions Convex, Apple Developer and ASC, EAS, and Resend end-to-end: account auth, secrets, env mirroring, Sign In With Apple JWT signing with 90-day auto-rotation, EAS workflows, and more.
-- **[tanvex](https://github.com/ramonclaudio/tanvex)**: TanStack Start + Convex + Better Auth + Resend SaaS starter. SSR auth, email + OTP, rate-limited HTTP API, avatar uploads. Live demo at [tanvex-demo.vercel.app](https://tanvex-demo.vercel.app).
-- **dreamseeker**: goal-achievement app, RevenueCat Shipyard Hackathon 2026 submission. Expo SDK 56 canary + Convex + Better Auth + RevenueCat. Row-level security, rate-limited endpoints, input validation on every mutation.
-- **[uniwind-ui](https://github.com/ramonclaudio/uniwind-ui)**: shadcn/ui for React Native. Copy-and-paste components built on Uniwind, iOS + Android + Web from one codebase. Live demo at [uniwind-ui.vercel.app](https://uniwind-ui.vercel.app).
+- **[convex-revenuecat](https://github.com/ramonclaudio/convex-revenuecat)**: Convex component mirroring RevenueCat subscription state. Webhook and REST sync with lifecycle hooks for entitlement transitions. ~21,500 npm downloads, listed on the Convex Components Directory.
+- **[vexpo](https://github.com/ramonclaudio/vexpo)**: Expo + Convex + Better Auth starter paired with a CLI that does the setup. `create-vexpo` scaffolds the template, then `vexpo full` provisions Convex, Apple Developer and ASC, EAS, and Resend end-to-end: account auth, secrets, env mirroring, Sign In With Apple JWT signing with 90-day auto-rotation, and EAS workflows.
+- **CLI scaffolders**: [tanstack-cn](https://github.com/ramonclaudio/tanstack-cn) puts up TanStack Start on Vite 8 Rolldown+Oxc, Tailwind v4, and Oxlint+Oxfmt, with package-manager detection and git init. [create-claude](https://github.com/ramonclaudio/create-claude) and [create-codex](https://github.com/ramonclaudio/create-codex) wire agent config into an existing project. ~3,500 downloads across them.
+- **[ccbase](https://github.com/ramonclaudio/ccbase)**: local log indexer. Parses a session directory into SQLite with full-text search across every project, plus a dashboard over the result. `ccbase mv` rewrites the absolute paths that break history when a project directory moves.
+- **[seetree](https://github.com/ramonclaudio/seetree)**: terminal tree viewer written in Zig. Tails JSONL session logs and lights up files as they get read, written, edited, or deleted. Hand-rolled JSONL scanner and direct POSIX calls instead of `std.process.spawn`, so the binary fits at or around 200K. On Homebrew and npm.
+- **[gitbar](https://github.com/ramonclaudio/gitbar)**: menubar GitHub dashboard on Tauri. Three parallel GraphQL queries plus REST events instead of one blocking call, progressive rendering, stale-while-revalidate caching. ~5MB binary.
 
 ## Skills
 
-TypeScript, Node, Bun, React, React Native, Expo, Convex, SwiftUI, Postgres, Redis, Python.
+TypeScript, JavaScript, Python, HTML, CSS, React, React Native, Expo, Convex, Node, Bun, SwiftUI.
 
 ## Education
 

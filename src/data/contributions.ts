@@ -1,5 +1,5 @@
 // Single source of truth for upstream contributions. The homepage, the
-// contributions page, now.md's open-PR list, llms.txt, and the JSON-LD schema
+// contributions page's merged and open lists, llms.txt, and the JSON-LD schema
 // derive from this file. `bun reconcile` audits it against live GitHub;
 // `bun reconcile:fix` fixes it: new PRs get scaffolded entries, open PRs
 // move to merged when they land, closed ones drop out, and patchesCount
@@ -11,7 +11,7 @@
 export type Contribution = {
   repo: string;
   number: number;
-  title: string; // terse one-liner (homepage, now.md open list)
+  title: string; // terse one-liner (homepage, open-PR list)
   detail?: string; // fuller description (contributions page); falls back to title
 };
 
@@ -69,6 +69,57 @@ export const merged: Contribution[] = [
   },
   {
     repo: "expo/expo",
+    number: 47622,
+    title: "silence the Xcode every-build warning on the `EXUpdates` podspec",
+    detail:
+      "the `Generate updates resources for expo-updates` script phase in `EXUpdates.podspec` declares no outputs, so Xcode 14+ warns that it will run during every build, on every app that depends on `expo-updates`. Set `:always_out_of_date` on the phase, the same fix already landed on `EXConstants.podspec` (#35181), `ExpoWidgets.podspec` (#43170), and `ExpoLogBox.podspec` (#39958). Verified with `et check-packages expo-updates` and a `bare-expo` build on the iPhone 17 Pro simulator",
+  },
+  {
+    repo: "expo/expo",
+    number: 47772,
+    title: "drop the deep import warning baked into the LogBox web bundle",
+    detail:
+      "the LogBox web overlay printed `Deep imports from the 'react-native' package are deprecated` on load, because a native-only import sat in a shared file and shipped into the web bundle. Moved that import into a native-only file, added the web version beside it, and rebuilt the bundle. Verified with `et check-packages @expo/log-box` and the `dev-console-errors` Playwright tests",
+  },
+  {
+    repo: "expo/expo",
+    number: 45403,
+    title:
+      "stop `workspace:*` shipping in the published canary tarballs for scoped packages",
+    detail:
+      '`getPackageByName` did a `packages/<name>/package.json` lookup, which misses for scoped packages whose dir name differs from the package name (`@expo/ui` lives at `packages/expo-ui/`, `@expo/app-integrity` at `packages/expo-app-integrity/`). On a miss, `Workspace.getInfoAsync` recorded empty `workspacePeerDependencies` for those packages, so `updateWorkspaceProjects` never rewrote `workspace:*` to the canary version, and the published canary tarballs shipped `peerDependencies.expo: "workspace:*"`. `bun add @expo/ui@canary` errored with `Workspace dependency "expo" not found` and `npm install @expo/ui@canary` errored with `EUNSUPPORTEDPROTOCOL`. Fix keeps the existing path-based fast path and falls back to scanning `cachedPackages` by `name` field when the path lookup misses. Same root cause as #44412, different call site',
+  },
+  {
+    repo: "expo/expo",
+    number: 43958,
+    title: "PersistentFileLog read-race fix that flaked expo-updates CI",
+    detail:
+      "`PersistentFileLog.readEntries` race condition where reads bypassed the `serialQueue` that guards every write. Caused flaky `UpdatesLogReaderTests.PurgeOldLogs` failures in `expo-updates` CI when a read executed before a queued write flushed to disk and returned `entries1.count == 1` instead of `2`. Fix wraps `readEntries` in `serialQueue.sync` so reads wait for pending writes. No deadlock risk because all callers are external to the queue",
+  },
+  {
+    repo: "expo/expo",
+    number: 45782,
+    title: "make five auto-firing scheduled workflows fork-safe",
+    detail:
+      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` in `fingerprint` and both `development-client-e2e` matrices, and gated `validate-npm-owners`, `check-issues-nightly`, and `publish-canaries` on the repo check. Dropped failing checks and 120-minute fork CI burns",
+  },
+  {
+    repo: "expo/expo",
+    number: 46050,
+    title:
+      "gate 15 more workflows on the upstream repo, finishing the fork-safety sweep",
+    detail:
+      "closed the fork-safety sweep. Gated 15 more workflows on `github.repository == 'expo/expo'` so fork CI stops red-checking nightly RN and test-suite jobs, hourly issue-maintenance crons, the GCP publish path in `ios-prebuild-external-xcframeworks`, and Slack-notify steps that reference org-only webhooks. Covers `test-react-native-nightly`, `test-suite-nightly`, `lock`, `issue-stale`, `cli`, `create-expo-app`, `create-expo-module`, `fingerprint`, `sdk`, `ios-static-frameworks`, `bare-diffs`, `native-component-list`, `test-suite`, `test-suite-macos`, and drops a redundant step-level repo check in `development-client-latest-e2e`. Finishes what #45782 and #45859 started",
+  },
+  {
+    repo: "expo/expo",
+    number: 45859,
+    title: "skip 13 secret-gated workflows on forks",
+    detail:
+      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 13 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
+  },
+  {
+    repo: "expo/expo",
     number: 47472,
     title:
       "add `testID` and `accessibilityLabel` to `NativeTabs.Trigger` so tests can find tabs and screen readers can read them",
@@ -120,15 +171,7 @@ export const merged: Contribution[] = [
     title:
       "`scrollPosition` and `id` so JS can read and set where a `ScrollView` sits",
     detail:
-      "`scrollPosition` and `id` modifiers (iOS 17+) binding a `ScrollView`'s leading target to JS via `useNativeState` and the worklet `.value` write path. Reading `state.value` returns the id of the leading target; writing scrolls to the matching view. The optional `onChange` callback fires on the JS thread when the leading target changes. `id(string)` marks views as scroll targets and works on `ScrollView`, `LazyVStack`, and `LazyHStack`. Built on the worklet infrastructure from #44214 and #44215. Deferred from #43955 per [@intergalacticspacehighway](https://github.com/intergalacticspacehighway)",
-  },
-  {
-    repo: "expo/expo",
-    number: 45403,
-    title:
-      "stop `workspace:*` shipping in the published canary tarballs for scoped packages",
-    detail:
-      '`getPackageByName` did a `packages/<name>/package.json` lookup, which misses for scoped packages whose dir name differs from the package name (`@expo/ui` lives at `packages/expo-ui/`, `@expo/app-integrity` at `packages/expo-app-integrity/`). On a miss, `Workspace.getInfoAsync` recorded empty `workspacePeerDependencies` for those packages, so `updateWorkspaceProjects` never rewrote `workspace:*` to the canary version, and the published canary tarballs shipped `peerDependencies.expo: "workspace:*"`. `bun add @expo/ui@canary` errored with `Workspace dependency "expo" not found` and `npm install @expo/ui@canary` errored with `EUNSUPPORTEDPROTOCOL`. Fix keeps the existing path-based fast path and falls back to scanning `cachedPackages` by `name` field when the path lookup misses. Same root cause as #44412, different call site',
+      "`scrollPosition` and `id` modifiers (iOS 17+) binding a `ScrollView`'s leading target to JS via `useNativeState` and the worklet `.value` write path. Reading `state.value` returns the id of the leading target, and writing scrolls to the matching view. The optional `onChange` callback fires on the JS thread when the leading target changes. `id(string)` marks views as scroll targets and works on `ScrollView`, `LazyVStack`, and `LazyHStack`. Built on the worklet infrastructure from #44214 and #44215. Deferred from #43955 per [@intergalacticspacehighway](https://github.com/intergalacticspacehighway)",
   },
   {
     repo: "expo/expo",
@@ -144,13 +187,6 @@ export const merged: Contribution[] = [
     title: "`dynamicTypeSize` modifier to clamp how far text grows",
     detail:
       "iOS `dynamicTypeSize` modifier to set or clamp Dynamic Type within a view. A single size pins it, `{ min, max }` bounds the range with either end optional. Caps how far text grows at the largest accessibility sizes for layout safety while still honoring Dynamic Type, and cascades from `<Host>` to every descendant. Bounds the `textStyle` scaling from #46007. Shipped in `56.0.16`",
-  },
-  {
-    repo: "expo/expo",
-    number: 43958,
-    title: "PersistentFileLog read-race fix that flaked expo-updates CI",
-    detail:
-      "`PersistentFileLog.readEntries` race condition where reads bypassed the `serialQueue` that guards every write. Caused flaky `UpdatesLogReaderTests.PurgeOldLogs` failures in `expo-updates` CI when a read executed before a queued write flushed to disk and returned `entries1.count == 1` instead of `2`. Fix wraps `readEntries` in `serialQueue.sync` so reads wait for pending writes. No deadlock risk because all callers are external to the queue",
   },
   {
     repo: "expo/expo",
@@ -251,28 +287,6 @@ export const merged: Contribution[] = [
     title: "per-axis scaleEffect accepting { x, y }",
     detail:
       "per-axis `scaleEffect` accepting `{ x, y }` in addition to `number`. Backwards-compatible: `scaleEffect(0.5)` still normalizes to `{ x: 0.5, y: 0.5 }` in the TS layer before hitting native",
-  },
-  {
-    repo: "expo/expo",
-    number: 45782,
-    title: "make five auto-firing scheduled workflows fork-safe",
-    detail:
-      "made five auto-firing scheduled workflows fork-safe. Swapped `../expo/` (breaks on forks named anything but `expo`) for `${{ github.workspace }}` in `fingerprint` and both `development-client-e2e` matrices, and gated `validate-npm-owners`, `check-issues-nightly`, and `publish-canaries` on the repo check. Dropped failing checks and 120-minute fork CI burns",
-  },
-  {
-    repo: "expo/expo",
-    number: 46050,
-    title:
-      "gate 15 more workflows on the upstream repo, finishing the fork-safety sweep",
-    detail:
-      "closed the fork-safety sweep. Gated 15 more workflows on `github.repository == 'expo/expo'` so fork CI stops red-checking nightly RN and test-suite jobs, hourly issue-maintenance crons, the GCP publish path in `ios-prebuild-external-xcframeworks`, and Slack-notify steps that reference org-only webhooks. Covers `test-react-native-nightly`, `test-suite-nightly`, `lock`, `issue-stale`, `cli`, `create-expo-app`, `create-expo-module`, `fingerprint`, `sdk`, `ios-static-frameworks`, `bare-diffs`, `native-component-list`, `test-suite`, `test-suite-macos`, and drops a redundant step-level repo check in `development-client-latest-e2e`. Finishes what #45782 and #45859 started",
-  },
-  {
-    repo: "expo/expo",
-    number: 45859,
-    title: "skip 13 secret-gated workflows on forks",
-    detail:
-      "gated `pull_request_target`, `issues`, and label-event workflows on `github.repository == 'expo/expo'` so fork PRs stop red-checking on secret-gated jobs that can't run. Covers 13 workflows including `code-review`, `commentator`, `docs-pr`, `issue-triage`, and `sync-template`. Sibling to #45782",
   },
   {
     repo: "get-convex/better-auth",
@@ -393,6 +407,30 @@ export const merged: Contribution[] = [
       "swapped the hardcoded `hermes` source dir for `${{ github.event.repository.name }}` in the `test-linux-armv7` job's `cmake -S` and `test_runner.py` paths. The job runs `actions/checkout@v1` without `path:` (v4 breaks in the arm32 container), so the checkout dir takes the repo name and the job failed on any fork not named `hermes`. Unchanged upstream, where the repo is named `hermes`. Merged via Meta's internal import",
   },
   {
+    repo: "react/react-native",
+    number: 56912,
+    title:
+      "silence the Xcode clean-build warning on the `hermes-engine` podspec",
+    detail:
+      "`hermes-engine.podspec`'s `[Hermes] Replace Hermes for the right configuration, if needed` script phase declares no outputs, so Xcode 14+ warns on every clean iOS build of every project on the default prebuilt-release-tarball Hermes path. Set `:always_out_of_date` using the same guard shape as the two sibling phases already fixed in this package (#52133 and #49812). Verified on RN 0.85.3, the warning drops to a note, `Pods.xcodeproj` carries `alwaysOutOfDate = 1`, and the phase still replaces the binary for the right configuration",
+  },
+  {
+    repo: "react/react-native",
+    number: 57517,
+    title:
+      "declare a dev-only React Native API unconditionally so it stops vanishing in Release",
+    detail:
+      "`RCTBundleURLProviderAllowPackagerServerAccess` was declared only under the dev-menu build guards, so it disappeared in Release and broke callers outside the repo. Expo's side of the same bug is #47688. Merged via Meta's internal import",
+  },
+  {
+    repo: "react/react-native",
+    number: 57518,
+    title:
+      "add a missing include so the TurboModule ArrayBuffer test compiles again",
+    detail:
+      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
+  },
+  {
     repo: "fuma-nama/fumadocs",
     number: 2092,
     title:
@@ -421,22 +459,6 @@ export const merged: Contribution[] = [
     title: "first glibc compat attempt, superseded by #25",
     detail:
       "first-attempt glibc compat fix, added `-x` to `x86_64-unknown-linux-gnu`. Turned out to be insufficient, superseded by #25",
-  },
-  {
-    repo: "react/react-native",
-    number: 57517,
-    title:
-      "declare a dev-only React Native API unconditionally so it stops vanishing in Release",
-    detail:
-      "`RCTBundleURLProviderAllowPackagerServerAccess` was declared only under the dev-menu build guards, so it disappeared in Release and broke callers outside the repo. Expo's side of the same bug is #47688. Merged via Meta's internal import",
-  },
-  {
-    repo: "react/react-native",
-    number: 57518,
-    title:
-      "add a missing include so the TurboModule ArrayBuffer test compiles again",
-    detail:
-      "`RCTTurboModuleArrayBufferTests.mm` uses `detail::OwnedBytesBuffer` from `react/bridging/ArrayBuffer.h` but never imported it, and nothing in its include chain provides it, so `detail` resolved to `facebook::jsi::detail` and `RNTesterUnitTests` failed to compile before running a single test. The file already had `using namespace facebook::react;`, so the one-line import is the entire fix. CI never caught it because the `test_ios_rntester` jobs only build the app scheme, meaning the file had never compiled in the repo since it landed. With the target compiling, the suite ran for the first time: 162 tests, 0 failures. Verified both ways on GitHub-hosted macOS runners. Merged via Meta's internal import",
   },
   {
     repo: "TanStack/db",
@@ -471,26 +493,16 @@ export const merged: Contribution[] = [
 
 export const open: Contribution[] = [
   {
-    repo: "react/react-native",
-    number: 56912,
+    repo: "microsoft/react-native-macos",
+    number: 3078,
     title:
-      "silence the Xcode clean-build warning on the `hermes-engine` podspec",
+      "accept `React.ComponentRef` as a command's first argument in codegen",
   },
   {
     repo: "oven-sh/bun",
     number: 30855,
     title:
       "make `bun.lock` come out the same every run, and stop `bun add X@version` being ignored for peer deps",
-  },
-  {
-    repo: "oven-sh/bun",
-    number: 27086,
-    title: "invalid YAML in the `update-root-certs` workflow `labels` field",
-  },
-  {
-    repo: "expo/expo",
-    number: 47622,
-    title: "silence the Xcode every-build warning on the `EXUpdates` podspec",
   },
   {
     repo: "better-auth/better-auth",
@@ -503,17 +515,6 @@ export const open: Contribution[] = [
     number: 10364,
     title:
       "strip control characters from `prompts` text input so pasted hidden bytes don't break the CLI",
-  },
-  {
-    repo: "expo/expo",
-    number: 47772,
-    title: "fix deep import warning baked into the web overlay bundle",
-  },
-  {
-    repo: "microsoft/react-native-macos",
-    number: 3045,
-    title:
-      "accept `React.ComponentRef` as the first argument of a codegen command",
   },
 ];
 
